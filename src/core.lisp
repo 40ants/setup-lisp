@@ -85,7 +85,8 @@ QL:  ~{~A~^~%~}
 
 
 (defun make-system-info (system-name)
-  (let ((system (asdf:find-system system-name)))
+  (let ((system (handler-case (asdf:find-system system-name)
+                  (asdf:missing-component () nil))))
     (if system
         (make-instance 'system-info
                        :name system-name
@@ -93,7 +94,7 @@ QL:  ~{~A~^~%~}
                        :path (asdf:component-pathname system))
         (make-instance 'system-info
                        :name system-name
-                       :absent-p t
+                       :absent t
                        :version nil
                        :path nil))))
 
