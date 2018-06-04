@@ -1,3 +1,4 @@
+#-asdf3.1 (error "cl-info requires ASDF 3.1")
 (defsystem cl-info
   :version (:read-file-form "version.lisp-expr")
   :author ""
