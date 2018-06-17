@@ -85,17 +85,26 @@ QL:  ~{~A~^~%~}
 
 
 (defun make-system-info (system-name)
-  (let ((system (handler-case (asdf:find-system system-name)
-                  (asdf:missing-component () nil))))
+  (let ((system (block search-for-system
+                  (handler-bind ((asdf:missing-component
+                                  (lambda (c)
+                                    (declare (ignorable c))
+                                    (return-from search-for-system nil)))
+                                 (asdf:system-out-of-date
+                                  (lambda (c)
+                                    (declare (ignorable c))
+                                    (invoke-restart 'continue))))
+                    (asdf:find-system system-name)))))
+    
     (if system
         (make-instance 'system-info
                        :name system-name
                        :version (asdf:component-version system)
                        :path (asdf:component-pathname system))
-        (make-instance 'system-info
-                       :name system-name
-                       :absent t
-                       :version nil
-                       :path nil))))
+      (make-instance 'system-info
+                     :name system-name
+                     :absent t
+                     :version nil
+                     :path nil))))
 
 

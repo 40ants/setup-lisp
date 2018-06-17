@@ -2,6 +2,14 @@
  ChangeLog
 ===========
 
+0.3.0 (2018-06-17)
+==================
+
+Fixed handling of ``ASDF/PLAN:SYSTEM-OUT-OF-DATE`` error, when
+displaying information about installed systems.
+
+Added normal README with examples.
+
 0.2.0 (2018-06-04)
 ==================
 
