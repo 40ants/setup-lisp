@@ -1,12 +1,12 @@
 #-asdf3.1 (error "cl-info requires ASDF 3.1")
 (defsystem cl-info
   :version (:read-file-form "version.lisp-expr")
-  :author ""
-  :license ""
+  :author "Alexander Artemenko"
+  :license "BSD"
   :class :package-inferred-system
   :pathname "src"
   :depends-on ("cl-info/core")
-  :description ""
+  :description "A helper to an answer a question about OS, Lisp and Everything."
   :long-description
   #.(with-open-file (stream (merge-pathnames
                              #p"README.rst"

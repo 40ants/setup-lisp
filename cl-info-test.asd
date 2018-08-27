@@ -1,7 +1,3 @@
-#|
-  This file is a part of cl-info project.
-|#
-
 (defsystem cl-info-test
            :author ""
            :license ""
