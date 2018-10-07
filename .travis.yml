@@ -14,29 +14,28 @@ addons:
 env:
   global:
     - PATH=~/.roswell/bin:$PATH
-    - ROSWELL_BRANCH=master
     - ROSWELL_INSTALL_DIR=$HOME/.roswell
   matrix:
-    - LISP=sbcl
-    - LISP=ecl
-    - LISP=abcl
-    - LISP=allegro
-    - LISP=ccl
-    - LISP=clisp
-    - LISP=cmucl
+    - LISP=sbcl-bin
+    # - LISP=ecl
+    # - LISP=abcl
+    # - LISP=allegro
+    # - LISP=ccl
+    # - LISP=clisp
+    # - LISP=cmucl
 
-matrix:
-  allow_failures:
-    - env: LISP=clisp
-    - env: LISP=ecl
+# matrix:
+#   allow_failures:
+#     - env: LISP=clisp
+#     - env: LISP=ecl
 
 os:
   - osx
-  - linux
+#  - linux
 
 install:
   - curl -L https://raw.githubusercontent.com/snmsts/roswell/release/scripts/install-for-ci.sh | sh
-  - ros install prove
+  - ros install ./
 
 before_script:
   - ros --version
@@ -50,4 +49,4 @@ before_script:
             (uiop:quit 0)'
 
 script:
-  - run-prove cl-info-test.asd
+  - cl-info
