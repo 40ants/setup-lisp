@@ -35,6 +35,7 @@ os:
 
 install:
   - curl -L https://raw.githubusercontent.com/snmsts/roswell/release/scripts/install-for-ci.sh | sh
+  - ros install asdf
   - ros install ./
 
 before_script:
