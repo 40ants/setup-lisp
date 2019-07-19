@@ -9,13 +9,13 @@
     #:get-software-type
     #:get-software-version
     #:get-ql-dists
-    #:make-cl-info
+    #:get-cl-info
     #:system-info
     #:get-name
     #:get-version
     #:get-path
     #:absent-p
-    #:make-system-info))
+    #:get-system-info))
 (in-package cl-info/core)
 
 
@@ -30,8 +30,14 @@
                   :reader get-software-type)
    (software-version :initform (software-version)
                      :reader get-software-version)
+   #+quicklisp
    (ql-dists :initform (ql-dist:all-dists)
              :reader get-ql-dists)))
+
+
+#-quicklisp
+(defun get-ql-dists (obj)
+  nil)
 
 
 (defclass system-info ()
@@ -51,13 +57,19 @@
           "OS:   ~A ~A
 Lisp: ~A ~A
 ASDF: ~A
-QL:  ~{~A~^~%~}
 "
           (get-software-type info)
           (get-software-version info)
           (get-lisp-type info)
           (get-lisp-version info)
-          (get-asdf-version info)
+          (get-asdf-version info))
+  #-quicklisp
+  (format stream
+          "QL:   is not available~%")
+  #+quicklisp
+  (format stream
+          "QL:   ~{~A~^~%~}
+"
           (loop for dist in (get-ql-dists info)
                 for idx upfrom 0
                 collect (format nil "~:[~;     ~]~A ~A"
@@ -73,18 +85,19 @@ QL:  ~{~A~^~%~}
               (get-name info))
       (format stream
               "System: ~A ~A
-       ~A
+        ~A
 "
               (get-name info)
               (get-version info)
               (get-path info))))
 
 
-(defun make-cl-info ()
+(defun get-cl-info ()
+  "Returns information about lisp implementation, asdf and quicklisp."
   (make-instance 'cl-info))
 
 
-(defun make-system-info (system-name)
+(defun get-system-info (system-name)
   (let ((system (block search-for-system
                   (handler-bind ((asdf:missing-component
                                   (lambda (c)
@@ -106,5 +119,3 @@ QL:  ~{~A~^~%~}
                      :absent t
                      :version nil
                      :path nil))))
-
-

@@ -2,6 +2,16 @@
  ChangeLog
 ===========
 
+0.4.0 (2019-07-19)
+==================
+
+Now cl-info is able to work without Quicklisp client.
+
+Also:
+
+* ``make-cl-info`` was renamed to ``get-cl-info``.
+* ``make-system-info`` was renamed to ``get-system-info``.
+
 0.3.0 (2018-06-17)
 ==================
 
