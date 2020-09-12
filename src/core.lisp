@@ -68,11 +68,10 @@ ASDF: ~A
           "QL:   is not available~%")
   #+quicklisp
   (format stream
-          "QL:   ~{~A~^~%~}
-"
+          "QL:   ~{~A~^~%~}~%"
           (loop for dist in (get-ql-dists info)
                 for idx upfrom 0
-                collect (format nil "~:[~;     ~]~A ~A"
+                collect (format nil "~:[~;      ~]~A ~A"
                                 (> idx 0)
                                 (ql-dist:name dist)
                                 (ql-dist:version dist)))))
