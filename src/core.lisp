@@ -80,12 +80,11 @@ ASDF: ~A
 (defmethod print-object ((info system-info) stream)
   (if (absent-p info)
       (format stream
-              "System: ~A is not available"
+              "System: ~A is not available~%"
               (get-name info))
       (format stream
               "System: ~A ~A
-        ~A
-"
+        ~A~%"
               (get-name info)
               (get-version info)
               (get-path info))))
