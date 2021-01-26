@@ -39,7 +39,7 @@ jobs:
           env | sort -u
       - name: Install Roswell
         run: |
-          curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
+          curl -L https://raw.githubusercontent.com/svetlyak40wt/roswell/patches/scripts/install-for-ci.sh | sh
           echo $HOME/.roswell/bin >> $GITHUB_PATH
       - name: Upgrade ASDF to the latest version
         run: |
