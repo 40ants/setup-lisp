@@ -20,19 +20,19 @@ jobs:
       fail-fast: false
       matrix:
         lisp:
-          # - sbcl-bin
-          # - ccl-bin
-          # - ecl
+          - sbcl-bin
+          - ccl-bin
+          - ecl
           - abcl
-          # - allegro
-          # - clisp
-          # - cmucl
+          - allegro
+          - clisp
+          - cmucl
         os:
           - ubuntu-latest
           - macos-latest
         quicklisp-dist:
           - quicklisp
-#          - ultralisp
+          - ultralisp
         include:
           # Fails because this error on cl-info start:
           # ill-formed handler binding ((LAMBDA (DEFMAIN/DEFMAIN::C) (DECLARE (IGNORABLE DEFMAIN/DEFMAIN::C)) (UIOP/IMAGE:QUIT 0)))
@@ -41,20 +41,20 @@ jobs:
           # Seems allegro is does not support 64bit OSX.
           # Unable to install it using Roswell:
           # alisp is not executable. Missing 32bit glibc?
-          # - lisp: allegro
-          #   os: maxos-latest
-          #   can-fail: true
-          # # CLisp on Ubuntu can't be installed because of the error:
-          # # #<FOREIGN-VARIABLE "rl_readline_state" #x00007FA93E698850> does not have
-          # # the required size or alignment
-          # - lisp: clisp
-          #   os: ubuntu-latest
-          #   can-fail: true
-          # # CMUCL is 32bit and cant' work on 64bit OSX:
-          # # .roswell/impls/x86-64/darwin/cmu-bin/21d/bin/lisp is not executable. Missing 32bit glibc?
-          # - lisp: cmucl
-          #   os: macos-latest
-          #   can-fail: true
+          - lisp: allegro
+            os: maxos-latest
+            can-fail: true
+          # CLisp on Ubuntu can't be installed because of the error:
+          # #<FOREIGN-VARIABLE "rl_readline_state" #x00007FA93E698850> does not have
+          # the required size or alignment
+          - lisp: clisp
+            os: ubuntu-latest
+            can-fail: true
+          # CMUCL is 32bit and cant' work on 64bit OSX:
+          # .roswell/impls/x86-64/darwin/cmu-bin/21d/bin/lisp is not executable. Missing 32bit glibc?
+          - lisp: cmucl
+            os: macos-latest
+            can-fail: true
           
 
     runs-on: ${{ matrix.os }}
@@ -106,9 +106,6 @@ jobs:
           fi
 
           qlot exec ros install 40ants/cl-info
-#        continue-on-error: ${{ matrix.can-fail || false }}
       - name: Run CL-INFO
         run: |
           qlot exec cl-info
-#        continue-on-error: ${{ matrix.can-fail || false }}
-
