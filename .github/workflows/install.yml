@@ -33,13 +33,10 @@ jobs:
         quicklisp-dist:
           - quicklisp
           - ultralisp
-        can-fail:
-          - false
         include:
           # Fails because this error on cl-info start:
           # ill-formed handler binding ((LAMBDA (DEFMAIN/DEFMAIN::C) (DECLARE (IGNORABLE DEFMAIN/DEFMAIN::C)) (UIOP/IMAGE:QUIT 0)))
           - lisp: abcl
-            os: maxos-latest
             can-fail: true
           # Seems allegro is does not support 64bit OSX.
           # Unable to install it using Roswell:
