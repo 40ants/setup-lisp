@@ -34,15 +34,11 @@ jobs:
           - quicklisp
           - ultralisp
         include:
-          # Fails because this error on cl-info start:
-          # ill-formed handler binding ((LAMBDA (DEFMAIN/DEFMAIN::C) (DECLARE (IGNORABLE DEFMAIN/DEFMAIN::C)) (UIOP/IMAGE:QUIT 0)))
-          - lisp: abcl
-            can-fail: true
           # Seems allegro is does not support 64bit OSX.
           # Unable to install it using Roswell:
           # alisp is not executable. Missing 32bit glibc?
           - lisp: allegro
-            os: maxos-latest
+            os: macos-latest
             can-fail: true
           # CLisp on Ubuntu can't be installed because of the error:
           # #<FOREIGN-VARIABLE "rl_readline_state" #x00007FA93E698850> does not have
