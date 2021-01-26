@@ -105,9 +105,9 @@ jobs:
           fi
 
           qlot exec ros install 40ants/cl-info
-        continue-on-error: ${{ matrix.can-fail }} || false
+        continue-on-error: ${{ matrix.can-fail || false }}
       - name: Run CL-INFO
         run: |
           qlot exec cl-info
-        continue-on-error: ${{ matrix.can-fail }} || false
+        continue-on-error: $f{{ matrix.can-fail || false }}
 
