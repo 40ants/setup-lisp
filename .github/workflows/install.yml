@@ -58,6 +58,7 @@ jobs:
           
 
     runs-on: ${{ matrix.os }}
+    continue-on-error: "${{ matrix.can-fail }}"
     
     env:
       LISP: ${{ matrix.lisp }}
@@ -108,5 +109,4 @@ jobs:
       - name: Run CL-INFO
         run: |
           qlot exec cl-info
-        continue-on-error: "${{ matrix.can-fail }}"
 
