@@ -22,6 +22,11 @@ jobs:
         lisp:
           - sbcl-bin
           - ccl-bin
+          - ecl
+          - abcl
+          - allegro
+          - clisp
+          - cmucl
         os:
           - ubuntu-latest
           - macos-latest
