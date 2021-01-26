@@ -34,7 +34,7 @@ jobs:
           - quicklisp
           - ultralisp
         can-fail:
-          - [false]
+          - false
         include:
           # Fails because this error on cl-info start:
           # ill-formed handler binding ((LAMBDA (DEFMAIN/DEFMAIN::C) (DECLARE (IGNORABLE DEFMAIN/DEFMAIN::C)) (UIOP/IMAGE:QUIT 0)))
