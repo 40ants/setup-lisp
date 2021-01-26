@@ -25,12 +25,16 @@ jobs:
         os:
           - ubuntu-latest
           - macos-latest
+        quicklisp-dist:
+          - quicklisp
+          - ultralisp
           
     runs-on: ${{ matrix.os }}
     
     env:
       LISP: ${{ matrix.lisp }}
       OS: ${{ matrix.os }}
+      QUICKLISP_DIST: ${{ matrix.quicklisp-dist }}
 
     steps:
       - uses: actions/checkout@v1
@@ -59,11 +63,19 @@ jobs:
       - name: Install Dependencies
         run: |
           rm -fr qlfile
-          echo dist ultralisp http://dist.ultralisp.org/ >> qlfile
+          touch qlfile
+
+          if [[ "${QUICKLISP_DIST}" == 'ultralisp' ]]; then
+              echo dist ultralisp http://dist.ultralisp.org/ >> qlfile
+          fi
 
           qlot install
       - name: Install CL-INFO
         run: |
+          if [[ "${QUICKLISP_DIST}" == 'quicklisp' ]]; then
+              qlot exec ros install 40ants/defmain
+          fi
+
           qlot exec ros install 40ants/cl-info
       - name: Run CL-INFO
         run: |
