@@ -57,7 +57,6 @@ jobs:
             can-fail: true
           
 
-    continue-on-error: ${{ matrix.can-fail }} || false
     runs-on: ${{ matrix.os }}
     
     env:
@@ -109,4 +108,5 @@ jobs:
       - name: Run CL-INFO
         run: |
           qlot exec cl-info
+        continue-on-error: "${{ matrix.can-fail }}"
 
