@@ -7,6 +7,9 @@
 .. image:: https://travis-ci.org/40ants/cl-info.svg?branch=master
     :target: https://travis-ci.org/40ants/cl-info
 
+.. image:: https://github.com/40ants/cl-info/workflows/Check%20Installation/badge.svg
+    :target: https://github.com/40ants/cl-info/actions
+
 .. Everything starting from this commit will be inserted into the
    index page of the HTML documentation.
 .. include-from
