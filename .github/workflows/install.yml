@@ -63,7 +63,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - name: Show env
+      - name: Show ENV
         run: |
           env | sort -u
       - name: Install Roswell
@@ -78,7 +78,7 @@ jobs:
           curl -L https://raw.githubusercontent.com/svetlyak40wt/roswell/patches/scripts/install-for-ci.sh | sh
           
           echo $HOME/.roswell/bin >> $GITHUB_PATH
-      - name: Upgrade ASDF to the latest version
+      - name: Upgrade ASDF to the Latest Version
         run: |
           ros install asdf
       - name: Install Qlot
@@ -95,14 +95,14 @@ jobs:
           fi
 
           qlot install
-      - name: Install CL-INFO
+      - name: Install System
         run: |
           if [[ "${QUICKLISP_DIST}" == 'quicklisp' ]]; then
               qlot exec ros install 40ants/defmain
           fi
 
           qlot exec ros install cl-info
-      - name: Run CL-INFO
+      - name: Run Tests
         run: |
           set -x
           qlot exec cl-info --help
