@@ -101,7 +101,7 @@ jobs:
               qlot exec ros install 40ants/defmain
           fi
 
-          qlot exec ros install .
+          qlot exec ros install cl-info
       - name: Run CL-INFO
         run: |
           qlot exec cl-info
