@@ -19,6 +19,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+        quicklisp-dist:
+          - quicklisp
+          - ultralisp
         lisp:
           - sbcl-bin
           - ccl-bin
@@ -27,12 +33,6 @@ jobs:
           - allegro
           - clisp
           - cmucl
-        os:
-          - ubuntu-latest
-          - macos-latest
-        quicklisp-dist:
-          - quicklisp
-          - ultralisp
         include:
           # Seems allegro is does not support 64bit OSX.
           # Unable to install it using Roswell:
