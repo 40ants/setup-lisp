@@ -12,6 +12,9 @@
 .. include-from
 
 
+.. image:: https://img.shields.io/badge/rollup-%5E0.67.3-blue
+
+
 This is a small utility, useful to display information about you Common
 Lisp environment.
 
