@@ -5,14 +5,10 @@
 .. insert-your badges like that:
 
 .. image:: https://com-40ants-github-actions.herokuapp.com/40ants/cl-info/matrix.svg?v=1
-    :target: https://github.com/40ants/cl-info/actions
 
 .. Everything starting from this commit will be inserted into the
    index page of the HTML documentation.
 .. include-from
-
-
-.. image:: https://img.shields.io/badge/rollup-%5E0.67.3-blue
 
 
 This is a small utility, useful to display information about you Common
