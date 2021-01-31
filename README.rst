@@ -4,7 +4,7 @@
 
 .. insert-your badges like that:
 
-.. image:: https://com-40ants-github-actions.herokuapp.com/40ants/cl-info/matrix.svg
+.. image:: https://com-40ants-github-actions.herokuapp.com/40ants/cl-info/matrix.svg?v=1
     :target: https://github.com/40ants/cl-info/actions
 
 .. Everything starting from this commit will be inserted into the
