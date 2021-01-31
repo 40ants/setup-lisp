@@ -4,10 +4,7 @@
 
 .. insert-your badges like that:
 
-.. image:: https://travis-ci.org/40ants/cl-info.svg?branch=master
-    :target: https://travis-ci.org/40ants/cl-info
-
-.. image:: https://github.com/40ants/cl-info/workflows/Check%20Installation/badge.svg
+.. image:: https://com-40ants-github-actions.herokuapp.com/debug/40ants/cl-info/matrix.svg
     :target: https://github.com/40ants/cl-info/actions
 
 .. Everything starting from this commit will be inserted into the
