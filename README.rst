@@ -4,13 +4,8 @@
 
 .. insert-your badges like that:
 
-.. raw:: html
-
-   <iframe src="https://com-40ants-github-actions.herokuapp.com/40ants/cl-info/matrix.svg?v=2"
-           frameborder="0"
-           width="600"
-           height="500"></iframe>
-          
+.. image:: https://com-40ants-github-actions.herokuapp.com/40ants/cl-info/matrix.svg?v=2
+    :target: https://github.com/40ants/cl-info/actions
 
 .. Everything starting from this commit will be inserted into the
    index page of the HTML documentation.
