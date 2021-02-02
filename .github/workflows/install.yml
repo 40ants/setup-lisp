@@ -63,6 +63,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+      - name: Start SSH session
+        uses: luchihoratiu/debug-via-ssh@main
+        with:
+            NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+            NGROK_REGION: eu
+            SSH_PASS: ${{ secrets.SSH_PASS }}
+
       - uses: 40ants/cl-info/.github/actions/setup@custom-action
       - name: Install System
         run: |
