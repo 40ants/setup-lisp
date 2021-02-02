@@ -65,7 +65,8 @@ runs:
           #+quicklisp
           (ql:quickload '() :silent t))
 
-        (defun main ()
+        (defun main (args)
+           (declare (ignore args))
            (format t "Lisp: ~A ~A~%ASDF: ~A~%"
                    (lisp-implementation-version)
                    (lisp-implementation-type)
