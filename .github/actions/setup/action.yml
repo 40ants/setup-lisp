@@ -4,7 +4,7 @@ inputs:
   qlfile-template:
     description: 'Jinja template for qlfile'
     required: false
-    default: 'no temlplate'    
+    default: 'no temlplate'
   lisp-system:
     description: 'ASDF system to install and test'
     required: false
@@ -58,17 +58,17 @@ runs:
           fi
         fi
         qlot install
-      - name: Install System
-        run: |
-          if [[ "${QUICKLISP_DIST}" == 'quicklisp' ]]; then
-              qlot exec ros install 40ants/defmain
-          fi
+    - name: Install System
+      run: |
+        if [[ "${QUICKLISP_DIST}" == 'quicklisp' ]]; then
+            qlot exec ros install 40ants/defmain
+        fi
 
-          qlot exec ros install cl-info
-      - name: Install System
-        run: |
-          if [[ "${QUICKLISP_DIST}" == 'quicklisp' ]]; then
-              qlot exec ros install 40ants/defmain
-          fi
+        qlot exec ros install cl-info
+    - name: Install System
+      run: |
+        if [[ "${QUICKLISP_DIST}" == 'quicklisp' ]]; then
+            qlot exec ros install 40ants/defmain
+        fi
 
-          qlot exec ros install cl-info
+        qlot exec ros install cl-info
