@@ -73,7 +73,12 @@ runs:
     #                (lisp-implementation-type)
     #                (asdf:asdf-version))
     #        (format t "::endgroup::~%"))
-
+    - name: Create Qlot Environment
+      run: |
+        echo ::group::Create Qlot Environment
+        qlot install
+        echo ::endgroup::
+    
     - name: Run Tests
       shell: bash
       run: |
