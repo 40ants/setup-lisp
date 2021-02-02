@@ -57,7 +57,7 @@ runs:
         echo .qlot/bin >> $GITHUB_PATH
         echo ::endgroup::
 
-    - name: Test Ros
+    - name: Run a custom Roswell Script
       shell: ros -Q -- {0} "$@"
       run: |
         (progn
@@ -67,10 +67,12 @@ runs:
 
         (defun main (args)
            (declare (ignore args))
+           (format t "::group::Custom Roswell Script~%")
            (format t "Lisp: ~A ~A~%ASDF: ~A~%"
                    (lisp-implementation-version)
                    (lisp-implementation-type)
-                   (asdf:asdf-version)))
+                   (asdf:asdf-version))
+           (format t "::endgroup::~%"))
 
     # - name: Test
     #   shell: bash
