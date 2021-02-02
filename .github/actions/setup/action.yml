@@ -1,7 +1,7 @@
 name: 'Install Roswell & Qlot'
 runs:
-   - name: Current Env
-     run: |
+  - name: Current Env
+    run: |
       env | sort -u
 
   - name: Install Roswell
