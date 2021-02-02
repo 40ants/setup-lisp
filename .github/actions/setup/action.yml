@@ -58,7 +58,7 @@ runs:
         echo ::endgroup::
 
     - name: Test Ros
-      shell: ros -Q -- $0 "$@"
+      shell: ros -Q -- ${0} "$@"
       run: |
         (progn
           (ros:ensure-asdf)
