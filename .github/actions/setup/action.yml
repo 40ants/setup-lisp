@@ -5,15 +5,15 @@ inputs:
     description: 'Jinja template for qlfile'
     required: false
     default: 'no temlplate'
-  # lisp-system:
-  #   description: 'ASDF system to install and test'
-  #   required: false
-  #   default: ''
+  lisp-system:
+    description: 'ASDF system to install and test'
+    required: false
+    default: ''
   run-tests:
     description: A command to run tests
     required: false
     default: |
-      qlot exec ros --eval '(asdf:test-system :${{ inputs.lisp-system }})' --quit
+      qlot exec ros --eval '(asdf:test-system :{{ lisp-system }})' --quit
 
 runs:
   using: composite
