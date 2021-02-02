@@ -79,6 +79,16 @@ runs:
         echo ::group::Create Qlot Environment
         qlot install
         echo ::endgroup::
+
+    # This step will install system and
+    # all possible roswell scripts, if the system
+    # has them in the roswell/ subdirectory:
+    - name: Install ASDF System
+      shell: bash
+      run: |
+        echo ::group::Install ASDF System
+        qlot exec ros install ${{ inputs.asdf-system }}
+        echo ::endgroup::
     
     - name: Run Tests
       shell: bash
