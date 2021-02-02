@@ -4,11 +4,11 @@ inputs:
   qlfile-template:
     description: 'Jinja template for qlfile'
     required: false
-    default: 'no temlplate'
-    
+    default: 'no temlplate'    
   lisp-system:
     description: 'ASDF system to install and test'
     required: false
+    default: ''
   run-tests:
     description: A command to run tests
     required: false
