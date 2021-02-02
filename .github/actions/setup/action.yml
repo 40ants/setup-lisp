@@ -15,6 +15,10 @@ inputs:
     default: |
       qlot exec ros --eval '(asdf:test-system :{{ lisp-system }})' --quit
 
+  custom-code:
+    required: false
+
+
 runs:
   using: composite
   steps:
@@ -57,22 +61,27 @@ runs:
         echo .qlot/bin >> $GITHUB_PATH
         echo ::endgroup::
 
+    # - name: Run a custom Roswell Script
+    #   shell: ros -Q -- {0} "$@"
+    #   run: |
+    #     (progn
+    #       (ros:ensure-asdf)
+    #       #+quicklisp
+    #       (ql:quickload '() :silent t))
+
+    #     (defun main (args)
+    #        (declare (ignore args))
+    #        (format t "::group::Custom Roswell Script~%")
+    #        (format t "Lisp: ~A ~A~%ASDF: ~A~%"
+    #                (lisp-implementation-version)
+    #                (lisp-implementation-type)
+    #                (asdf:asdf-version))
+    #        (format t "::endgroup::~%"))
+
     - name: Run a custom Roswell Script
       shell: ros -Q -- {0} "$@"
-      run: |
-        (progn
-          (ros:ensure-asdf)
-          #+quicklisp
-          (ql:quickload '() :silent t))
-
-        (defun main (args)
-           (declare (ignore args))
-           (format t "::group::Custom Roswell Script~%")
-           (format t "Lisp: ~A ~A~%ASDF: ~A~%"
-                   (lisp-implementation-version)
-                   (lisp-implementation-type)
-                   (asdf:asdf-version))
-           (format t "::endgroup::~%"))
+      run: ${{ inputs.custom-code }}
+      if: ${{ inputs.custom-code }}
 
     # - name: Test
     #   shell: bash

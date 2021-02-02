@@ -64,6 +64,22 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - uses: 40ants/cl-info/.github/actions/setup@custom-action
+        with:
+          - custom-code: |
+              (progn
+                (ros:ensure-asdf)
+                #+quicklisp
+                (ql:quickload '() :silent t))
+      
+              (defun main (args)
+                 (declare (ignore args))
+                 (format t "::group::Custom Roswell Script~%")
+                 (format t "Lisp: ~A ~A~%ASDF: ~A~%"
+                         (lisp-implementation-version)
+                         (lisp-implementation-type)
+                         (asdf:asdf-version))
+                 (format t "::endgroup::~%"))
+        
       # - name: Start SSH session
       #   uses: luchihoratiu/debug-via-ssh@main
       #   with:
