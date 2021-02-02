@@ -64,12 +64,12 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - uses: 40ants/cl-info/.github/actions/setup@custom-action
-        # with:
-        #   custom-code: |
-        #     (format t "Lisp: ~A ~A~%ASDF: ~A~%"
-        #       (lisp-implementation-version)
-        #       (lisp-implementation-type)
-        #       (asdf:asdf-version))
+        with:
+          custom-code: |
+            (format t "Now with custom code!~%Lisp: ~A ~A~%ASDF: ~A~%"
+              (lisp-implementation-version)
+              (lisp-implementation-type)
+              (asdf:asdf-version))
         
       # - name: Start SSH session
       #   uses: luchihoratiu/debug-via-ssh@main
