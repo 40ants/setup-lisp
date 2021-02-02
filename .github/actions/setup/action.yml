@@ -6,8 +6,8 @@ runs:
       shell: bash
       run: |
         env | sort -u
-  
     - name: Install Roswell
+      shell: bash
       run: |
         if [[ "$OS" == "ubuntu-latest" ]]; then
             sudo apt-get -y install git build-essential automake libcurl4-openssl-dev
