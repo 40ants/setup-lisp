@@ -63,7 +63,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - uses: 40ants/cl-info/.github/actions/setup
+      - uses: 40ants/cl-info/.github/actions/setup@custom-action
       - name: Install System
         run: |
           if [[ "${QUICKLISP_DIST}" == 'quicklisp' ]]; then
