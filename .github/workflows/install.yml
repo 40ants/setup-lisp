@@ -27,7 +27,7 @@ jobs:
           # - ultralisp
         lisp:
           - sbcl-bin
-          # - ccl-bin
+          - ccl-bin
           # - ecl
           # - abcl
           # - allegro

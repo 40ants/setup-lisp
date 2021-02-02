@@ -1,0 +1,20 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+(progn
+  (ros:ensure-asdf)
+  #+quicklisp
+  (ql:quickload '(cl-mustache)
+                :silent t))
+
+(defpackage :ros.script.templater
+  (:use :cl))
+(in-package :ros.script.templater)
+
+
+(defun main (&rest argv)
+  (declare (ignorable argv)))
+
+;;; vim: set ft=lisp lisp:

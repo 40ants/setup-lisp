@@ -65,12 +65,16 @@ runs:
           #+quicklisp
           (ql:quickload '() :silent t))
 
-        (format t "Hello World!~%")
+        (defun main ()
+           (format t "Lisp: ~A ~A~%ASDF: ~A~%"
+                   (lisp-implementation-version)
+                   (lisp-implementation-type)
+                   (asdf:asdf-version)))
 
-    - name: Test
-      shell: bash
-      run: |
-        echo ${{ inputs.qlfile-template }} > qlfile
+    # - name: Test
+    #   shell: bash
+    #   run: |
+    #     echo ${{ inputs.qlfile-template }} > qlfile
     # - name: Install Dependencies
     #   shell: bash
     #   run: |
