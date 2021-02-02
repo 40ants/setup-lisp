@@ -93,7 +93,7 @@ runs:
                     (if (string= custom-code "")
                         (format t "No custom code~%")
                         (uiop:eval-input custom-code))
-                 (format t "::endgroup::~%"))
+                 (format t "::endgroup::~%")))
 
     # - name: Test
     #   shell: bash
