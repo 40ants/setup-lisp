@@ -8,6 +8,9 @@ exec ros -Q -- $0 "$@"
   #+quicklisp(ql:quickload '(trivial-backtrace)
                            :silent t))
 
+(declaim (optimize (debug 3) (safety 3)
+                   (speed 0) (space 0)))
+
 (defpackage :ros.script.run-tests
   (:use :cl))
 (in-package :ros.script.run-tests)
