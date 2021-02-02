@@ -1,8 +1,12 @@
 (defpackage #:cl-info-test/core
-  (:use #:cl
-        #:cl-info/core
-        #:rove
-        #:hamcrest/rove))
+  (:use #:cl)
+  (:import-from #:cl-info)
+  (:import-from #:hamcrest/rove
+                #:contains
+                #:assert-that)
+  (:import-from #:rove
+                #:testing
+                #:deftest))
 (in-package cl-info-test/core)
 
 
