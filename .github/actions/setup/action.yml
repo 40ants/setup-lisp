@@ -74,6 +74,7 @@ runs:
     #                (asdf:asdf-version))
     #        (format t "::endgroup::~%"))
     - name: Create Qlot Environment
+      shell: bash
       run: |
         echo ::group::Create Qlot Environment
         qlot install
