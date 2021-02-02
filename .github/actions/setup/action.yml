@@ -5,18 +5,14 @@ inputs:
     description: 'Jinja template for qlfile'
     required: false
     default: 'The Template'
-  lisp-system:
+  asdf-system:
     description: 'ASDF system to install and test'
-    required: false
-    default: ''
+    required: true
   run-tests:
     description: A command to run tests
     required: false
-    default: |
-      qlot exec ros --eval '(asdf:test-system :{{ lisp-system }})' --quit
-
-  custom-code:
-    required: false
+    # default: |
+    #   qlot exec ros --eval '(asdf:test-system :{{ lisp-system }})' --quit
 
 
 runs:
@@ -78,22 +74,12 @@ runs:
     #                (asdf:asdf-version))
     #        (format t "::endgroup::~%"))
 
-    - name: Run a custom Roswell Script
-      shell: ros -Q -- {0} "$@"
+    - name: Run Tests
+      shell: bash
       run: |
-              (progn
-                (ros:ensure-asdf)
-                #+quicklisp
-                (ql:quickload '() :silent t))
-      
-              (defun main (args)
-                 (declare (ignorable args))
-                 (format t "::group::Custom Roswell Script New 2~%")
-                 (let ((custom-code "${{ inputs.custom-code | escape }}"))
-                    (if (string= custom-code "")
-                        (format t "No custom code~%")
-                        (uiop:eval-input custom-code))
-                 (format t "::endgroup::~%")))
+        ${{ github.action_path }}/run-tests.ros ${{ inputs.asdf-system }} <<EOF
+        ${{ inputs.run-tests }}
+        EOF
 
     # - name: Test
     #   shell: bash

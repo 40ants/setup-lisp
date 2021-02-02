@@ -65,11 +65,7 @@ jobs:
       - uses: actions/checkout@v1
       - uses: 40ants/cl-info/.github/actions/setup@custom-action
         with:
-          custom-code: |
-            (format t "Now with custom code!~%Lisp: ~A ~A~%ASDF: ~A~%"
-              (lisp-implementation-version)
-              (lisp-implementation-type)
-              (asdf:asdf-version))
+          asdf-system: cl-info
         
       # - name: Start SSH session
       #   uses: luchihoratiu/debug-via-ssh@main
