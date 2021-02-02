@@ -65,7 +65,7 @@ jobs:
       - uses: actions/checkout@v1
       - uses: 40ants/cl-info/.github/actions/setup@custom-action
         with:
-          - custom-code: |
+          custom-code: |
               (progn
                 (ros:ensure-asdf)
                 #+quicklisp
