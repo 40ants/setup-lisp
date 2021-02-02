@@ -3,7 +3,7 @@
   :license ""
   :class :package-inferred-system
   :pathname "t"
-  :depends-on (;; "hamcrest"
+  :depends-on ("hamcrest"
                "cl-info-test/core")
   :description "Test system for cl-info"
 
