@@ -4,7 +4,7 @@ inputs:
   qlfile-template:
     description: 'Jinja template for qlfile'
     required: false
-    default: 'no temlplate'
+    default: 'The Template'
   lisp-system:
     description: 'ASDF system to install and test'
     required: false
@@ -22,11 +22,16 @@ runs:
       shell: bash
       run: |
         echo ::group::Environment
+        echo "Current dir:"
+        pwd
+        
+        echo "Environment Variables:"
         env | sort -u
         echo ::endgroup::
     - name: Install Roswell
       shell: bash
       run: |
+        echo ::group::Install Roswell
         if [[ "$OS" == "ubuntu-latest" ]]; then
             sudo apt-get -y install git build-essential automake libcurl4-openssl-dev
         fi
@@ -37,40 +42,49 @@ runs:
         curl -L https://raw.githubusercontent.com/svetlyak40wt/roswell/patches/scripts/install-for-ci.sh | sh
         
         echo $HOME/.roswell/bin >> $GITHUB_PATH
+        echo ::endgroup::
     - name: Upgrade ASDF to the Latest Version
       shell: bash
       run: |
+        echo ::group::Upgrade ASDF
         ros install asdf
+        echo ::endgroup::
     - name: Install Qlot
       shell: bash
       run: |
+        echo ::group::Install Qlot
         ros install qlot
         echo .qlot/bin >> $GITHUB_PATH
+        echo ::endgroup::
 
-    - name: Install Dependencies
+    - name: Test
       shell: bash
       run: |
-        if [[ -e qlfile ]]; then
-          rm -fr qlfile.lock
-        else:
-          if [[ "${QUICKLISP_DIST}" == 'ultralisp' ]]; then
-            echo dist ultralisp http://dist.ultralisp.org/ >> qlfile
-          fi
-        fi
-        qlot install
-    - name: Install System
-      shell: bash
-      run: |
-        if [[ "${QUICKLISP_DIST}" == 'quicklisp' ]]; then
-            qlot exec ros install 40ants/defmain
-        fi
+        echo ${{ inputs.qlfile-template }} > qlfile
+    # - name: Install Dependencies
+    #   shell: bash
+    #   run: |
+    #     if [[ -e qlfile ]]; then
+    #       rm -fr qlfile.lock
+    #     else:
+    #       if [[ "${QUICKLISP_DIST}" == 'ultralisp' ]]; then
+    #         echo dist ultralisp http://dist.ultralisp.org/ >> qlfile
+    #       fi
+    #     fi
+    #     qlot install
+    # - name: Install System
+    #   shell: bash
+    #   run: |
+    #     if [[ "${QUICKLISP_DIST}" == 'quicklisp' ]]; then
+    #         qlot exec ros install 40ants/defmain
+    #     fi
 
-        qlot exec ros install cl-info
-    - name: Install System
-      shell: bash
-      run: |
-        if [[ "${QUICKLISP_DIST}" == 'quicklisp' ]]; then
-            qlot exec ros install 40ants/defmain
-        fi
+    #     qlot exec ros install cl-info
+    # - name: Install System
+    #   shell: bash
+    #   run: |
+    #     if [[ "${QUICKLISP_DIST}" == 'quicklisp' ]]; then
+    #         qlot exec ros install 40ants/defmain
+    #     fi
 
-        qlot exec ros install cl-info
+    #     qlot exec ros install cl-info

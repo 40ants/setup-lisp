@@ -63,6 +63,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+      - uses: 40ants/cl-info/.github/actions/setup@custom-action
       - name: Start SSH session
         uses: luchihoratiu/debug-via-ssh@main
         with:
@@ -70,17 +71,16 @@ jobs:
             NGROK_REGION: eu
             SSH_PASS: ${{ secrets.SSH_PASS }}
 
-      - uses: 40ants/cl-info/.github/actions/setup@custom-action
-      - name: Install System
-        run: |
-          if [[ "${QUICKLISP_DIST}" == 'quicklisp' ]]; then
-              qlot exec ros install 40ants/defmain
-          fi
+      # - name: Install System
+      #   run: |
+      #     if [[ "${QUICKLISP_DIST}" == 'quicklisp' ]]; then
+      #         qlot exec ros install 40ants/defmain
+      #     fi
 
-          qlot exec ros install cl-info
-      - name: Run Tests
-        run: |
-          set -x
-          qlot exec cl-info --help
-          qlot exec cl-info --version
-          qlot exec cl-info cl-info
+      #     qlot exec ros install cl-info
+      # - name: Run Tests
+      #   run: |
+      #     set -x
+      #     qlot exec cl-info --help
+      #     qlot exec cl-info --version
+      #     qlot exec cl-info cl-info
