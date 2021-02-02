@@ -89,7 +89,7 @@ runs:
               (defun main (args)
                  (declare (ignorable args))
                  (format t "::group::Custom Roswell Script New 2~%")
-                 (let ((custom-code "${{ inputs.custom-code }}"))
+                 (let ((custom-code "${{ inputs.custom-code | escape }}"))
                     (if (string= custom-code "")
                         (format t "No custom code~%")
                         (uiop:eval-input custom-code))
