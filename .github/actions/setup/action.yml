@@ -1,11 +1,29 @@
 name: 'Install Roswell & Qlot'
+
+inputs:
+  qlfile-template:
+    description: 'Jinja template for qlfile'
+    required: false
+    default: |
+      
+  lisp-system:
+    description: 'ASDF system to install and test'
+    required: false
+  run-tests:
+    description: A command to run tests
+    required: false
+    default: |
+      qlot exec ros --eval '(asdf:test-system :${{ inputs.lisp-system }})' --quit
+
 runs:
   using: composite
   steps:
     - name: Current Env
       shell: bash
       run: |
+        echo ::group::Environment
         env | sort -u
+        echo ::endgroup::
     - name: Install Roswell
       shell: bash
       run: |
@@ -28,12 +46,36 @@ runs:
       run: |
         ros install qlot
         echo .qlot/bin >> $GITHUB_PATH
+
+    - name: Start SSH session
+      uses: luchihoratiu/debug-via-ssh@main
+      with:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+        NGROK_REGION: eu
+        SSH_PASS: ${{ secrets.SSH_PASS }}
+
     - name: Install Dependencies
       shell: bash
       run: |
-        rm -fr qlfile
-        touch qlfile
-         if [[ "${QUICKLISP_DIST}" == 'ultralisp' ]]; then
+        if [[ -e qlfile ]]; then
+          rm -fr qlfile.lock
+        else:
+          if [[ "${QUICKLISP_DIST}" == 'ultralisp' ]]; then
             echo dist ultralisp http://dist.ultralisp.org/ >> qlfile
+          fi
         fi
-         qlot install
+        qlot install
+      - name: Install System
+        run: |
+          if [[ "${QUICKLISP_DIST}" == 'quicklisp' ]]; then
+              qlot exec ros install 40ants/defmain
+          fi
+
+          qlot exec ros install cl-info
+      - name: Install System
+        run: |
+          if [[ "${QUICKLISP_DIST}" == 'quicklisp' ]]; then
+              qlot exec ros install 40ants/defmain
+          fi
+
+          qlot exec ros install cl-info
