@@ -1,0 +1,33 @@
+name: 'Install Roswell & Qlot'
+runs:
+   - name: Current Env
+     run: |
+      env | sort -u
+
+  - name: Install Roswell
+    run: |
+      if [[ "$OS" == "ubuntu-latest" ]]; then
+          sudo apt-get -y install git build-essential automake libcurl4-openssl-dev
+      fi
+      if [[ "$OS" == "macos-latest" ]]; then
+          brew install automake autoconf curl
+      fi
+      
+      curl -L https://raw.githubusercontent.com/svetlyak40wt/roswell/patches/scripts/install-for-ci.sh | sh
+      
+      echo $HOME/.roswell/bin >> $GITHUB_PATH
+  - name: Upgrade ASDF to the Latest Version
+    run: |
+      ros install asdf
+  - name: Install Qlot
+    run: |
+      ros install qlot
+      echo .qlot/bin >> $GITHUB_PATH
+  - name: Install Dependencies
+    run: |
+      rm -fr qlfile
+      touch qlfile
+       if [[ "${QUICKLISP_DIST}" == 'ultralisp' ]]; then
+          echo dist ultralisp http://dist.ultralisp.org/ >> qlfile
+      fi
+       qlot install
