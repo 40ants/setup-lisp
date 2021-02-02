@@ -81,9 +81,9 @@ jobs:
       #     fi
 
       #     qlot exec ros install cl-info
-      # - name: Run Tests
-      #   run: |
-      #     set -x
-      #     qlot exec cl-info --help
-      #     qlot exec cl-info --version
-      #     qlot exec cl-info cl-info
+      - name: Run Command Line Version
+        run: |
+          set -x
+          qlot exec cl-info --help
+          qlot exec cl-info --version
+          qlot exec cl-info cl-info
