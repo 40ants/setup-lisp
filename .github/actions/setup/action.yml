@@ -79,9 +79,9 @@ runs:
     #        (format t "::endgroup::~%"))
 
     - name: Run a custom Roswell Script
+      if: ${{ inputs.custom-code }}
       shell: ros -Q -- {0} "$@"
       run: ${{ inputs.custom-code }}
-      if: ${{ inputs.custom-code }}
 
     # - name: Test
     #   shell: bash
