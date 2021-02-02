@@ -11,6 +11,9 @@
 
 
 (defun foo (a b)
+  #+sbcl
+  (sb-ext:describe-compiler-policy )
+  
   (list a b 3))
 
 
