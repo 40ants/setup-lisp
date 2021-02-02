@@ -80,7 +80,17 @@ runs:
 
     - name: Run a custom Roswell Script
       shell: ros -Q -- {0} "$@"
-      run: ${{ inputs.custom-code }}
+      run: |
+              (progn
+                (ros:ensure-asdf)
+                #+quicklisp
+                (ql:quickload '() :silent t))
+      
+              (defun main (args)
+                 (declare (ignorable args))
+                 (format t "::group::Custom Roswell Script New~%")
+                 ${{ inputs.custom-code }}
+                 (format t "::endgroup::~%"))
 
     # - name: Test
     #   shell: bash
