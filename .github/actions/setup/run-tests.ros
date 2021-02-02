@@ -69,7 +69,7 @@ exec ros -Q -- $0 "$@"
                      "Please specify ASDF system as a first argument.~%")
              (uiop:quit 1))
            
-           (let* ((user-script (uiop/stream:slurp-stream-forms *standard-input*))
+           (let* ((user-script (uiop:slurp-stream-forms *standard-input*))
                   (result
                     (cond
                       (user-script

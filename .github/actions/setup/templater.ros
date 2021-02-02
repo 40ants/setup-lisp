@@ -6,7 +6,7 @@ exec ros -Q -- $0 "$@"
 (progn
   (ros:ensure-asdf)
   #+quicklisp
-  (ql:quickload '(cl-mustache)
+  (ql:quickload '(djula)
                 :silent t))
 
 (defpackage :ros.script.templater
@@ -14,7 +14,27 @@ exec ros -Q -- $0 "$@"
 (in-package :ros.script.templater)
 
 
+(defun collect-arguments ()
+  (let* ((env-output (with-output-to-string (s)
+                       (uiop:run-program "env" :output s)))
+         (lines (uiop:with-input (env-output)
+                  (uiop:slurp-stream-lines env-output))))
+    (loop for line in lines
+          for (key value) = (cl-ppcre:split "=" line
+                                            :limit 2)
+          appending (list (alexandria:make-keyword key)
+                          value))))
+
+
 (defun main (&rest argv)
-  (declare (ignorable argv)))
+  (declare (ignore argv))
+  (let* ((lines (uiop:slurp-stream-lines *standard-input*))
+         (template-text (apply #'concatenate 'string lines))
+         (template (djula::compile-string template-text))
+         (arguments (collect-arguments)))
+    (apply #'djula:render-template*
+           template
+           *standard-output*
+           arguments)))
 
 ;;; vim: set ft=lisp lisp:
