@@ -1,4 +1,4 @@
-name: 'Install Roswell & Qlot'
+name: 'Test Common Lisp System'
 
 inputs:
   asdf-system:
@@ -8,7 +8,7 @@ inputs:
     description: A command to run tests
     required: false
   qlfile-template:
-    description: 'Mustache template for qlfile'
+    description: "Djula template for qlfile. All environment variables are available in it's context"
     required: false
 
 runs:
@@ -84,35 +84,3 @@ runs:
         ${{ github.action_path }}/run-tests.ros ${{ inputs.asdf-system }} <<EOF
         ${{ inputs.run-tests }}
         EOF
-
-    # - name: Test
-    #   shell: bash
-    #   run: |
-    #     echo ${{ inputs.qlfile-template }} > qlfile
-    # - name: Install Dependencies
-    #   shell: bash
-    #   run: |
-    #     if [[ -e qlfile ]]; then
-    #       rm -fr qlfile.lock
-    #     else:
-    #       if [[ "${QUICKLISP_DIST}" == 'ultralisp' ]]; then
-    #         echo dist ultralisp http://dist.ultralisp.org/ >> qlfile
-    #       fi
-    #     fi
-    #     qlot install
-    # - name: Install System
-    #   shell: bash
-    #   run: |
-    #     if [[ "${QUICKLISP_DIST}" == 'quicklisp' ]]; then
-    #         qlot exec ros install 40ants/defmain
-    #     fi
-
-    #     qlot exec ros install cl-info
-    # - name: Install System
-    #   shell: bash
-    #   run: |
-    #     if [[ "${QUICKLISP_DIST}" == 'quicklisp' ]]; then
-    #         qlot exec ros install 40ants/defmain
-    #     fi
-
-    #     qlot exec ros install cl-info
