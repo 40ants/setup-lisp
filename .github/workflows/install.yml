@@ -66,6 +66,10 @@ jobs:
       - uses: 40ants/cl-info/.github/actions/setup@custom-action
         with:
           asdf-system: cl-info
+          qlfile-template: |
+            {% ifequal quicklisp_dist "ultralisp" %}
+            dist ultralisp http://dist.ultralisp.org
+            {% endifequal %}
         
       # - name: Start SSH session
       #   uses: luchihoratiu/debug-via-ssh@main
