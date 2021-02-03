@@ -24,7 +24,7 @@ jobs:
           # - macos-latest
         quicklisp-dist:
           - quicklisp
-          # - ultralisp
+          - ultralisp
         lisp:
           - sbcl-bin
           - ccl-bin
