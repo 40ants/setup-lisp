@@ -71,23 +71,16 @@ jobs:
             dist ultralisp http://dist.ultralisp.org
             {% endifequal %}
         
-      # - name: Start SSH session
-      #   uses: luchihoratiu/debug-via-ssh@main
-      #   with:
-      #       NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-      #       NGROK_REGION: eu
-      #       SSH_PASS: ${{ secrets.SSH_PASS }}
-
-      # - name: Install System
-      #   run: |
-      #     if [[ "${QUICKLISP_DIST}" == 'quicklisp' ]]; then
-      #         qlot exec ros install 40ants/defmain
-      #     fi
-
-      #     qlot exec ros install cl-info
       - name: Run Command Line Version
         run: |
-          set -x
+          echo ::group::Help Argument
           qlot exec cl-info --help
+          echo ::endgroup::
+
+          echo ::group::Version Argument
           qlot exec cl-info --version
-          qlot exec cl-info cl-info
+          echo ::endgroup::
+
+          echo ::group::Lisp Systems Info
+          qlot exec cl-info cl-info defmain
+          echo ::endgroup::
