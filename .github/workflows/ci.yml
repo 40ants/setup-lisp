@@ -1,4 +1,4 @@
-name: 'Check Installation'
+name: 'CI'
 
 on:
   # This will run tests on pushes
@@ -15,7 +15,7 @@ on:
     - cron:  '0 10 * * 1'
 
 jobs:
-  run_tests:
+  run-tests:
     strategy:
       fail-fast: false
       matrix:
@@ -63,14 +63,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - uses: 40ants/cl-info/.github/actions/setup@custom-action
+      - uses: 40ants/cl-info/.github/actions/run-tests@custom-action
         with:
           asdf-system: cl-info
           qlfile-template: |
             {% ifequal quicklisp_dist "ultralisp" %}
             dist ultralisp http://dist.ultralisp.org
             {% endifequal %}
-        
+
+      # This is additional step to check
+      # a command line script
       - name: Run Command Line Version
         run: |
           echo ::group::Help Argument
