@@ -77,7 +77,7 @@ behaviour could be overriden by keyword argument ``:raise t``."
 
 (defun git-repository-was-changed-p ()
   ;; if git status returns something, then repository have uncommitted changes
-  (> (length (git "status --porcelain"))
+  (> (length (git "status --porcelain | grep -v qlfile"))
      0))
 
 
