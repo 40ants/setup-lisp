@@ -184,7 +184,7 @@ runs:
         echo "TRACE 5"
         echo ::group::Upload Docs
         echo "TRACE 6"
-        BUILD_DIR=${{ steps.build-docs.outputs.build-dir }}
+        BUILD_DIR="${{ steps.build-docs.outputs.build-dir }}"
         echo "TRACE 7"
         ${{ github.action_path }}/upload.ros "${BUILD_DIR}"
         echo "TRACE 8"
