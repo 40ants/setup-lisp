@@ -187,6 +187,8 @@ runs:
         echo =============
         cat build-docs.err
         echo =============
+
+        OUTPUT_DIR=$(cat build-docs.out)
       
         echo "TRACE 2"
         echo "::set-output name=build-dir::${OUTPUT_DIR}"
