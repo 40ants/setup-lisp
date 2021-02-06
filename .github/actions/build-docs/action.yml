@@ -170,11 +170,35 @@ runs:
         echo "TRACE 1"
         # OUTPUT_DIR=`build-docs ${{ inputs.asdf-system }}`
 
-        cat > test.sh <<EOF
-        echo Foo >&1
-        echo Bar >&2
+        cat > test.ros <<EOF
+        #!/bin/sh
+        #|-*- mode:lisp -*-|#
+        #|
+        exec ros -Q -- $0 "$@"
+        |#
+        (progn ;;init forms
+          (ros:ensure-asdf)
+          #+quicklisp
+          (ql:quickload '()
+                        :silent t))
+
+        (defpackage :ros.script.build-docs
+          (:use :cl))
+        (in-package :ros.script.build-docs)
+
+        (defun main (&rest args)
+          (declare (ignorable args))
+          (format *standard-output*
+                  "Standard Foo~%")
+          (format *error-output*
+                  "Error Bar~%")
+          (format *trace-io*
+                  "Trace Blah~%")
+          (format *terminal-io*
+                  "Terminal Minor~%"))
+        
         EOF
-        bash test.sh > out 2> err
+        bash test.ros > out 2> err
 
         echo TTTTT 1_out
         cat out
