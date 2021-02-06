@@ -171,11 +171,6 @@ runs:
         # OUTPUT_DIR=`build-docs ${{ inputs.asdf-system }}`
 
         cat > test.ros <<EOF
-        #!/bin/sh
-        #|-*- mode:lisp -*-|#
-        #|
-        exec ros -Q -- $0 "$@"
-        |#
         (ros:ensure-asdf)
 
         (defpackage :ros.script.build-docs
