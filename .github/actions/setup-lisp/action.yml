@@ -72,6 +72,9 @@ runs:
       shell: bash
       run: |
         echo ::group::Install ASDF System
-        qlot exec ros install ${{ inputs.asdf-system }}
+        if [[ -n "${{ inputs.asdf-system }}" ]]; then
+            qlot exec ros install ${{ inputs.asdf-system }}
+        else
+            echo "ASDF system wasn't provided."
+        fi
         echo ::endgroup::
-      if: ${{ inputs.asdf-system }}
