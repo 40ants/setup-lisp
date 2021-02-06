@@ -65,9 +65,17 @@ runs:
             echo "${QLFILE_TEMPLATE}" | ${{ github.action_path }}/../scripts/templater.ros > qlfile
             rm -f qlfile.lock
         fi
+
+        cat qlfile.template | ${{ github.action_path }}/../scripts/templater.ros > qlfile2
         
         echo 'Here is content of template:'
         cat qlfile.template
+
+        echo ''
+        echo ''
+
+        echo 'Here is content of qlfile2:'
+        cat qlfile2
 
         echo ''
         echo ''
