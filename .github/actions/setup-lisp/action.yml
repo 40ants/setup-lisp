@@ -57,10 +57,20 @@ runs:
 
         set -x
 
+        cat > qlfile.template <<EOF
+        ${QLFILE_TEMPLATE}
+        EOF
+
         if [[ -n "${QLFILE_TEMPLATE}" ]]; then
             echo "${QLFILE_TEMPLATE}" | ${{ github.action_path }}/../scripts/templater.ros > qlfile
             rm -f qlfile.lock
         fi
+        
+        echo 'Here is content of template:'
+        cat qlfile.template
+
+        echo ''
+        echo ''
 
         echo 'Here is content of qlfile:'
         cat qlfile
