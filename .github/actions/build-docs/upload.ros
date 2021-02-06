@@ -55,9 +55,10 @@ behaviour could be overriden by keyword argument ``:raise t``."
     (values stdout stderr code)))
 
 
-(defun gh-pages-repository-initialized-p ()
+(defun gh-pages-repository-initialized-p (docs-dir)
   "Checks if repository for documentation already initialized"
-  (uiop:directory-exists-p "docs/build/.git"))
+  (uiop:directory-exists-p (uiop:merge-pathnames* #P".git/"
+                                                  docs-dir)))
 
 
 (defun git (&rest commands)
@@ -123,7 +124,7 @@ behaviour could be overriden by keyword argument ``:raise t``."
 
   (let ((*current-dir* docs-dir))
   
-    (unless (gh-pages-repository-initialized-p)
+    (unless (gh-pages-repository-initialized-p docs-dir)
       (git "init")
     
       (git "remote add origin "
