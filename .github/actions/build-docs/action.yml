@@ -11,6 +11,14 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: 40ants/cl-info/.github/actions/setup-lisp@custom-action
-      with:
-        asdf-system: cl-info
+    - name: Install Documentation Builder
+      shell: bash
+      run: |
+        echo ::group::Install Documentation Builder
+        qlot exec ros install 40ants/docs-builder
+        echo ::endgroup::
+
+    - name: Build Docs
+      shell: bash
+      run: |
+        docs-builder ${{ inputs.asdf-system }}

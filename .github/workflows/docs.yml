@@ -23,6 +23,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+      - uses: 40ants/cl-info/.github/actions/setup-lisp@custom-action
+        with:
+          asdf-system: cl-info
       - uses: 40ants/cl-info/.github/actions/build-docs@custom-action
         with:
           asdf-system: cl-info
