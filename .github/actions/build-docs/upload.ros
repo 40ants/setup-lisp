@@ -154,7 +154,7 @@ behaviour could be overriden by keyword argument ``:raise t``."
     (cond
       ((git-repository-was-changed-p)
        
-       (git "add .")
+       (git "add -u")
        (when (uiop:getenv "GITHUB_ACTIONS")
          (log:info "Pushing changes to gh-pages branch")
 
