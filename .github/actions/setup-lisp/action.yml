@@ -57,12 +57,23 @@ runs:
 
         set -x
 
+        echo ''
+        echo ''
+        cat ${{ github.action_path }}/../scripts/templater.ros
+        echo ''
+        echo ''
+
         if [[ -n "${QLFILE_TEMPLATE}" ]]; then
             echo "${QLFILE_TEMPLATE}" | ${{ github.action_path }}/../scripts/templater.ros > qlfile
             rm -f qlfile.lock
         fi
 
+        echo 'Here is content of qlfile:
         cat qlfile
+
+        echo ''
+        echo ''
+        
         qlot install
         echo ::endgroup::
       env:
