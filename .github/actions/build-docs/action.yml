@@ -1,0 +1,20 @@
+name: 'Build Docs'
+
+inputs:
+  asdf-system:
+    description: 'ASDF system to build system for'
+    required: true
+  qlfile-template:
+    description: "Djula template for qlfile. All environment variables are available in it's context"
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - uses: 40ants/cl-info/.github/actions/setup-lisp@custom-action
+      with:
+        asdf-system: cl-info
+    - name: Finish
+      shell: bash
+      run: |
+        echo "DONE"

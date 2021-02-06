@@ -1,0 +1,76 @@
+name: 'Setup Common Lisp'
+
+inputs:
+  asdf-system:
+    description: 'ASDF system to install'
+    required: true
+  qlfile-template:
+    description: "Djula template for qlfile. All environment variables are available in it's context"
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Current Env
+      shell: bash
+      run: |
+        echo ::group::Environment
+        echo "Current dir:"
+        pwd
+        
+        echo "Environment Variables:"
+        env | sort -u
+        echo ::endgroup::
+    - name: Install Roswell
+      shell: bash
+      run: |
+        echo ::group::Install Roswell
+        if [[ "$OS" == "ubuntu-latest" ]]; then
+            sudo apt-get -y install git build-essential automake libcurl4-openssl-dev
+        fi
+        if [[ "$OS" == "macos-latest" ]]; then
+            brew install automake autoconf curl
+        fi
+        
+        curl -L https://raw.githubusercontent.com/svetlyak40wt/roswell/patches/scripts/install-for-ci.sh | sh
+        
+        echo $HOME/.roswell/bin >> $GITHUB_PATH
+        echo ::endgroup::
+    - name: Upgrade ASDF to the Latest Version
+      shell: bash
+      run: |
+        echo ::group::Upgrade ASDF
+        ros install asdf
+        echo ::endgroup::
+    - name: Install Qlot
+      shell: bash
+      run: |
+        echo ::group::Install Qlot
+        ros install qlot
+        echo .qlot/bin >> $GITHUB_PATH
+        echo ::endgroup::
+
+    - name: Create Qlot Environment
+      shell: bash
+      run: |
+        echo ::group::Create Qlot Environment
+
+        if [[ -n "${QLFILE_TEMPLATE}" ]]; then
+            echo "${QLFILE_TEMPLATE}" | ${{ github.action_path }}/templater.ros > qlfile
+            rm -f qlfile.lock
+        fi
+
+        qlot install
+        echo ::endgroup::
+      env:
+        QLFILE_TEMPLATE: ${{ inputs.qlfile-template }}
+
+    # This step will install system and
+    # all possible roswell scripts, if the system
+    # has them in the roswell/ subdirectory:
+    - name: Install ASDF System
+      shell: bash
+      run: |
+        echo ::group::Install ASDF System
+        qlot exec ros install ${{ inputs.asdf-system }}
+        echo ::endgroup::
