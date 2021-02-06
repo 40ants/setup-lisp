@@ -1,0 +1,52 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -L sbcl-bin -- $0 "$@"
+|#
+(progn
+  (ros:ensure-asdf)
+  #+quicklisp
+  (ql:quickload '(djula)
+                :silent t))
+
+(defpackage :ros.script.templater
+  (:use :cl))
+(in-package :ros.script.templater)
+
+
+(defun collect-arguments ()
+  (let* ((env-output (with-output-to-string (s)
+                       (uiop:run-program "env" :output s)))
+         (lines (uiop:with-input (env-output)
+                  (uiop:slurp-stream-lines env-output))))
+    (loop for line in lines
+          for (key value) = (cl-ppcre:split "=" line
+                                            :limit 2)
+          appending (list (alexandria:make-keyword key)
+                          value))))
+
+
+(defun interpose (separator list)
+  "Returns a sequence of the elements of SEQUENCE separated by SEPARATOR."
+  (labels ((rec (s acc)
+             (if s
+                 (rec (cdr s) (nconc acc
+                                     (list separator (car s))))
+                 acc)))
+    (cdr (rec list nil))))
+
+
+(defun main (&rest argv)
+  (declare (ignore argv))
+  (let* ((lines (uiop:slurp-stream-lines *standard-input*))
+         (template-text (apply #'concatenate 'string
+                               (interpose (string #\Newline)
+                                          lines)))
+         (template (djula::compile-string template-text))
+         (arguments (collect-arguments)))
+    (apply #'djula:render-template*
+           template
+           *standard-output*
+           arguments)))
+
+;;; vim: set ft=lisp lisp:
