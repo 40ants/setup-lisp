@@ -92,33 +92,37 @@ behaviour could be overriden by keyword argument ``:raise t``."
 
 
 (defun get-origin-to-push ()
-  (let ((upstream (get-git-upstream)))
+  (cond
+    ;; If we are running inside github actions
+    ((uiop:getenv "GITHUB_ACTIONS")
+     (unless (uiop:getenv "GITHUB_TOKEN")
+       (error 'unable-to-proceed
+              :message "Please, provide GITHUB_TOKEN environment variable."))
+     (format nil "https://~A:~A@github.com/~A"
+             (uiop:getenv "GITHUB_ACTOR")
+             (uiop:getenv "GITHUB_TOKEN")
+             (uiop:getenv "GITHUB_REPOSITORY")))
+    ;; otherwise make it from travis secret token and repo slug
+    ((uiop:getenv "TRAVIS_REPO_SLUG")
+     (let ((repo-slug (uiop:getenv "TRAVIS_REPO_SLUG"))
+           (repo-token (uiop:getenv "GH_REPO_TOKEN")))
 
-    (cond
-      (upstream
-       ;; If there is already some remote upstream, then use it
-       (run (concatenate 'string "git remote get-url " upstream)))
-      ;; If we are running inside github actions
-      ((uiop:getenv "GITHUB_ACTIONS")
-       (unless (uiop:getenv "GITHUB_TOKEN")
+       (unless (and repo-slug repo-token)
          (error 'unable-to-proceed
-                :message "Please, provide GITHUB_TOKEN environment variable."))
-       (format nil "https://~A:~A@github.com/~A"
-               (uiop:getenv "GITHUB_ACTOR")
-               (uiop:getenv "GITHUB_TOKEN")
-               (uiop:getenv "GITHUB_REPOSITORY")))
-      ;; otherwise make it from travis secret token and repo slug
-      (t
-       (let ((repo-slug (uiop:getenv "TRAVIS_REPO_SLUG"))
-             (repo-token (uiop:getenv "GH_REPO_TOKEN")))
+                :message "Current branch does not track any upstream and there is no TRAVIS_REPO_SLUG and GH_REPO_TOKEN env variables. Where to push gh-pages branch?"))
 
-         (unless (and repo-slug repo-token)
-           (error 'unable-to-proceed
-                  :message "Current branch does not track any upstream and there is no TRAVIS_REPO_SLUG and GH_REPO_TOKEN env variables. Where to push gh-pages branch?"))
-
-         (format nil "https://~A@github.com/~A"
-                 repo-token
-                 repo-slug))))))  
+       (format nil "https://~A@github.com/~A"
+               repo-token
+               repo-slug)))
+    ;; If there is already some remote upstream, then use it
+    (t
+     (let ((upstream (get-git-upstream)))
+       (cond
+         (upstream
+          (run (concatenate 'string "git remote get-url " upstream)))
+         (t
+          (log:error "Unable to guess correct upstream URL")
+          (values nil)))))))  
 
 
 (defun push-gh-pages (docs-dir)
