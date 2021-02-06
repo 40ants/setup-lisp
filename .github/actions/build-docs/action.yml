@@ -24,12 +24,16 @@ runs:
         echo ::endgroup::
 
     - name: Build Docs
+      id: build-docs
       shell: bash
       run: |
-        set -x
-        ls .qlot
-        ls .qlot/bin
-        echo $PATH
-        cat qlfile
-    
-        build-docs ${{ inputs.asdf-system }}
+        OUTPUT_DIR=$(build-docs ${{ inputs.asdf-system }})
+        
+        echo "::set-output name=build-dir::${OUTPUT_DIR}"
+
+    - name: Upload Docs
+      shell: bash
+      run: |
+        BUILD_DIR=${{ steps.build-docs.outputs.build-dir }}
+
+        ${{ github.action_path }}/upload.ros "${BUILD_DIR}"
