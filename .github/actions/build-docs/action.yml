@@ -15,7 +15,12 @@ runs:
       shell: bash
       run: |
         echo ::group::Install Documentation Builder
-        qlot exec ros install 40ants/docs-builder
+
+        echo 'github docs-builder 40ants/docs-builder' >> qlfile
+        
+        qlot update
+
+        qlot exec ros install docs-builder
         echo ::endgroup::
 
     - name: Build Docs
