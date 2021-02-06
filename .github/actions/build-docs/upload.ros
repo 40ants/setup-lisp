@@ -156,6 +156,11 @@ behaviour could be overriden by keyword argument ``:raise t``."
        (log:info "Pushing local changes to the repository")
        
        (git "add -u")
+
+       ;; We don't want to commit changes to qlfile,
+       ;; because documentation builders might change them:
+       (git "reset qlfile*")
+       
        (when (uiop:getenv "GITHUB_ACTIONS")
 
          (git "config --global user.name \"github-actions[bot]\"")
