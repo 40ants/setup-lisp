@@ -16,7 +16,7 @@ on:
 
 jobs:
   build-docs:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     
     env:
       LISP: sbcl-bin

@@ -62,7 +62,7 @@ runs:
             rm -f qlfile.lock
         fi
 
-        echo qlfile
+        cat qlfile
         qlot install
         echo ::endgroup::
       env:
