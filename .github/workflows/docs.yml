@@ -16,7 +16,7 @@ on:
 
 jobs:
   build-docs:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     
     env:
       LISP: sbcl-bin
@@ -26,6 +26,8 @@ jobs:
       - uses: 40ants/cl-info/.github/actions/setup-lisp@custom-action
         with:
           asdf-system: cl-info
+          qlfile-template: |
+            github mgl-pax 40ants/mgl-pax :branch mgl-pax-minimal
       - uses: 40ants/cl-info/.github/actions/build-docs@custom-action
         with:
           asdf-system: cl-info

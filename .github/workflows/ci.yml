@@ -69,14 +69,12 @@ jobs:
             {% ifequal quicklisp_dist "ultralisp" %}
             dist ultralisp http://dist.ultralisp.org
             {% endifequal %}
+
+            github mgl-pax 40ants/mgl-pax :branch mgl-pax-minimal
+            
       - uses: 40ants/cl-info/.github/actions/run-tests@custom-action
         with:
           asdf-system: cl-info
-          qlfile-template: |
-            {% ifequal quicklisp_dist "ultralisp" %}
-            dist ultralisp http://dist.ultralisp.org
-            {% endifequal %}
-
 
       # This is additional step to check
       # a command line script
