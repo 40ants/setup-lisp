@@ -170,12 +170,17 @@ runs:
         echo "TRACE 1"
         # OUTPUT_DIR=`build-docs ${{ inputs.asdf-system }}`
 
-        set -x
-        
-        ls -l /dev/stdout
-        ls -l /dev/stderr
+        cat > test.sh <<EOF
+        echo Foo >&1
+        echo Bar >&2
+        EOF
+        bash test.sh > out 2> err
 
-        set +x
+        echo TTTTT 1_out
+        cat out
+        echo TTTTT 1_err
+        cat err
+
 
         build-docs ${{ inputs.asdf-system }} > build-docs.out 2> build-docs.err
         
