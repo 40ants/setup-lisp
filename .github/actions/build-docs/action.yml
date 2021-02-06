@@ -189,7 +189,7 @@ runs:
                   "Terminal Minor~%"))
         EOF
 
-        bash test.ros > out 2> err
+        ros -Q test.ros > out 2> err
 
         echo TTTTT 1_out
         cat out
