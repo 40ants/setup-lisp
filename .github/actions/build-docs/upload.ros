@@ -153,13 +153,14 @@ behaviour could be overriden by keyword argument ``:raise t``."
   (let ((*current-dir* (probe-file #P"")))
     (cond
       ((git-repository-was-changed-p)
+       (log:info "Pushing local changes to the repository")
        
        (git "add -u")
        (when (uiop:getenv "GITHUB_ACTIONS")
-         (log:info "Pushing changes to gh-pages branch")
 
          (git "config --global user.name \"github-actions[bot]\"")
          (git "config --global user.email \"actions@github.com\""))
+       
        (git "commit -m 'Update docs'")
     
        (cond
