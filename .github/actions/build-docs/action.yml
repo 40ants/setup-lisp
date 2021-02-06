@@ -169,11 +169,25 @@ runs:
         set -x
         echo ::group::Build Docs
         echo "TRACE 1"
-        OUTPUT_DIR=`build-docs ${{ inputs.asdf-system }}`
-        echo "TRACE 1_1"
+        # OUTPUT_DIR=`build-docs ${{ inputs.asdf-system }}`
+
+        build-docs ${{ inputs.asdf-system }} > build-docs.out 2> build-docs.err
+        
+        # echo "TRACE 1_1"
+        # echo =============
+        # echo ${OUTPUT_DIR}
+        # echo =============
+
+        echo "TRACE 1_out"
         echo =============
-        echo ${OUTPUT_DIR}
+        cat build-docs.out
         echo =============
+
+        echo "TRACE 1_err"
+        echo =============
+        cat build-docs.err
+        echo =============
+      
         echo "TRACE 2"
         echo "::set-output name=build-dir::${OUTPUT_DIR}"
         echo "TRACE 3"
