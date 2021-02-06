@@ -25,4 +25,6 @@ runs:
         ls .qlot
         ls .qlot/bin
         echo $PATH
+        cat qlfile
+    
         docs-builder ${{ inputs.asdf-system }}
