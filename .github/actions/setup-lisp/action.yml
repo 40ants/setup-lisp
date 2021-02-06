@@ -55,8 +55,6 @@ runs:
       run: |
         echo ::group::Create Qlot Environment
 
-        set -x
-
         cat > qlfile.template <<EOF
         ${QLFILE_TEMPLATE}
         EOF
