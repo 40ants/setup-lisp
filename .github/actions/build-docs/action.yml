@@ -4,6 +4,9 @@ inputs:
   asdf-system:
     description: 'ASDF system to build system for'
     required: true
+  # github-token:
+  #   description: 'A token needed to push docs to GitHub'
+  #   required: true
   qlfile-template:
     description: "Djula template for qlfile. All environment variables are available in it's context"
     required: false
@@ -188,13 +191,11 @@ runs:
     - name: Upload Docs
       shell: bash
       run: |
-        set -x
         set -Eeuo pipefail
-        echo "TRACE 5"
         echo ::group::Upload Docs
-        echo "TRACE 6"
-        BUILD_DIR="${{ steps.build-docs.outputs.build-dir }}"
-        echo "TRACE 7"
+        
         ${{ github.action_path }}/upload.ros "${BUILD_DIR}"
-        echo "TRACE 8"
         echo ::endgroup::
+      env:
+        BUILD_DIR: ${{ steps.build-docs.outputs.build-dir }}
+        GITHUB_TOKEN: ${{ github.token }}
