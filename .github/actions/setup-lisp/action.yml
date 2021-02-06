@@ -55,35 +55,14 @@ runs:
       run: |
         echo ::group::Create Qlot Environment
 
-        cat > qlfile.template <<EOF
-        ${QLFILE_TEMPLATE}
-        EOF
-        
-        echo 'Here is content of template:'
-        cat qlfile.template
-
-        echo '=============='
-        echo ''
-        cat qlfile.template | ${{ github.action_path }}/../scripts/templater.ros > qlfile2
-        
-
-        echo 'Here is content of qlfile2:'
-        cat qlfile2
-
-        echo '==============='
-        echo ''
-
-
-        echo 'NOW DOING IT OLD WAY'
-        
         if [[ -n "${QLFILE_TEMPLATE}" ]]; then
             echo "${QLFILE_TEMPLATE}" | ${{ github.action_path }}/../scripts/templater.ros > qlfile
             rm -f qlfile.lock
         fi
 
         echo 'Here is content of qlfile:'
+        echo '==============='
         cat qlfile
-
         echo '==============='
         echo ''
         
