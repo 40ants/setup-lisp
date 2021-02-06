@@ -28,16 +28,8 @@ jobs:
           asdf-system: cl-info
           qlfile-template: |
             github mgl-pax svetlyak40wt/mgl-pax :branch mgl-pax-minimal
-      # - name: Start SSH session
-      #   uses: luchihoratiu/debug-via-ssh@main
-      #   with:
-      #     NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-      #     NGROK_REGION: eu
-      #     SSH_PASS: ${{ secrets.SSH_PASS }}
       
       - uses: 40ants/cl-info/.github/actions/build-docs@custom-action
         with:
           asdf-system: cl-info
-#           github-token: ${{ github.token }}
-          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-          SSH_PASS: ${{ secrets.SSH_PASS }}
+
