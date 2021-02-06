@@ -21,4 +21,8 @@ runs:
     - name: Build Docs
       shell: bash
       run: |
+        set -x
+        ls .qlot
+        ls .qlot/bin
+        echo $PATH
         docs-builder ${{ inputs.asdf-system }}
