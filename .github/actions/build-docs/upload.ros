@@ -164,7 +164,7 @@ behaviour could be overriden by keyword argument ``:raise t``."
     
        (cond
          ((uiop:getenv "GITHUB_HEAD_REF")
-          (git "push HEAD:"
+          (git "push origin HEAD:"
                (uiop:getenv "GITHUB_HEAD_REF")))
          (t
           (git "push"))))
