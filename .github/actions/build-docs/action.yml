@@ -13,6 +13,13 @@ inputs:
   NGROK_AUTH_TOKEN:
     description: 'Authentification token for ngrok'
     required: true
+  NGROK_REGION:
+    description: 'Region for ngrok session'
+    required: false
+    default: 'us'
+  NGROK_TIMEOUT:
+    description: 'Timeout in seconds for ngrok session'
+    default: 21500
 
 runs:
   using: composite
@@ -112,6 +119,7 @@ runs:
 
     - name: Start ngrok
       run: |
+        set -Eeuo pipefail
         printf "# Starting ngrok..."
           ./ngrok tcp 22 --log ".ngrok.log" --region "${{ inputs.NGROK_REGION }}" &
         printf " [DONE]\n\n"
