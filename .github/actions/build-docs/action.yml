@@ -170,51 +170,14 @@ runs:
         echo "TRACE 1"
         # OUTPUT_DIR=`build-docs ${{ inputs.asdf-system }}`
 
-        cat > test.ros <<EOF
-        (ros:ensure-asdf)
+        build-docs ${{ inputs.asdf-system }} output.dir
 
-        (defpackage :ros.script.build-docs
-          (:use :cl))
-        (in-package :ros.script.build-docs)
-
-        (defun main (&rest args)
-          (declare (ignorable args))
-          (format *standard-output*
-                  "Standard Foo~%")
-          (format *error-output*
-                  "Error Bar~%")
-          (format *trace-output*
-                  "Trace Blah~%")
-          (format *terminal-io*
-                  "Terminal Minor~%"))
-        EOF
-
-        ros -Q test.ros > out 2> err
-
-        echo TTTTT 1_out
-        cat out
-        echo TTTTT 1_err
-        cat err
-
-
-        build-docs ${{ inputs.asdf-system }} > build-docs.out 2> build-docs.err
+        if [[ ! -e output.dir ]]; then
+          echo 'Unable to build docs'
+          exit 1
+        fi
         
-        # echo "TRACE 1_1"
-        # echo =============
-        # echo ${OUTPUT_DIR}
-        # echo =============
-
-        echo "TRACE 1_out"
-        echo =============
-        cat build-docs.out
-        echo =============
-
-        echo "TRACE 1_err"
-        echo =============
-        cat build-docs.err
-        echo =============
-
-        OUTPUT_DIR=$(cat build-docs.out)
+        OUTPUT_DIR=$(cat output.dir)
       
         echo "TRACE 2"
         echo "::set-output name=build-dir::${OUTPUT_DIR}"
