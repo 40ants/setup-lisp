@@ -80,6 +80,7 @@ jobs:
       # a command line script
       - name: Run Command Line Version
         run: |
+
           echo ::group::Help Argument
           qlot exec cl-info --help
           echo ::endgroup::
