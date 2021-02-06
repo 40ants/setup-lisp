@@ -26,10 +26,22 @@ exec ros -Q -L sbcl-bin -- $0 "$@"
                           value))))
 
 
+(defun interpose (separator list)
+  "Returns a sequence of the elements of SEQUENCE separated by SEPARATOR."
+  (labels ((rec (s acc)
+             (if s
+                 (rec (cdr s) (nconc acc
+                                     (list separator (car s))))
+                 acc)))
+    (cdr (rec list nil))))
+
+
 (defun main (&rest argv)
   (declare (ignore argv))
   (let* ((lines (uiop:slurp-stream-lines *standard-input*))
-         (template-text (apply #'concatenate 'string lines))
+         (template-text (apply #'concatenate 'string
+                               (interpose (string #\Newline)
+                                          lines)))
          (template (djula::compile-string template-text))
          (arguments (collect-arguments)))
     (apply #'djula:render-template*
