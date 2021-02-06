@@ -179,7 +179,7 @@ behaviour could be overriden by keyword argument ``:raise t``."
             ;;
             ;; To push changes back, we need to change
             ;; our HEAD back to the pull-request's reference:
-            (git "checkout" ref)
+            (git "checkout " ref)
             (git "remote add upstream "
                  (get-origin-to-push))
             (git "push upstream HEAD:" ref)))
