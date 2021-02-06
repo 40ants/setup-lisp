@@ -3,7 +3,7 @@ name: 'Setup Common Lisp'
 inputs:
   asdf-system:
     description: 'ASDF system to install'
-    required: true
+    required: false
   qlfile-template:
     description: "Djula template for qlfile. All environment variables are available in it's context"
     required: false
@@ -74,3 +74,4 @@ runs:
         echo ::group::Install ASDF System
         qlot exec ros install ${{ inputs.asdf-system }}
         echo ::endgroup::
+      if: ${{ inputs.asdf-system }}
