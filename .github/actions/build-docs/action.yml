@@ -166,7 +166,6 @@ runs:
       id: build-docs
       shell: bash
       run: |
-        set -x
         echo ::group::Build Docs
         echo "TRACE 1"
         # OUTPUT_DIR=`build-docs ${{ inputs.asdf-system }}`
