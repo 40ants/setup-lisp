@@ -32,4 +32,4 @@ runs:
         echo $PATH
         cat qlfile
     
-        docs-builder ${{ inputs.asdf-system }}
+        build-docs ${{ inputs.asdf-system }}
