@@ -146,6 +146,27 @@ behaviour could be overriden by keyword argument ``:raise t``."
       (t (log:info "Everything is up to date.")))))
 
 
+(defun push-local-changes ()
+  "Some documentation builders, like MGL-PAX,
+   can update README file as well. In this case, we need
+   to push the file into the current branch of the repository."
+  (let ((*current-dir* (probe-file #P"")))
+    (cond
+      ((git-repository-was-changed-p)
+       
+       (git "add .")
+       (when (uiop:getenv "GITHUB_ACTIONS")
+         (log:info "Pushing changes to gh-pages branch")
+
+         (git "config --global user.name \"github-actions[bot]\"")
+         (git "config --global user.email \"actions@github.com\""))
+       (git "commit -m 'Update docs'")
+    
+       (git "push"))
+      ;; or
+      (t (log:info "There is no local changes.")))))
+
+
 (defun main (&rest argv)
   (log:info "Uploading documentation")
 
@@ -168,6 +189,7 @@ behaviour could be overriden by keyword argument ``:raise t``."
                                                        docs-dir)
                                 :if-exists :overwrite)
         (declare (ignorable s)))
-      (push-gh-pages docs-dir))))
+      (push-gh-pages docs-dir)
+      (push-local-changes))))
 
 ;;; vim: set ft=lisp lisp:
