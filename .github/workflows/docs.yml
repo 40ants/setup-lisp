@@ -27,7 +27,7 @@ jobs:
         with:
           asdf-system: cl-info
           qlfile-template: |
-            github mgl-pax 40ants/mgl-pax :branch mgl-pax-minimal
+            github mgl-pax svetlyak40wt/mgl-pax :branch mgl-pax-minimal
       - uses: 40ants/cl-info/.github/actions/build-docs@custom-action
         with:
           asdf-system: cl-info

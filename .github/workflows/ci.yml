@@ -70,7 +70,7 @@ jobs:
             dist ultralisp http://dist.ultralisp.org
             {% endifequal %}
 
-            github mgl-pax 40ants/mgl-pax :branch mgl-pax-minimal
+            github mgl-pax svetlyak40wt/mgl-pax :branch mgl-pax-minimal
             
       - uses: 40ants/cl-info/.github/actions/run-tests@custom-action
         with:
