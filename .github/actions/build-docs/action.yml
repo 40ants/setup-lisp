@@ -167,17 +167,23 @@ runs:
       shell: bash
       run: |
         echo ::group::Build Docs
+        echo "TRACE 1"
         OUTPUT_DIR=`build-docs ${{ inputs.asdf-system }}`
-        
+        echo "TRACE 2"
         echo "::set-output name=build-dir::${OUTPUT_DIR}"
+        echo "TRACE 3"
         echo ::endgroup::
+        echo "TRACE 4"
 
     - name: Upload Docs
       shell: bash
       run: |
         set -Eeuo pipefail
+        echo "TRACE 5"
         echo ::group::Upload Docs
+        echo "TRACE 6"
         BUILD_DIR=${{ steps.build-docs.outputs.build-dir }}
-
+        echo "TRACE 7"
         ${{ github.action_path }}/upload.ros "${BUILD_DIR}"
+        echo "TRACE 8"
         echo ::endgroup::
