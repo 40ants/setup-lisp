@@ -159,36 +159,38 @@ behaviour could be overriden by keyword argument ``:raise t``."
       ((git-repository-was-changed-p)
        (log:info "Pushing local changes to the repository")
        
-       (git "add -u")
+       (flet ((make-commit ()
+                (git "add -u")
 
-       ;; We don't want to commit changes to qlfile,
-       ;; because documentation builders might change them:
-       (git "reset qlfile*")
+                ;; We don't want to commit changes to qlfile,
+                ;; because documentation builders might change them:
+                (git "reset qlfile*")
        
-       (when (uiop:getenv "GITHUB_ACTIONS")
+                (when (uiop:getenv "GITHUB_ACTIONS")
 
-         (git "config --global user.name \"github-actions[bot]\"")
-         (git "config --global user.email \"actions@github.com\""))
+                  (git "config --global user.name \"github-actions[bot]\"")
+                  (git "config --global user.email \"actions@github.com\""))
        
-       (git "commit -m 'Update docs'")
-    
-       (cond
-         ((uiop:getenv "GITHUB_HEAD_REF")
-          (let ((ref (uiop:getenv "GITHUB_HEAD_REF")))
+                (git "commit -m 'Update docs'")))
+         (cond
+           ((uiop:getenv "GITHUB_HEAD_REF")
+            (let ((ref (uiop:getenv "GITHUB_HEAD_REF")))
 
-            ;; Inside github action we are running on
-            ;; detached commit. Github takes last commit
-            ;; from the "master" branch and merges
-            ;; a branch from pull-request settings.
-            ;;
-            ;; To push changes back, we need to change
-            ;; our HEAD back to the pull-request's reference:
-            (git "checkout " ref)
-            (git "remote add upstream "
-                 (get-origin-to-push))
-            (git "push upstream HEAD:" ref)))
-         (t
-          (git "push"))))
+              ;; Inside github action we are running on
+              ;; detached commit. Github takes last commit
+              ;; from the "master" branch and merges
+              ;; a branch from pull-request settings.
+              ;;
+              ;; To push changes back, we need to change
+              ;; our HEAD back to the pull-request's reference:
+              (git "checkout " ref)
+              (make-commit)
+              (git "remote add upstream "
+                   (get-origin-to-push))
+              (git "push upstream HEAD:" ref)))
+           (t
+            (make-commit)
+            (git "push")))))
       ;; or
       (t (log:info "There is no local changes.")))))
 
