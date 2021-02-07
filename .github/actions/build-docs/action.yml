@@ -39,13 +39,7 @@ runs:
         set -Eeuo pipefail
         echo ::group::Upload Docs
 
-        echo 'Before upload'
-        git status
-        
         ${{ github.action_path }}/upload.ros "$(cat output.dir)"
-
-        echo 'After upload'
-        git status
 
         echo ::endgroup::
       env:
