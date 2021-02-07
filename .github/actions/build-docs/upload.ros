@@ -229,7 +229,12 @@ behaviour could be overriden by keyword argument ``:raise t``."
                                 :if-exists :overwrite)
         (declare (ignorable s)))
       
-      (when (uiop:getenv "NGROK_AUTH_TOKEN")
+      (unless (string= (or (uiop:getenv "NGROK_AUTH_TOKEN")
+                           ;; If var is not given, uiop will return NIL,
+                           ;; but inside github action, not required arguments
+                           ;; are empty strings and env var will be empty string.
+                           "")
+                       "")
         (let ((url (ngrok/slynk:start 4005)))
           (when url
             (log:info "Waiting for connection to ~A" url)
