@@ -245,5 +245,3 @@ behaviour could be overriden by keyword argument ``:raise t``."
       
       (push-gh-pages docs-dir)
       (push-local-changes))))
-
-;;; vim: set ft=lisp lisp:
