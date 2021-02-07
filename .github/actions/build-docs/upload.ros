@@ -225,8 +225,11 @@ behaviour could be overriden by keyword argument ``:raise t``."
       
       (let ((url (ngrok/slynk:start 4005)))
         (when url
-          (loop do (log:info "Waiting for connection to ~A" url)
-                   (sleep 5))))
+          (log:info "Waiting for connection to ~A" url)
+          (log:info "do touch ~~/continue to let process continue" )
+          (loop
+            until (probe-file "~/continue")
+            do (sleep 5))))
       
       (push-gh-pages docs-dir)
       (push-local-changes))))
