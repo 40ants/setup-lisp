@@ -155,44 +155,48 @@ behaviour could be overriden by keyword argument ``:raise t``."
    can update README file as well. In this case, we need
    to push the file into the current branch of the repository."
   (let ((*current-dir* (probe-file #P"")))
-    (cond
-      ((git-repository-was-changed-p)
-       (log:info "Pushing local changes to the repository")
-       
-       (flet ((make-commit ()
-                (git "add -u")
+    (macrolet ((if-there-are-changes (&body body)
+                 `(cond
+                    ((git-repository-was-changed-p)
+                     (log:info "Pushing local changes to the repository")
+                     ,@body)
+                    (t
+                     (log:info "There is no local changes.")))))
+      (flet ((make-commit ()
+               (git "add -u")
 
-                ;; We don't want to commit changes to qlfile,
-                ;; because documentation builders might change them:
-                (git "reset qlfile*")
-       
-                (when (uiop:getenv "GITHUB_ACTIONS")
+               ;; We don't want to commit changes to qlfile,
+               ;; because documentation builders might change them:
+               (git "reset qlfile*")
+                 
+               (when (uiop:getenv "GITHUB_ACTIONS")
 
-                  (git "config --global user.name \"github-actions[bot]\"")
-                  (git "config --global user.email \"actions@github.com\""))
-       
-                (git "commit -m 'Update docs'")))
-         (cond
-           ((uiop:getenv "GITHUB_HEAD_REF")
-            (let ((ref (uiop:getenv "GITHUB_HEAD_REF")))
+                 (git "config --global user.name \"github-actions[bot]\"")
+                 (git "config --global user.email \"actions@github.com\""))
+                 
+               (git "commit -m 'Update docs'")))
+        (cond
+          ((uiop:getenv "GITHUB_HEAD_REF")
+           (let ((ref (uiop:getenv "GITHUB_HEAD_REF")))
 
-              ;; Inside github action we are running on
-              ;; detached commit. Github takes last commit
-              ;; from the "master" branch and merges
-              ;; a branch from pull-request settings.
-              ;;
-              ;; To push changes back, we need to change
-              ;; our HEAD back to the pull-request's reference:
-              (git "checkout " ref)
+             ;; Inside github action we are running on
+             ;; detached commit. Github takes last commit
+             ;; from the "master" branch and merges
+             ;; a branch from pull-request settings.
+             ;;
+             ;; To push changes back, we need to change
+             ;; our HEAD back to the pull-request's reference:
+             (git "checkout " ref)
+             ;; Here we need to check again if
+             (if-there-are-changes
               (make-commit)
               (git "remote add upstream "
                    (get-origin-to-push))
-              (git "push upstream HEAD:" ref)))
-           (t
+              (git "push upstream HEAD:" ref))))
+          (t
+           (if-there-are-changes
             (make-commit)
-            (git "push")))))
-      ;; or
-      (t (log:info "There is no local changes.")))))
+            (git "push"))))))))
 
 
 (defun main (&rest argv)
