@@ -29,10 +29,11 @@ exec ros -Q -- $0 "$@"
   ((stdout :initarg :stdout :reader subprocess-error-stdout)
    (stderr :initarg :stderr :reader subprocess-error-stderr))
   (:report (lambda (condition stream)
-             (format stream "Subprocess ~@[~S~% ~]~@[with command ~S~% ~]exited with error~@[ code ~D ~]~@[ and this text at stderr:~% ~S~]"
+             (format stream "Subprocess ~@[~S~% ~]~@[with command ~S~% ~]exited with error~@[ code ~D ~]~@[~%STDOUT:~% ~S~]~@[~%STDERR:~% ~S~]"
                      (uiop:subprocess-error-process condition)
                      (uiop:subprocess-error-command condition)
                      (uiop:subprocess-error-code condition)
+                     (subprocess-error-stdout condition)
                      (subprocess-error-stderr condition)))))
 
 
@@ -77,8 +78,11 @@ behaviour could be overriden by keyword argument ``:raise t``."
 
 
 (defun git-repository-was-changed-p ()
-  ;; if git status returns something, then repository have uncommitted changes
-  (> (length (git "status --porcelain | grep -v qlfile"))
+  ;; Here we only interested in entries which are starting from 1 (changed in porcelain v2 format).
+  ;; And not in qlfile and qlfile.lock.
+  ;; The "cat" at the end is to make 0 status code if there is no changed files.
+  ;; Because we only want an output from grep.
+  (> (length (git "status --porcelain=v2 | grep '^1' | grep -v -e qlfile | cat"))
      0))
 
 
@@ -148,7 +152,8 @@ behaviour could be overriden by keyword argument ``:raise t``."
     
        (git "push --force origin master:gh-pages"))
       ;; or
-      (t (log:info "Everything is up to date.")))))
+      (t (log:info "Everything is up to date."))))
+  (values))
 
 
 (defun push-local-changes ()
@@ -197,7 +202,8 @@ behaviour could be overriden by keyword argument ``:raise t``."
           (t
            (if-there-are-changes
             (make-commit)
-            (git "push"))))))))
+            (git "push")))))))
+  (values))
 
 
 (defun main (&rest argv)
@@ -223,13 +229,14 @@ behaviour could be overriden by keyword argument ``:raise t``."
                                 :if-exists :overwrite)
         (declare (ignorable s)))
       
-      (let ((url (ngrok/slynk:start 4005)))
-        (when url
-          (log:info "Waiting for connection to ~A" url)
-          (log:info "do touch ~~/continue to let process continue" )
-          (loop
-            until (probe-file "~/continue")
-            do (sleep 5))))
+      (when (uiop:getenv "NGROK_AUTH_TOKEN")
+        (let ((url (ngrok/slynk:start 4005)))
+          (when url
+            (log:info "Waiting for connection to ~A" url)
+            (log:info "do touch ~~/continue to let process continue" )
+            (loop
+              until (probe-file "~/continue")
+              do (sleep 5)))))
       
       (push-gh-pages docs-dir)
       (push-local-changes))))
