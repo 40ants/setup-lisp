@@ -7,6 +7,9 @@ inputs:
   qlfile-template:
     description: "Djula template for qlfile. All environment variables are available in it's context"
     required: false
+  ngrok-auth-token:
+    description: "A token to debug processes."
+    required: false
 
 runs:
   using: composite
@@ -46,3 +49,4 @@ runs:
         echo ::endgroup::
       env:
         GITHUB_TOKEN: ${{ github.token }}
+        NGROK_AUTH_TOKEN: ${{ inputs.ngrok-auth-token }}
