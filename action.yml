@@ -56,7 +56,7 @@ runs:
         echo ::group::Create Qlot Environment
 
         if [[ -n "${QLFILE_TEMPLATE}" ]]; then
-            echo "${QLFILE_TEMPLATE}" | ${{ github.action_path }}/../scripts/templater.ros > qlfile
+            echo "${QLFILE_TEMPLATE}" | ${{ github.action_path }}/templater.ros > qlfile
             rm -f qlfile.lock
         fi
 
