@@ -17,10 +17,12 @@ runs:
         echo ::group::Install Documentation Builder
 
         echo 'github docs-builder 40ants/docs-builder' >> qlfile
+        echo 'github ngrok 40ants/ngrok' >> qlfile
         
         qlot update
 
         qlot exec ros install docs-builder
+        qlot exec ros install ngrok
         echo ::endgroup::
     - name: Build Docs
       id: build-docs

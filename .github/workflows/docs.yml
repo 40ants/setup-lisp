@@ -32,6 +32,7 @@ jobs:
       - uses: 40ants/cl-info/.github/actions/build-docs@custom-action
         with:
           asdf-system: cl-info
+          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
       # - name: Start SSH session
       #   uses: luchihoratiu/debug-via-ssh@main
       #   with:
