@@ -85,7 +85,7 @@ If you remove `with` part, then action will skip the ASDF system
 installation.
 
 The last step in this workflow runs tests for the specified ASDF
-system. It is documented [here](https://40ants/run-tests).
+system. It is documented [here](https://40ants.com/run-tests).
 ")
 
 
