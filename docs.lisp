@@ -18,7 +18,8 @@ and [Qlot](https://github.com/fukamachi/qlot) inside the Github CI.
 "
   (@features section)
   (@typical-usage section)
-  (@ql-file section))
+  (@ql-file section)
+  (@roadmap section))
 
 
 (defsection @features (:title "What this action does for you?")
@@ -141,4 +142,12 @@ You can refer any environment variable inside the `qlfile` templater.
 Also note, it is using [Djula](https://github.com/mmontone/djula)
 markup, similar to [Django](https://docs.djangoproject.com/en/3.1/topics/templates/)
 and [Jinja2](https://jinja.palletsprojects.com/).
+")
+
+
+(defsection @roadmap (:title "Roadmap")
+  "
+- Make action use caching to speedup dependencies installation.
+- Support [CLPM](https://gitlab.common-lisp.net/clpm/clpm).
+- Vendor all dependencies, to make action more reliable and secure.
 ")
