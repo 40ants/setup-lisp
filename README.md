@@ -88,7 +88,7 @@ If you remove `with` part, then action will skip the `ASDF` system
 installation.
 
 The last step in this workflow runs tests for the specified `ASDF`
-system. It is documented [here](https://40ants/run-tests).
+system. It is documented [here](https://40ants.com/run-tests).
 
 <a id='x-28DOCS-3A-40QL-FILE-20MGL-PAX-MINIMAL-3ASECTION-29'></a>
 
