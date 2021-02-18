@@ -73,7 +73,7 @@ jobs:
           asdf-system: cl-info
 ```
 
-The part, corresponding to an actionn call is:
+The part, corresponding to an action call is:
 
 ```yaml
 - uses: 40ants/setup-lisp@v1
@@ -83,6 +83,15 @@ The part, corresponding to an actionn call is:
 
 If you remove `with` part, then action will skip the ASDF system
 installation.
+
+Also, pay attention to the `env` section of the workflow. If you don't
+set up a `LISP` env variable, action will set default lisp implementation
+to `sbcl`:
+
+```yaml
+env:
+  LISP: ${{ matrix.lisp }}
+```
 
 The last step in this workflow runs tests for the specified ASDF
 system. It is documented [here](https://40ants.com/run-tests).
