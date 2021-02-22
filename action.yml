@@ -60,11 +60,16 @@ runs:
             rm -f qlfile.lock
         fi
 
-        echo 'Here is content of qlfile:'
-        echo '==============='
-        cat qlfile
-        echo '==============='
-        echo ''
+        if [[ -e qlfile ]]; then
+            echo 'Here is content of qlfile:'
+            echo '==============='
+            cat qlfile
+            echo '==============='
+            echo ''
+        else
+            echo 'There is no qlfile. Creating an empty one.'
+            touch qlfile
+        fi
         
         qlot install
         echo ::endgroup::
