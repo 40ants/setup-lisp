@@ -25,6 +25,10 @@ jobs:
         run: sudo mkdir /usr/local/etc/roswell && sudo chmod -R a+rwx /usr/local/etc/roswell
       - name: Who am I
         run: whoami
+      - name: Who am under SUDO
+        run: sudo echo `whoami`
+      - name: USSER under SUDO
+        run: sudo echo "${USER}"
       - name: Cache Roswell Setup
         id: cache
         uses: actions/cache@v2
