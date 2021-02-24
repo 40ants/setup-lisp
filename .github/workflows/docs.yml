@@ -44,6 +44,7 @@ jobs:
           tree ~/.roswell
           ls /usr/local/etc/roswell
           ls .qlot
+        if: steps.cache.outputs.cache-hit == 'true'
       - name: Restore Path
         run: |
           echo $HOME/.roswell/bin >> $GITHUB_PATH
