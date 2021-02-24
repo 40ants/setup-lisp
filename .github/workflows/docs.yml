@@ -7,6 +7,7 @@ on:
     branches:
       - 'main'
       - 'master'
+      - 'test-cache'
   schedule:
     - cron:  '0 10 * * 1'
 
@@ -19,7 +20,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - uses: 40ants/setup-lisp@v1
+      - name: Cache Roswell Setup
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-roswell
+        with:
+          path: ~/.roswell
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('qlfile.lock') }}
+      with:
+      - uses: 40ants/setup-lisp@test-cache
       - uses: 40ants/build-docs@v1
         with:
           asdf-system: docs
