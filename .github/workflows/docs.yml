@@ -52,6 +52,7 @@ jobs:
         run: |
           set -x
           which ros
+          which qlot
           ls /usr/local/bin
           tree /usr/local
           ls ~/.roswell
