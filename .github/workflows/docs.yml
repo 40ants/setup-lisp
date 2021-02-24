@@ -23,6 +23,8 @@ jobs:
       - name: Grant All Perms on /usr/local/etc/roswell
         # This makes cache restoration possible
         run: sudo mkdir /usr/local/etc/roswell && sudo chmod -R a+rwx /usr/local/etc/roswell
+      - name: Who am I
+        run: whoami
       - name: Cache Roswell Setup
         id: cache
         uses: actions/cache@v2
