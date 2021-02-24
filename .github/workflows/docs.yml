@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Grant All Perms on /usr/local/etc/roswell
         # This makes cache restoration possible
-        run: sudo mkdir -p /usr/local/etc/roswell && sudo chown "${USER}" /usr/local/etc/roswell
+        run: sudo chown -R "${USER}" /usr/local
       # - name: Get Current Month
       #   id: current-month
       #   run: |
