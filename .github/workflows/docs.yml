@@ -25,8 +25,11 @@ jobs:
         env:
           cache-name: cache-roswell
         with:
-          path: ~/.roswell
-          key: "${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('qlfile.lock') }}"
+          path: |
+            ~/.roswell
+            /usr/local/etc/roswell
+            .qlot
+          key: "${{ runner.os }}-build1-${{ env.cache-name }}-${{ hashFiles('qlfile.lock') }}"
       - uses: 40ants/setup-lisp@test-cache
       - uses: 40ants/build-docs@v1
         with:
