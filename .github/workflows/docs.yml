@@ -51,7 +51,7 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
       - uses: 40ants/setup-lisp@test-cache
         if: steps.cache.outputs.cache-hit != 'true'
-      - uses: 40ants/build-docs@v1
+      - uses: 40ants/build-docs@v2-alpha
         with:
           asdf-system: docs
           # ngrok-auth-token: ${{ secrets.NGROK_AUTH_TOKEN }}
