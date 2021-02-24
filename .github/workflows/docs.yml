@@ -40,9 +40,21 @@ jobs:
           ls ~/.roswell
           ls /usr/local/etc/roswell
           ls .qlot
-      #- uses: 40ants/setup-lisp@test-cache
-      #   if: steps.cache.outputs.cache-hit != 'true'
-      - uses: 40ants/build-docs@v1
-        with:
-          asdf-system: docs
-          # ngrok-auth-token: ${{ secrets.NGROK_AUTH_TOKEN }}
+      - name: Restore Path
+        run: |
+          echo $HOME/.roswell/bin >> $GITHUB_PATH
+          echo .qlot/bin >> $GITHUB_PATH
+        if: steps.cache.outputs.cache-hit == 'true'
+      - uses: 40ants/setup-lisp@test-cache
+#        if: steps.cache.outputs.cache-hit != 'true'
+      - name: Check dirs again
+        run: |
+          set -x
+          ls ~/.roswell
+          ls /usr/local/etc/roswell
+          ls .qlot
+        
+      # - uses: 40ants/build-docs@v1
+      #   with:
+      #     asdf-system: docs
+      #     # ngrok-auth-token: ${{ secrets.NGROK_AUTH_TOKEN }}
