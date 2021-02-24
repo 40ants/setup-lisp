@@ -29,16 +29,19 @@ jobs:
         env:
           cache-name: cache-roswell
         with:
-          # ~/.cache/common-lisp/
           path: |
+            /usr/local/bin/ros
+            ~/.cache/common-lisp/
             ~/.roswell
             /usr/local/etc/roswell
             .qlot
-          key: "${{ runner.os }}-build1-${{ env.cache-name }}-${{ hashFiles('qlfile.lock') }}"
+          key: "${{ runner.os }}-build2-${{ env.cache-name }}-${{ hashFiles('qlfile.lock') }}"
       - name: Check dirs
         run: |
           set -x
-          ls ~/.roswell
+          which ros
+          which qlot
+          tree ~/.roswell
           ls /usr/local/etc/roswell
           ls .qlot
       - name: Restore Path
@@ -53,9 +56,7 @@ jobs:
           set -x
           which ros
           which qlot
-          ls /usr/local/bin
-          tree /usr/local
-          ls ~/.roswell
+          tree ~/.roswell
           ls /usr/local/etc/roswell
           ls .qlot
 
