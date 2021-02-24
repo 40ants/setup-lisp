@@ -34,6 +34,12 @@ jobs:
             /usr/local/etc/roswell
             .qlot
           key: "${{ runner.os }}-build1-${{ env.cache-name }}-${{ hashFiles('qlfile.lock') }}"
+      - name: Check dirs
+        run: |
+          set -x
+          ls ~/.roswell
+          ls /usr/local/etc/roswell
+          ls .qlot
       #- uses: 40ants/setup-lisp@test-cache
       #   if: steps.cache.outputs.cache-hit != 'true'
       - uses: 40ants/build-docs@v1
