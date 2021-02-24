@@ -20,7 +20,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+      - name: Grant All Perms on /usr/local/etc/roswell
+        # This makes cache restoration possible
+        run: sudo mkdir /usr/local/etc/roswell && sudo chmod a+rwx /usr/local/etc/roswell
       - name: Cache Roswell Setup
+        id: cache
         uses: actions/cache@v2
         env:
           cache-name: cache-roswell
@@ -30,7 +34,8 @@ jobs:
             /usr/local/etc/roswell
             .qlot
           key: "${{ runner.os }}-build1-${{ env.cache-name }}-${{ hashFiles('qlfile.lock') }}"
-      - uses: 40ants/setup-lisp@test-cache
+      # - uses: 40ants/setup-lisp@test-cache
+      #   if: steps.cache.outputs.cache-hit != 'true'
       - uses: 40ants/build-docs@v1
         with:
           asdf-system: docs
