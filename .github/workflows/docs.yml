@@ -60,7 +60,7 @@ jobs:
           ls .qlot
         if: steps.cache.outputs.cache-hit == 'true'
       - uses: 40ants/setup-lisp@test-cache
-#        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != 'true'
       - name: Check dirs again
         run: |
           set -x
