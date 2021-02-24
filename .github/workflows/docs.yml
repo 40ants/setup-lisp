@@ -23,6 +23,11 @@ jobs:
       - name: Grant All Perms on /usr/local/etc/roswell
         # This makes cache restoration possible
         run: sudo mkdir -p /usr/local/etc/roswell && sudo chown "${USER}" /usr/local/etc/roswell
+      # - name: Get Current Month
+      #   id: current-month
+      #   run: |
+      #     echo "::set-output name=value::$(date -u "+%Y-%m")"
+      #   # use it as ${{ steps.current-month.outputs.value }}
       - name: Cache Roswell Setup
         id: cache
         uses: actions/cache@v2
