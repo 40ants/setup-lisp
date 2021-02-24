@@ -27,11 +27,10 @@ jobs:
           sudo chown "${USER}" /usr/local/etc/roswell
           # Here the ros binary will be restored:
           sudo chown "${USER}" /usr/local/bin
-      # - name: Get Current Month
-      #   id: current-month
-      #   run: |
-      #     echo "::set-output name=value::$(date -u "+%Y-%m")"
-      #   # use it as ${{ steps.current-month.outputs.value }}
+      - name: Get Current Month
+        id: current-month
+        run: |
+          echo "::set-output name=value::$(date -u "+%Y-%m")"
       - name: Cache Roswell Setup
         id: cache
         uses: actions/cache@v2
@@ -44,7 +43,7 @@ jobs:
             ~/.roswell
             /usr/local/etc/roswell
             .qlot
-          key: "${{ runner.os }}-build2-${{ env.cache-name }}-${{ hashFiles('qlfile.lock') }}"
+          key: "${{ steps.current-month.outputs.value }}-${{ env.cache-name }}-${{ runner.os }}-${{ hashFiles('qlfile.lock') }}"
       - name: Restore Path To Cached Files
         run: |
           echo $HOME/.roswell/bin >> $GITHUB_PATH
