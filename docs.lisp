@@ -169,13 +169,13 @@ To make caching work, add such sections into your workflow file:
 - name: Grant All Perms to Make Cache Restoring Possible
   run: |
     sudo mkdir -p /usr/local/etc/roswell
-    sudo chown "${USER}" /usr/local/etc/roswell
+    sudo chown \"${USER}\" /usr/local/etc/roswell
     # Here the ros binary will be restored:
-    sudo chown "${USER}" /usr/local/bin
+    sudo chown \"${USER}\" /usr/local/bin
 - name: Get Current Month
   id: current-month
   run: |
-    echo "::set-output name=value::$(date -u "+%Y-%m")"
+    echo \"::set-output name=value::$(date -u \"+%Y-%m\")\"
 - name: Cache Roswell Setup
   id: cache
   uses: actions/cache@v2
@@ -188,7 +188,7 @@ To make caching work, add such sections into your workflow file:
       ~/.roswell
       /usr/local/etc/roswell
       .qlot
-    key: "${{ steps.current-month.outputs.value }}-${{ env.cache-name }}-${{ runner.os }}-${{ hashFiles('qlfile.lock') }}"
+    key: \"${{ steps.current-month.outputs.value }}-${{ env.cache-name }}-${{ runner.os }}-${{ hashFiles('qlfile.lock') }}\"
 - name: Restore Path To Cached Files
   run: |
     echo $HOME/.roswell/bin >> $GITHUB_PATH
@@ -205,7 +205,7 @@ There are two important lines here.
 - The `key` value:
 
   ```
-  key: "${{ steps.current-month.outputs.value }}-${{ env.cache-name }}-${{ runner.os }}-${{ hashFiles('qlfile.lock') }}"
+  key: \"${{ steps.current-month.outputs.value }}-${{ env.cache-name }}-${{ runner.os }}-${{ hashFiles('qlfile.lock') }}\"
   ```
 
   It controls when your cache will be matched. If you are using `matrix`, put all it's components
@@ -214,6 +214,7 @@ There are two important lines here.
   I also added a current month there, to make sure cache will be renewed at least monthly.
   This way a new Roswell, Qlot and ASDF will be used in a build.
 ")
+
 
 (defsection @roadmap (:title "Roadmap")
   "
