@@ -199,7 +199,7 @@ To make caching work, add such sections into your workflow file:
     echo $HOME/.roswell/bin >> $GITHUB_PATH
     echo .qlot/bin >> $GITHUB_PATH
   if: steps.cache.outputs.cache-hit == 'true'
-- uses: 40ants/setup-lisp@test-cache
+- uses: 40ants/setup-lisp@v1
   if: steps.cache.outputs.cache-hit != 'true'
 ```
 
