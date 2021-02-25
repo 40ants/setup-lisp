@@ -227,5 +227,5 @@ There are two important lines here.
   "
 If you want to contribute to this system, join development at GitHub:
 
-https://github.com/40ants/setup-lisp
+<https://github.com/40ants/setup-lisp>
 ")
