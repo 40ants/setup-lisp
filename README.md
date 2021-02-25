@@ -7,7 +7,8 @@
 - [1 What this action does for you?][f73c]
 - [2 A typical usage][ff56]
 - [3 Overriding qlfile][d1d0]
-- [4 Roadmap][278a]
+- [4 Caching][8d36]
+- [5 Roadmap][278a]
 
 ###### \[in package DOCS with nicknames DOCS/DOCS\]
 This is a Github Action to setup Common Lisp, Roswell and Qlot.
@@ -157,11 +158,71 @@ Also note, it is using [Djula](https://github.com/mmontone/djula)
 markup, similar to [Django](https://docs.djangoproject.com/en/3.1/topics/templates/)
 and [Jinja2](https://jinja.palletsprojects.com/).
 
+<a id='x-28DOCS-3A-40CACHING-20MGL-PAX-MINIMAL-3ASECTION-29'></a>
+
+## 4 Caching
+
+Usually installing Roswell, a lisp implementation and dependencies
+take from 2 to 10 minutes. Multiply this to the number of
+matrix combinations and you'll get signifficant time.
+
+To speed up build, you can use caching using a standad GitHub action `actions/cache@v2`.
+
+To make caching work, add such sections into your workflow file:
+
+```yaml
+- name: Grant All Perms to Make Cache Restoring Possible
+  run: |
+    sudo mkdir -p /usr/local/etc/roswell
+    sudo chown "${USER}" /usr/local/etc/roswell
+    # Here the ros binary will be restored:
+    sudo chown "${USER}" /usr/local/bin
+- name: Get Current Month
+  id: current-month
+  run: |
+    echo "::set-output name=value::$(date -u "+%Y-%m")"
+- name: Cache Roswell Setup
+  id: cache
+  uses: actions/cache@v2
+  env:
+    cache-name: cache-roswell
+  with:
+    path: |
+      /usr/local/bin/ros
+      ~/.cache/common-lisp/
+      ~/.roswell
+      /usr/local/etc/roswell
+      .qlot
+    key: "${{ steps.current-month.outputs.value }}-${{ env.cache-name }}-${{ runner.os }}-${{ hashFiles('qlfile.lock') }}"
+- name: Restore Path To Cached Files
+  run: |
+    echo $HOME/.roswell/bin >> $GITHUB_PATH
+    echo .qlot/bin >> $GITHUB_PATH
+  if: steps.cache.outputs.cache-hit == 'true'
+- uses: 40ants/setup-lisp@test-cache
+  if: steps.cache.outputs.cache-hit != 'true'
+```
+
+There are two important lines here.
+
+- The last line `if: steps.cache.outputs.cache-hit != 'true'` skips
+  running lisp installation, it it was take from the cache.
+
+- The `key` value:
+
+`
+  key: "${{ steps.current-month.outputs.value }}-${{ env.cache-name }}-${{ runner.os }}-${{ hashFiles('qlfile.lock') }}"
+`
+
+It controls when your cache will be matched. If you are using `matrix`, put all it's components
+  into the key.
+
+  I also added a current month there, to make sure cache will be renewed at least monthly.
+  This way a new Roswell, Qlot and `ASDF` will be used in a build.
+
 <a id='x-28DOCS-3A-40ROADMAP-20MGL-PAX-MINIMAL-3ASECTION-29'></a>
 
-## 4 Roadmap
-
-- Make action use caching to speedup dependencies installation.
+## 5 Roadmap
 
 - Support [CLPM](https://gitlab.common-lisp.net/clpm/clpm).
 
@@ -169,6 +230,7 @@ and [Jinja2](https://jinja.palletsprojects.com/).
 
 
   [278a]: #x-28DOCS-3A-40ROADMAP-20MGL-PAX-MINIMAL-3ASECTION-29 "Roadmap"
+  [8d36]: #x-28DOCS-3A-40CACHING-20MGL-PAX-MINIMAL-3ASECTION-29 "Caching"
   [d1d0]: #x-28DOCS-3A-40QL-FILE-20MGL-PAX-MINIMAL-3ASECTION-29 "Overriding qlfile"
   [f73c]: #x-28DOCS-3A-40FEATURES-20MGL-PAX-MINIMAL-3ASECTION-29 "What this action does for you?"
   [ff56]: #x-28DOCS-3A-40TYPICAL-USAGE-20MGL-PAX-MINIMAL-3ASECTION-29 "A typical usage"
