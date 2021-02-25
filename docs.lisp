@@ -20,7 +20,8 @@ and [Qlot](https://github.com/fukamachi/qlot) inside the Github CI.
   (@typical-usage section)
   (@ql-file section)
   (@caching section)
-  (@roadmap section))
+  (@roadmap section)
+  (@contribution section))
 
 
 (defsection @features (:title "What this action does for you?")
@@ -220,4 +221,11 @@ There are two important lines here.
   "
 - Support [CLPM](https://gitlab.common-lisp.net/clpm/clpm).
 - Vendor all dependencies, to make action more reliable and secure.
+")
+
+(defsection @contribution (:title "Contribution")
+  "
+If you want to contribute to this system, join development at GitHub:
+
+https://github.com/40ants/setup-lisp
 ")
