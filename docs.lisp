@@ -19,6 +19,7 @@ and [Qlot](https://github.com/fukamachi/qlot) inside the Github CI.
   (@features section)
   (@typical-usage section)
   (@ql-file section)
+  (@caching section)
   (@roadmap section))
 
 
@@ -154,9 +155,68 @@ and [Jinja2](https://jinja.palletsprojects.com/).
 ")
 
 
+(defsection @caching (:title "Caching")
+  "
+Usually installing Roswell, a lisp implementation and dependencies
+take from 2 to 10 minutes. Multiply this to the number of
+matrix combinations and you'll get signifficant time.
+
+To speed up build, you can use caching using a standad GitHub action `actions/cache@v2`.
+
+To make caching work, add such sections into your workflow file:
+
+```yaml
+- name: Grant All Perms to Make Cache Restoring Possible
+  run: |
+    sudo mkdir -p /usr/local/etc/roswell
+    sudo chown "${USER}" /usr/local/etc/roswell
+    # Here the ros binary will be restored:
+    sudo chown "${USER}" /usr/local/bin
+- name: Get Current Month
+  id: current-month
+  run: |
+    echo "::set-output name=value::$(date -u "+%Y-%m")"
+- name: Cache Roswell Setup
+  id: cache
+  uses: actions/cache@v2
+  env:
+    cache-name: cache-roswell
+  with:
+    path: |
+      /usr/local/bin/ros
+      ~/.cache/common-lisp/
+      ~/.roswell
+      /usr/local/etc/roswell
+      .qlot
+    key: "${{ steps.current-month.outputs.value }}-${{ env.cache-name }}-${{ runner.os }}-${{ hashFiles('qlfile.lock') }}"
+- name: Restore Path To Cached Files
+  run: |
+    echo $HOME/.roswell/bin >> $GITHUB_PATH
+    echo .qlot/bin >> $GITHUB_PATH
+  if: steps.cache.outputs.cache-hit == 'true'
+- uses: 40ants/setup-lisp@test-cache
+  if: steps.cache.outputs.cache-hit != 'true'
+```
+
+There are two important lines here.
+
+- The last line `if: steps.cache.outputs.cache-hit != 'true'` skips
+  running lisp installation, it it was take from the cache.
+- The `key` value:
+
+  ```
+  key: "${{ steps.current-month.outputs.value }}-${{ env.cache-name }}-${{ runner.os }}-${{ hashFiles('qlfile.lock') }}"
+  ```
+
+  It controls when your cache will be matched. If you are using `matrix`, put all it's components
+  into the key.
+
+  I also added a current month there, to make sure cache will be renewed at least monthly.
+  This way a new Roswell, Qlot and ASDF will be used in a build.
+")
+
 (defsection @roadmap (:title "Roadmap")
   "
-- Make action use caching to speedup dependencies installation.
 - Support [CLPM](https://gitlab.common-lisp.net/clpm/clpm).
 - Vendor all dependencies, to make action more reliable and secure.
 ")
