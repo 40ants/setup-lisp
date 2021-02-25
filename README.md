@@ -9,6 +9,7 @@
 - [3 Overriding qlfile][d1d0]
 - [4 Caching][8d36]
 - [5 Roadmap][278a]
+- [6 Contribution][c105]
 
 ###### \[in package DOCS with nicknames DOCS/DOCS\]
 This is a Github Action to setup Common Lisp, Roswell and Qlot.
@@ -229,8 +230,17 @@ It controls when your cache will be matched. If you are using `matrix`, put all 
 - Vendor all dependencies, to make action more reliable and secure.
 
 
+<a id='x-28DOCS-3A-40CONTRIBUTION-20MGL-PAX-MINIMAL-3ASECTION-29'></a>
+
+## 6 Contribution
+
+If you want to contribute to this system, join development at GitHub:
+
+https://github.com/40ants/setup-lisp
+
   [278a]: #x-28DOCS-3A-40ROADMAP-20MGL-PAX-MINIMAL-3ASECTION-29 "Roadmap"
   [8d36]: #x-28DOCS-3A-40CACHING-20MGL-PAX-MINIMAL-3ASECTION-29 "Caching"
+  [c105]: #x-28DOCS-3A-40CONTRIBUTION-20MGL-PAX-MINIMAL-3ASECTION-29 "Contribution"
   [d1d0]: #x-28DOCS-3A-40QL-FILE-20MGL-PAX-MINIMAL-3ASECTION-29 "Overriding qlfile"
   [f73c]: #x-28DOCS-3A-40FEATURES-20MGL-PAX-MINIMAL-3ASECTION-29 "What this action does for you?"
   [ff56]: #x-28DOCS-3A-40TYPICAL-USAGE-20MGL-PAX-MINIMAL-3ASECTION-29 "A typical usage"
