@@ -7,7 +7,6 @@ on:
     branches:
       - 'main'
       - 'master'
-      - 'test-cache'
   schedule:
     - cron:  '0 10 * * 1'
 
@@ -20,8 +19,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - name: Grant All Perms on /usr/local/etc/roswell
-        # This makes cache restoration possible
+      - name: Grant All Perms to Make Cache Restoring Possible
         run: |
           sudo mkdir -p /usr/local/etc/roswell
           sudo chown "${USER}" /usr/local/etc/roswell
