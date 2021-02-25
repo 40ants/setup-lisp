@@ -236,7 +236,7 @@ It controls when your cache will be matched. If you are using `matrix`, put all 
 
 If you want to contribute to this system, join development at GitHub:
 
-https://github.com/40ants/setup-lisp
+<https://github.com/40ants/setup-lisp>
 
   [278a]: #x-28DOCS-3A-40ROADMAP-20MGL-PAX-MINIMAL-3ASECTION-29 "Roadmap"
   [8d36]: #x-28DOCS-3A-40CACHING-20MGL-PAX-MINIMAL-3ASECTION-29 "Caching"
