@@ -2,6 +2,11 @@
  ChangeLog
 ===========
 
+1.0.2 (2021-04-04)
+==================
+
+Fixed installation of ``libcurl4-openssl-dev`` on Ubuntu Focal.
+
 1.0.1 (2021-02-22)
 ==================
 

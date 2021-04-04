@@ -26,6 +26,7 @@ runs:
       run: |
         echo ::group::Install Roswell
         if [[ "$RUNNER_OS" == "Linux" ]]; then
+            sudo apt-get update
             sudo apt-get -y install git build-essential automake libcurl4-openssl-dev
         fi
         if [[ "$RUNNER_OS" == "macOS" ]]; then
