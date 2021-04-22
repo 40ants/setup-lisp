@@ -1,9 +1,9 @@
-(defpackage #:docs
+(defpackage #:project-docs
   (:use #:cl)
-  (:nicknames #:docs/docs)
+  (:nicknames #:project-docs/docs)
   (:import-from #:40ants-doc
                 #:defsection))
-(in-package docs)
+(in-package project-docs)
 
 
 (defsection @index (:title "GitHub Action to Setup Common Lisp for CI"
