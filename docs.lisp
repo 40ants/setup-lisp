@@ -1,13 +1,14 @@
 (defpackage #:docs
   (:use #:cl)
   (:nicknames #:docs/docs)
-  (:import-from #:mgl-pax-minimal
-                #:defsection
-                #:section))
+  (:import-from #:40ants-doc
+                #:defsection))
 (in-package docs)
 
 
-(defsection @index (:title "GitHub Action to Setup Common Lisp for CI")
+(defsection @index (:title "GitHub Action to Setup Common Lisp for CI"
+                    :ignore-words ("OSX"
+                                   "LISP"))
   "
 This is a Github Action to setup Common Lisp, Roswell and Qlot.
 
@@ -137,8 +138,6 @@ steps:
         {% ifequal quicklisp_dist \"ultralisp\" %}
         dist ultralisp http://dist.ultralisp.org
         {% endifequal %}
-
-        github mgl-pax svetlyak40wt/mgl-pax :branch mgl-pax-minimal
 ```
 
 Here we see a few important things.

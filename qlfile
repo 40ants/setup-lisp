@@ -1,5 +1,3 @@
 dist ultralisp http://dist.ultralisp.org
 
-# Unless this patch is not merged:
-github mgl-pax svetlyak40wt/mgl-pax :branch mgl-pax-minimal
 github sly svetlyak40wt/sly :branch patches
