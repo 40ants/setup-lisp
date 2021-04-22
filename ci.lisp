@@ -9,4 +9,5 @@
 (defworkflow docs
   :on-push-to "master"
   :by-cron "0 10 * * 1"
-  :jobs ((40ants-ci/jobs/docs:build-docs)))
+  :jobs ((40ants-ci/jobs/docs:build-docs
+          :asdf-system "docs/docs")))
