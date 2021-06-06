@@ -4,6 +4,9 @@ inputs:
   asdf-system:
     description: 'ASDF system to install'
     required: false
+  asdf-version:
+    description: 'ASDF version to install. If not specified, then latest version will be used'
+    required: false
   qlfile-template:
     description: "Djula template for qlfile. All environment variables are available in it's context"
     required: false
@@ -40,8 +43,13 @@ runs:
     - name: Upgrade ASDF to the Latest Version
       shell: bash
       run: |
-        echo ::group::Upgrade ASDF
-        ros install asdf
+        if [[ -n "${{ inputs.asdf-version }}" ]]; then
+            echo ::group::Installing ASDF ${{ inputs.asdf-version }}
+            ros install asdf/${{ inputs.asdf-version }}
+        else
+            echo ::group::Installing latest ASDF
+            ros install asdf
+        fi
         echo ::endgroup::
     - name: Install Qlot
       shell: bash

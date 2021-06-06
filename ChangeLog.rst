@@ -2,6 +2,12 @@
  ChangeLog
 ===========
 
+1.1.0 (2021-06-06)
+==================
+
+Added a new input variable ``asdf-version``. By default, the latest
+ASDF will be used.
+
 1.0.2 (2021-04-04)
 ==================
 
