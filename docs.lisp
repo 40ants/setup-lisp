@@ -19,6 +19,7 @@ and [Qlot](https://github.com/fukamachi/qlot) inside the Github CI.
 "
   (@features section)
   (@typical-usage section)
+  (@asdf-version section)
   (@ql-file section)
   (@caching section)
   (@roadmap section)
@@ -98,6 +99,19 @@ env:
 
 The last step in this workflow runs tests for the specified ASDF
 system. It is documented [here](https://40ants.com/run-tests).
+")
+
+
+(defsection @asdf-version (:title "Overriding qlfile")
+  "
+By default, action will install the latest ASDF version. But sometimes you might
+want to fix an ASDF version. In such case, use `asdf-version` argument:
+
+```
+- uses: 40ants/setup-lisp@v1
+  with:
+    asdf-version: 3.3.4.18
+```
 ")
 
 
