@@ -6,10 +6,11 @@
 
 - [1 What this action does for you?][57c1]
 - [2 A typical usage][6952]
-- [3 Overriding qlfile][cd23]
-- [4 Caching][33c1]
-- [5 Roadmap][bc0f]
-- [6 Contribution][b507]
+- [3 Overriding qlfile][571b]
+- [4 Overriding qlfile][cd23]
+- [5 Caching][33c1]
+- [6 Roadmap][bc0f]
+- [7 Contribution][b507]
 
 ###### \[in package PROJECT-DOCS with nicknames PROJECT-DOCS/DOCS\]
 This is a Github Action to setup Common Lisp, Roswell and Qlot.
@@ -101,9 +102,23 @@ env:
 The last step in this workflow runs tests for the specified `ASDF`
 system. It is documented [here](https://40ants.com/run-tests).
 
-<a id='x-28PROJECT-DOCS-3A-40QL-FILE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29'></a>
+<a id='x-28PROJECT-DOCS-3A-40ASDF-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29'></a>
 
 ## 3 Overriding qlfile
+
+By default, action will install the latest `ASDF` version. But sometimes you might
+want to fix an `ASDF` version. In such case, use `asdf-version` argument:
+
+```
+- uses: 40ants/setup-lisp@v1
+  with:
+    asdf-version: 3.3.4.18
+```
+
+
+<a id='x-28PROJECT-DOCS-3A-40QL-FILE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29'></a>
+
+## 4 Overriding qlfile
 
 Sometimes you might want to generate content of qlfile
 depending on matrix parameters. For example with matrix like this one:
@@ -159,7 +174,7 @@ and [Jinja2](https://jinja.palletsprojects.com/).
 
 <a id='x-28PROJECT-DOCS-3A-40CACHING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29'></a>
 
-## 4 Caching
+## 5 Caching
 
 Usually installing Roswell, a lisp implementation and dependencies
 take from 2 to 10 minutes. Multiply this to the number of
@@ -221,7 +236,7 @@ It controls when your cache will be matched. If you are using `matrix`, put all 
 
 <a id='x-28PROJECT-DOCS-3A-40ROADMAP-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29'></a>
 
-## 5 Roadmap
+## 6 Roadmap
 
 - Support [CLPM](https://gitlab.common-lisp.net/clpm/clpm).
 
@@ -230,13 +245,14 @@ It controls when your cache will be matched. If you are using `matrix`, put all 
 
 <a id='x-28PROJECT-DOCS-3A-40CONTRIBUTION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29'></a>
 
-## 6 Contribution
+## 7 Contribution
 
 If you want to contribute to this system, join development at GitHub:
 
 <https://github.com/40ants/setup-lisp>
 
   [33c1]: #x-28PROJECT-DOCS-3A-40CACHING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29 "Caching"
+  [571b]: #x-28PROJECT-DOCS-3A-40ASDF-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29 "Overriding qlfile"
   [57c1]: #x-28PROJECT-DOCS-3A-40FEATURES-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29 "What this action does for you?"
   [6952]: #x-28PROJECT-DOCS-3A-40TYPICAL-USAGE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29 "A typical usage"
   [b507]: #x-28PROJECT-DOCS-3A-40CONTRIBUTION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29 "Contribution"
