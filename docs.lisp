@@ -2,13 +2,35 @@
   (:use #:cl)
   (:nicknames #:project-docs/docs)
   (:import-from #:40ants-doc
-                #:defsection))
+                #:defsection
+                #:defsection-copy)
+  (:import-from #:project-docs/changelog
+                #:@changelog)
+  (:import-from #:docs-config
+                #:docs-config)
+  (:export #:@index
+           #:@readme
+           #:@changelog))
 (in-package project-docs)
+
+
+(defmethod docs-config ((system (eql (asdf:find-system "project-docs"))))
+  ;; 40ANTS-DOC-THEME-40ANTS system will bring
+  ;; as dependency a full 40ANTS-DOC but we don't want
+  ;; unnecessary dependencies here:
+  (ql:quickload :40ants-doc-theme-40ants)
+  (list :theme
+        (find-symbol "40ANTS-THEME"
+                     (find-package "40ANTS-DOC-THEME-40ANTS"))))
 
 
 (defsection @index (:title "GitHub Action to Setup Common Lisp for CI"
                     :ignore-words ("OSX"
-                                   "LISP"))
+                                   "LISP"
+                                   "ASDF"
+                                   "CI"
+                                   "CLPM"
+                                   "PATH"))
   "
 This is a Github Action to setup Common Lisp, Roswell and Qlot.
 
@@ -24,6 +46,9 @@ and [Qlot](https://github.com/fukamachi/qlot) inside the Github CI.
   (@caching section)
   (@roadmap section)
   (@contribution section))
+
+
+(defsection-copy @readme @index)
 
 
 (defsection @features (:title "What this action does for you?")

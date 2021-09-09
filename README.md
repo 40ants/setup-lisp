@@ -1,47 +1,36 @@
-<a id='x-28PROJECT-DOCS-3A-40INDEX-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29'></a>
+<a id="x-28PROJECT-DOCS-3A-40README-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 # GitHub Action to Setup Common Lisp for CI
 
-## Table of Contents
-
-- [1 What this action does for you?][57c1]
-- [2 A typical usage][6952]
-- [3 Overriding qlfile][cd23]
-- [4 Caching][33c1]
-- [5 Roadmap][bc0f]
-- [6 Contribution][b507]
-
-###### \[in package PROJECT-DOCS with nicknames PROJECT-DOCS/DOCS\]
 This is a Github Action to setup Common Lisp, Roswell and Qlot.
 
 It is useful to call it before running tests or building docs
 for your Common Lisp libraries. Action encapsulates all steps
-necessary to make available [Roswell](https://github.com/roswell/roswell)
-and [Qlot](https://github.com/fukamachi/qlot) inside the Github CI.
+necessary to make available [Roswell][795a]
+and [Qlot][e3ea] inside the Github `CI`.
 
-<a id='x-28PROJECT-DOCS-3A-40FEATURES-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29'></a>
+<a id="x-28PROJECT-DOCS-3A-3A-40FEATURES-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
-## 1 What this action does for you?
+## What this action does for you?
 
-- It installs Roswell and all it's dependencies, doing right thing depending on
-  the operating system. It should work on Ubuntu, OSX and maybe Windows.
+* It installs Roswell and all it's dependencies, doing right thing depending on
+  the operating system. It should work on Ubuntu, `OSX` and maybe Windows.
 
-- Upgrade `ASDF` to the latest version.
+* Upgrade `ASDF` to the latest version.
 
-- Installs Qlot.
+* Installs Qlot.
 
-- Adds to `PATH` these directories: `~/.roswell/bin` and `.qlot/bin`
+* Adds to `PATH` these directories: `~/.roswell/bin` and `.qlot/bin`
 
-- Creates `.qlot` by running `qlot install`. How to override content of the
+* Creates `.qlot` by running `qlot install`. How to override content of the
   `qlfile`, see "Overriding qlfile" section.
 
-- And finally, it can install a specified `ASDF` system and all it's dependencies.
+* And finally, it can install a specified `ASDF` system and all it's dependencies.
   But this step is optional.
 
+<a id="x-28PROJECT-DOCS-3A-3A-40TYPICAL-USAGE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
-<a id='x-28PROJECT-DOCS-3A-40TYPICAL-USAGE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29'></a>
-
-## 2 A typical usage
+## A typical usage
 
 Here is how a minimal GitHub Workflow might look like:
 
@@ -77,7 +66,6 @@ jobs:
         with:
           asdf-system: cl-info
 ```
-
 The part, corresponding to an action call is:
 
 ```yaml
@@ -85,7 +73,6 @@ The part, corresponding to an action call is:
   with:
     asdf-system: cl-info
 ```
-
 If you remove `with` part, then action will skip the `ASDF` system
 installation.
 
@@ -97,13 +84,24 @@ to `sbcl`:
 env:
   LISP: ${{ matrix.lisp }}
 ```
-
 The last step in this workflow runs tests for the specified `ASDF`
-system. It is documented [here](https://40ants.com/run-tests).
+system. It is documented [here][8469].
 
-<a id='x-28PROJECT-DOCS-3A-40QL-FILE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29'></a>
+<a id="x-28PROJECT-DOCS-3A-3A-40ASDF-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
-## 3 Overriding qlfile
+## Overriding qlfile
+
+By default, action will install the latest `ASDF` version. But sometimes you might
+want to fix an `ASDF` version. In such case, use `asdf-version` argument:
+
+```
+- uses: 40ants/setup-lisp@v1
+  with:
+    asdf-version: 3.3.4.18
+```
+<a id="x-28PROJECT-DOCS-3A-3A-40QL-FILE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## Overriding qlfile
 
 Sometimes you might want to generate content of qlfile
 depending on matrix parameters. For example with matrix like this one:
@@ -121,8 +119,7 @@ matrix:
     - ccl-bin
     - ecl
 ```
-
-you might want to add an [ultralisp](https://ultralisp.org) source
+you might want to add an [ultralisp][2a0d] source
 to the qlfile. Here is how this can be archived:
 
 ```yaml
@@ -141,7 +138,6 @@ steps:
         dist ultralisp http://dist.ultralisp.org
         {% endifequal %}
 ```
-
 Here we see a few important things.
 
 1. We put into the env var the type of the quicklisp distribution we want to
@@ -153,13 +149,13 @@ Here we see a few important things.
    into `qlfile` when `quicklisp_dist == "ultralisp"`.
 
 You can refer any environment variable inside the `qlfile` templater.
-Also note, it is using [Djula](https://github.com/mmontone/djula)
-markup, similar to [Django](https://docs.djangoproject.com/en/3.1/topics/templates/)
-and [Jinja2](https://jinja.palletsprojects.com/).
+Also note, it is using [Djula][3dbd]
+markup, similar to [Django][04b3]
+and [Jinja2][dd23].
 
-<a id='x-28PROJECT-DOCS-3A-40CACHING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29'></a>
+<a id="x-28PROJECT-DOCS-3A-3A-40CACHING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
-## 4 Caching
+## Caching
 
 Usually installing Roswell, a lisp implementation and dependencies
 take from 2 to 10 minutes. Multiply this to the number of
@@ -201,13 +197,12 @@ To make caching work, add such sections into your workflow file:
 - uses: 40ants/setup-lisp@v1
   if: steps.cache.outputs.cache-hit != 'true'
 ```
-
 There are two important lines here.
 
-- The last line `if: steps.cache.outputs.cache-hit != 'true'` skips
+* The last line `if: steps.cache.outputs.cache-hit != 'true'` skips
   running lisp installation, it it was take from the cache.
 
-- The `key` value:
+* The `key` value:
 
 `
   key: "${{ steps.current-month.outputs.value }}-${{ env.cache-name }}-${{ runner.os }}-${{ hashFiles('qlfile.lock') }}"
@@ -216,32 +211,35 @@ There are two important lines here.
 It controls when your cache will be matched. If you are using `matrix`, put all it's components
   into the key.
 
-  I also added a current month there, to make sure cache will be renewed at least monthly.
+I also added a current month there, to make sure cache will be renewed at least monthly.
   This way a new Roswell, Qlot and `ASDF` will be used in a build.
 
-<a id='x-28PROJECT-DOCS-3A-40ROADMAP-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29'></a>
+<a id="x-28PROJECT-DOCS-3A-3A-40ROADMAP-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
-## 5 Roadmap
+## Roadmap
 
-- Support [CLPM](https://gitlab.common-lisp.net/clpm/clpm).
+* Support [`CLPM`][2c45].
 
-- Vendor all dependencies, to make action more reliable and secure.
+* Vendor all dependencies, to make action more reliable and secure.
 
+<a id="x-28PROJECT-DOCS-3A-3A-40CONTRIBUTION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
-<a id='x-28PROJECT-DOCS-3A-40CONTRIBUTION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29'></a>
-
-## 6 Contribution
+## Contribution
 
 If you want to contribute to this system, join development at GitHub:
 
-<https://github.com/40ants/setup-lisp>
+[https://github.com/40ants/setup-lisp][cbff]
 
-  [33c1]: #x-28PROJECT-DOCS-3A-40CACHING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29 "Caching"
-  [57c1]: #x-28PROJECT-DOCS-3A-40FEATURES-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29 "What this action does for you?"
-  [6952]: #x-28PROJECT-DOCS-3A-40TYPICAL-USAGE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29 "A typical usage"
-  [b507]: #x-28PROJECT-DOCS-3A-40CONTRIBUTION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29 "Contribution"
-  [bc0f]: #x-28PROJECT-DOCS-3A-40ROADMAP-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29 "Roadmap"
-  [cd23]: #x-28PROJECT-DOCS-3A-40QL-FILE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29 "Overriding qlfile"
+
+[8469]: https://40ants.com/run-tests
+[04b3]: https://docs.djangoproject.com/en/3.1/topics/templates/
+[cbff]: https://github.com/40ants/setup-lisp
+[e3ea]: https://github.com/fukamachi/qlot
+[3dbd]: https://github.com/mmontone/djula
+[795a]: https://github.com/roswell/roswell
+[2c45]: https://gitlab.common-lisp.net/clpm/clpm
+[dd23]: https://jinja.palletsprojects.com/
+[2a0d]: https://ultralisp.org
 
 * * *
-###### \[generated by [40ANTS-DOC](https://40ants.com/doc)\]
+###### [generated by [40ANTS-DOC](https://40ants.com/doc/)]
