@@ -6,6 +6,9 @@
 
 
 (defchangelog (:ignore-words ("ASDF"))
+  (1.1.1 2021-09-12
+         "Version of qlot was fixed on 0.11.1, because later versions are broken and unable to install
+          systems from the GitHub. See issue [#118](https://github.com/fukamachi/qlot/issues/118).")
   (1.1.0 2021-06-06
          "Added a new input variable `asdf-version`. By default, the latest
           ASDF will be used.")

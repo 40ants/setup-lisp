@@ -53,9 +53,12 @@ runs:
         echo ::endgroup::
     - name: Install Qlot
       shell: bash
+      # Version 0.11.1 is fixed while issue
+      # https://github.com/fukamachi/qlot/issues/118
+      # will not be resolved.
       run: |
         echo ::group::Install Qlot
-        ros install qlot
+        ros install fukamachi/qlot/0.11.1
         echo .qlot/bin >> $GITHUB_PATH
         echo ::endgroup::
 
