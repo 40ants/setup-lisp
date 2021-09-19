@@ -6,6 +6,8 @@
 
 
 (defchangelog (:ignore-words ("ASDF"))
+  (1.1.2 2021-09-19
+          "Move from Qlot 0.11.1 to 0.11.5.")
   (1.1.1 2021-09-12
          "Version of qlot was fixed on 0.11.1, because later versions are broken and unable to install
           systems from the GitHub. See issue [#118](https://github.com/fukamachi/qlot/issues/118).")
