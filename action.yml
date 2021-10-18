@@ -1,6 +1,10 @@
 name: 'Setup Common Lisp'
 
 inputs:
+  roswell-version:
+    description: 'Roswell version to install. If not specified, then latest version will be used'
+    required: false
+    default: 'master'
   asdf-system:
     description: 'ASDF system to install'
     required: false
@@ -36,7 +40,7 @@ runs:
             brew install automake autoconf curl
         fi
         
-        curl -L https://raw.githubusercontent.com/svetlyak40wt/roswell/patches/scripts/install-for-ci.sh | sh
+        curl -L https://raw.githubusercontent.com/roswell/roswell/${{ inputs.roswell-version }}/scripts/install-for-ci.sh | sh
         
         echo $HOME/.roswell/bin >> $GITHUB_PATH
         echo ::endgroup::
