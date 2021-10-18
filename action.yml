@@ -18,6 +18,75 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Set up Environment
+      shell: bash
+      run: |
+        echo ::group::Set up Environment
+        if [[ "$RUNNER_OS" == "Windows" ]]; then
+            # ROSWELL_INSTALL_DIR defaults to /usr/local/bin; however,
+            # /usr/local/bin is not part of PATH on Windows and because of that
+            # Roswell's install script will fail to find the just unzip'd `ros`
+            # binary and resort to try to build it from sources -- and of
+            # course fail while doing so.  So we add /usr/local/bin to PATH:
+            #
+            #     > echo /usr/local/bin >> $GITHUB_PATH
+            #
+            # However, do the above and even though Roswell would now be able
+            # to find the newly minted `ros` binary, it would still fail when
+            # trying to install the specific lisp implementation:
+            #
+            #     'C:\Program' is not recognized as an internal or external command,
+            #       operable program or batch file.
+            #       Install Script for sbcl-bin...
+            #       'C:\Program' is not recognized as an internal or external command,
+            #       operable program or batch file.
+            #       Unhandled UIOP/RUN-PROGRAM:SUBPROCESS-ERROR in thread #<SB-THREAD:THREAD "main thread" RUNNING
+            #                                                                {10057000A3}>:
+            #         Subprocess #<UIOP/LAUNCH-PROGRAM::PROCESS-INFO {100506B0E3}>
+            #        with command "C:\\Program Files\\Git\\usr\\local\\bin\\ros.exe config set setup.time 3843610170"
+            #        exited with error code 1
+            #
+            #       Backtrace for: #<SB-THREAD:THREAD "main thread" RUNNING {10057000A3}>
+            #
+            # The work-around?  Install Roswell somewhere else!
+            echo ROSWELL_INSTALL_DIR=$HOME/.roswell >> $GITHUB_ENV
+
+            # Roswell would internally check for the MSYSCON env varible to be
+            # defined, and when not available it would assume Roswell needs to
+            # install msys2+, and more importantly, when running external
+            # programs, it would try to use msys2's version of `bash`, and not
+            # the globally availalbe one; and that, results in the following
+            # error:
+            #
+            #     Unhandled SIMPLE-ERROR in thread #<SB-THREAD:THREAD "main thread" RUNNING
+            #                                         {1005700003}>:
+            #       Couldn't execute "C:\\Users\\runneradmin\\.roswell\\impls\\x86-64\\windows\\msys2\\NIL\\usr\\bin\\bash": The system cannot find the file specified.
+            #
+            #     Backtrace for: #<SB-THREAD:THREAD "main thread" RUNNING {1005700003}>
+            #     0: (SB-DEBUG::DEBUGGER-DISABLED-HOOK #<SIMPLE-ERROR "Couldn't execute ~S: ~A" {1004EEA623}> #<unused argument> :QUIT T)
+            #     1: (SB-DEBUG::RUN-HOOK SB-EXT:*INVOKE-DEBUGGER-HOOK* #<SIMPLE-ERROR "Couldn't execute ~S: ~A" {1004EEA623}>)
+            #     2: (INVOKE-DEBUGGER #<SIMPLE-ERROR "Couldn't execute ~S: ~A" {1004EEA623}>)
+            #     3: (ERROR "Couldn't execute ~S: ~A" "C:\\Users\\runneradmin\\.roswell\\impls\\x86-64\\windows\\msys2\\NIL\\usr\\bin\\bash" "The system cannot find the file specified.")
+            #     4: (SB-EXT:RUN-PROGRAM "C:\\Users\\runneradmin\\.roswell\\impls\\x86-64\\windows\\msys2\\NIL\\usr\\bin\\bash" ("-lc" "cd \"C:\\\\Users\\\\runneradmin\\\\.roswell\\\\src\\\\asdf-3.3.5.3\\\\\";pwd") :ENV NIL :ENVIRONMENT NIL :WAIT NIL :SEARCH T :INPUT NIL :IF-INPUT-DOES-NOT-EXIST :ERROR :OUTPUT :STREAM :IF-OUTPUT-EXISTS :APPEND :ERROR NIL :IF-ERROR-EXISTS :APPEND :STATUS-HOOK NIL :EXTERNAL-FORMAT :UTF-8 :DIRECTORY NIL :PRESERVE-FDS NIL :ESCAPE-ARGUMENTS T :WINDOW NIL)
+            #     5: (UIOP/LAUNCH-PROGRAM:LAUNCH-PROGRAM ("C:\\Users\\runneradmin\\.roswell\\impls\\x86-64\\windows\\msys2\\NIL\\usr\\bin\\bash" "-lc" "cd \"C:\\\\Users\\\\runneradmin\\\\.roswell\\\\src\\\\asdf-3.3.5.3\\\\\";pwd") :INPUT NIL :OUTPUT :STREAM :ERROR-OUTPUT NIL :OUTPUT :STRING)
+            #     6: ((LAMBDA (UIOP/RUN-PROGRAM::REDUCED-INPUT UIOP/RUN-PROGRAM::INPUT-ACTIVITY) :IN UIOP/RUN-PROGRAM::%USE-LAUNCH-PROGRAM) NIL NIL)
+            #     7: (UIOP/RUN-PROGRAM::%USE-LAUNCH-PROGRAM ("C:\\Users\\runneradmin\\.roswell\\impls\\x86-64\\windows\\msys2\\NIL\\usr\\bin\\bash" "-lc" "cd \"C:\\\\Users\\\\runneradmin\\\\.roswell\\\\src\\\\asdf-3.3.5.3\\\\\";pwd") :OUTPUT :STRING)
+            #     8: (MINGW-NAMESTRING #P"C:/Users/runneradmin/.roswell/src/asdf-3.3.5.3/")
+            #     9: (ROSWELL.INSTALL.ASDF::ASDF-INSTALL (:TARGET "asdf" :VERSION "3.3.5.3" :VERSION-NOT-SPECIFIED 0 :ARGV NIL))
+            #
+            # The thing is, we don't need Roswell to install msys2, so we can
+            # simply let it believe "it's all fine"
+            echo MSYSCON=Stop-Roswell-From-Installing-Msys2 >> $GITHUB_ENV
+
+            # Also, for whatever reason Roswell seems to be installing
+            # ASDF-system-specific scripts inside .roswell/lisp/quicklisp/bin
+            # and not .roswell/bin, so if we want to enable users of this
+            # action to directly invoke these scripts, we need to add
+            # .roswell/lisp/quicklisp/bin to PATH.
+            echo $HOME/.roswell/lisp/quicklisp/bin >> $GITHUB_PATH
+        fi
+        echo $HOME/.roswell/bin >> $GITHUB_PATH
+        echo ::endgroup::
     - name: Current Env
       shell: bash
       run: |
@@ -42,7 +111,6 @@ runs:
         
         curl -L https://raw.githubusercontent.com/roswell/roswell/${{ inputs.roswell-version }}/scripts/install-for-ci.sh | sh
         
-        echo $HOME/.roswell/bin >> $GITHUB_PATH
         echo ::endgroup::
     - name: Upgrade ASDF to the Latest Version
       shell: bash
