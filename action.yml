@@ -109,7 +109,7 @@ runs:
             brew install automake autoconf curl
         fi
         
-        curl -L https://raw.githubusercontent.com/roswell/roswell/${{ inputs.roswell-version }}/scripts/install-for-ci.sh | sh
+        curl -L https://raw.githubusercontent.com/roswell/roswell/${{ inputs.roswell-version }}/scripts/install-for-ci.sh | sh -x
         
         echo ::endgroup::
     - name: Upgrade ASDF to the Latest Version
