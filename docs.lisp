@@ -41,6 +41,7 @@ and [Qlot](https://github.com/fukamachi/qlot) inside the Github CI.
 "
   (@features section)
   (@typical-usage section)
+  (@roswell-version section)
   (@asdf-version section)
   (@ql-file section)
   (@caching section)
@@ -54,7 +55,7 @@ and [Qlot](https://github.com/fukamachi/qlot) inside the Github CI.
 (defsection @features (:title "What this action does for you?")
   "
 * It installs Roswell and all it's dependencies, doing right thing depending on
-  the operating system. It should work on Ubuntu, OSX and maybe Windows.
+  the operating system. It should work on Ubuntu, OSX and Windows.
 * Upgrade ASDF to the latest version.
 * Installs Qlot.
 * Adds to `PATH` these directories: `~/.roswell/bin` and `.qlot/bin`
@@ -127,6 +128,20 @@ system. It is documented [here](https://40ants.com/run-tests).
 ")
 
 
+(defsection @roswell-version (:title "Overriding Roswell version")
+  "
+By default this action will install the latest version of Roswell. However,
+should you need to use a different version instead, you can specify that via
+the `roswell-version` argument:
+
+```
+- uses: 40ants/setup-lisp@v1
+  with:
+    roswell-version: v21.06.14.110
+```
+")
+
+
 (defsection @asdf-version (:title "Overriding qlfile")
   "
 By default, action will install the latest ASDF version. But sometimes you might
@@ -150,6 +165,7 @@ matrix:
   os:
     - ubuntu-latest
     - macos-latest
+    - windows-latest
   quicklisp-dist:
     - quicklisp
     - ultralisp
