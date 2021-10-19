@@ -142,7 +142,7 @@ the `roswell-version` argument:
 ")
 
 
-(defsection @asdf-version (:title "Overriding qlfile")
+(defsection @asdf-version (:title "Overriding ASDF version")
   "
 By default, action will install the latest ASDF version. But sometimes you might
 want to fix an ASDF version. In such case, use `asdf-version` argument:
