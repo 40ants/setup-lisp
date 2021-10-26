@@ -1,0 +1,63 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "0 0 * * SUN"
+
+jobs:
+  qlot-exec-ros-install:
+    # We want to run on external PRs, but not on our own internal PRs as
+    # they'll be run by the push to the branch.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
+    strategy:
+      fail-fast: false # Let the workflow continue as much as possible
+      matrix:
+        include:
+          - os: ubuntu-latest
+            shell: bash
+            lisp: sbcl-bin
+          - os: macos-latest
+            shell: bash
+            lisp: sbcl-bin
+          - os: windows-latest
+            shell: msys2 {0}
+            lisp: sbcl-bin
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
+    env:
+      LISP: ${{ matrix.lisp }}
+    name: build with ${{ matrix.lisp }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: msys2/setup-msys2@v2
+        if: runner.os == 'Windows'
+        with:
+          # Roswell was added to msys2 just _recently_, so the following makes
+          # sure packages metadata is up to date.  Otherwise...
+          #
+          #    $ pacman -S mingw-w64-x86_64-roswell
+          #    error: target not found: mingw-w64-x86_64-roswell
+          #    Error: Process completed with exit code 1
+          update: true
+          # Msys2 has its own PATH, and the following setting enables standard
+          # PATH manipulation expressions like the one shown below, to succeed:
+          #
+          #    $ echo /usr/local/bin >> $GITHUB_PATH
+          path-type: inherit
+      - name: Call setup-lisp with default arguments
+        if: github.event_name != 'schedule'
+        uses: iamFIREcracker/setup-lisp@windows-work-tests
+      - name: Call setup-lisp and install latest
+        if: github.event_name == 'schedule'
+        uses: iamFIREcracker/setup-lisp@windows-work-tests
+        with:
+          roswell-version: latest
+          # XXX remove this override (i.e. put "latest" back in) after the
+          # following roswell issue has been solved:
+          # https://github.com/roswell/roswell/issues/497
+          asdf-version: 3.3.5.3
+          qlot-version: latest
+      - run: qlot exec ros install 40ants/gh-pages
