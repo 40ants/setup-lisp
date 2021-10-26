@@ -47,12 +47,19 @@ jobs:
           #
           #    $ echo /usr/local/bin >> $GITHUB_PATH
           path-type: inherit
+      - uses: actions/checkout@v2
+        with:
+          # The repo already contains the qlot and qlot.lock files, and since
+          # we don't want those to interfere with the current test run, we
+          # clone the repository somewhere else (i.e. something different from
+          # the default './')
+          path: setup-lisp/
       - name: Call setup-lisp with default arguments
         if: github.event_name != 'schedule'
-        uses: iamFIREcracker/setup-lisp@windows-work-tests
+        uses: ./setup-lisp/
       - name: Call setup-lisp and install latest
         if: github.event_name == 'schedule'
-        uses: iamFIREcracker/setup-lisp@windows-work-tests
+        uses: ./setup-lisp/
         with:
           roswell-version: latest
           # XXX remove this override (i.e. put "latest" back in) after the
