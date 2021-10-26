@@ -2,15 +2,20 @@ name: 'Setup Common Lisp'
 
 inputs:
   roswell-version:
-    description: 'Roswell version to install. If not specified, then latest version will be used'
+    description: 'Roswell version to install. If not specified, the latest working version will be used; if "latest", the latest version is used'
     required: false
-    default: 'master'
+    default: v21.10.14.111
   asdf-system:
     description: 'ASDF system to install'
     required: false
   asdf-version:
-    description: 'ASDF version to install. If not specified, then latest version will be used'
+    description: 'ASDF version to install. If not specified, the latest working version will be used; if "latest", the latest version is used'
     required: false
+    default: 3.3.5.3
+  qlot-version:
+    description: 'Qlot version to install. If not specified, the latest working version will be used; if "latest", the latest version is used'
+    required: false
+    default: 0.11.5
   qlfile-template:
     description: "Djula template for qlfile. All environment variables are available in it's context"
     required: false
@@ -18,22 +23,45 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Create bash-or-msys2
+      shell: bash
+      run: |
+        # All the steps below, should work without problems on Linux, Mac OS,
+        # and Windows, provided that they are run with the "right" shell
+        # parameter, i.e. bash for Linux and Mac OS, and msys2 for Windows.
+        #
+        # Unfortunately, composite actions do not support getting the shell
+        # parameter injected from the parent workflow (read more about this
+        # here: https://github.com/actions/runner/issues/835), so the
+        # workaround I came up with is:
+        #
+        # 1. Symlink bash/msys2 to a known location, i.e. bash-or-msys2
+        # 2. Use bash-or-msys2 as shell parameter
+        #
+        # It's not ideal, but the alternative is to duplicate most of the steps
+        # below, and have some of them with `shell: bash`, and others with
+        # `shell: msys2 {0}`.
+        if [[ "$RUNNER_OS" == "Windows" ]]; then
+            powershell New-Item -ItemType SymbolicLink \
+              -Path  "D:/a/_temp/setup-msys2/bash-or-msys2.cmd" \
+              -Target "D:/a/_temp/setup-msys2/msys2.cmd"
+        else
+            sudo ln -sf $(which bash) /usr/local/bin/bash-or-msys2
+        fi
     - name: Set up Environment
       shell: bash
       run: |
         echo ::group::Set up Environment
         if [[ "$RUNNER_OS" == "Windows" ]]; then
-            # ROSWELL_INSTALL_DIR defaults to /usr/local/bin; however,
-            # /usr/local/bin is not part of PATH on Windows and because of that
-            # Roswell's install script will fail to find the just unzip'd `ros`
-            # binary and resort to try to build it from sources -- and of
-            # course fail while doing so.  So we add /usr/local/bin to PATH:
+            # ROSWELL_INSTALL_DIR defaults to /usr/local/bin which
+            # unfortunately is not part of PATH on Windows; one could be
+            # tempted to patch things up like this:
             #
-            #     > echo /usr/local/bin >> $GITHUB_PATH
+            #     echo /usr/local/bin >> $GITHUB_PATH
             #
-            # However, do the above and even though Roswell would now be able
-            # to find the newly minted `ros` binary, it would still fail when
-            # trying to install the specific lisp implementation:
+            # However, if the absolute Windows path that /usr/local/bin
+            # actually refers to, contains any white space in it, you will
+            # inevitably bump into the following error:
             #
             #     'C:\Program' is not recognized as an internal or external command,
             #       operable program or batch file.
@@ -48,15 +76,21 @@ runs:
             #
             #       Backtrace for: #<SB-THREAD:THREAD "main thread" RUNNING {10057000A3}>
             #
-            # The work-around?  Install Roswell somewhere else!
-            echo ROSWELL_INSTALL_DIR=$HOME/.roswell >> $GITHUB_ENV
+            # The work-around?  Install Roswell in a different location, whose
+            # absolute path we are 100% positive won't contain any white
+            # spaces!
+            mkdir -p /d/a/_temp/roswell
+            echo ROSWELL_INSTALL_DIR=/d/a/_temp/roswell >> $GITHUB_ENV
+            echo /d/a/_temp/roswell >> $GITHUB_PATH
 
-            # Roswell would internally check for the MSYSCON env varible to be
-            # defined, and when not available it would assume Roswell needs to
-            # install msys2+, and more importantly, when running external
-            # programs, it would try to use msys2's version of `bash`, and not
-            # the globally availalbe one; and that, results in the following
-            # error:
+            # Roswell internally checks for the MSYSCON env varible to be
+            # defined, and when not there, it would go and install msys2 (i.e.
+            # `ros install msys2+`) and rely on the `bash` bonary that comes
+            # with that installation.
+            #
+            # All good except that something is not quite working as it should,
+            # given that every time Roswell tries to run a `bash` command, it
+            # would spit out the following:
             #
             #     Unhandled SIMPLE-ERROR in thread #<SB-THREAD:THREAD "main thread" RUNNING
             #                                         {1005700003}>:
@@ -74,8 +108,15 @@ runs:
             #     8: (MINGW-NAMESTRING #P"C:/Users/runneradmin/.roswell/src/asdf-3.3.5.3/")
             #     9: (ROSWELL.INSTALL.ASDF::ASDF-INSTALL (:TARGET "asdf" :VERSION "3.3.5.3" :VERSION-NOT-SPECIFIED 0 :ARGV NIL))
             #
-            # The thing is, we don't need Roswell to install msys2, so we can
-            # simply let it believe "it's all fine"
+            # The NIL over there, seems to be the result of evaluating the
+            # following form:
+            #
+            #     (config "msys2.version")
+            #
+            # Now, I am not sure what's going on with that, but since
+            # we got msys2 installed already, I figured it would be easier to
+            # tell Roswell about it and ignore all the other installation
+            # steps.
             echo MSYSCON=Stop-Roswell-From-Installing-Msys2 >> $GITHUB_ENV
 
             # Also, for whatever reason Roswell seems to be installing
@@ -93,14 +134,14 @@ runs:
         echo ::group::Environment
         echo "Current dir:"
         pwd
-        
+
         echo "Environment Variables:"
         env | sort -u
         echo ::endgroup::
     - name: Install Roswell
-      shell: bash
+      shell: bash-or-msys2 {0}
       run: |
-        echo ::group::Install Roswell
+        echo ::group::Installing Roswell dependencies
         if [[ "$RUNNER_OS" == "Linux" ]]; then
             sudo apt-get update
             sudo apt-get -y install git build-essential automake libcurl4-openssl-dev
@@ -108,14 +149,26 @@ runs:
         if [[ "$RUNNER_OS" == "macOS" ]]; then
             brew install automake autoconf curl
         fi
-        
-        curl -L https://raw.githubusercontent.com/roswell/roswell/${{ inputs.roswell-version }}/scripts/install-for-ci.sh | sh -x
-        
+        if [[ "$RUNNER_OS" == "Windows" ]]; then
+            # Installing ASDF requires `make`, so let's make sure it's
+            # available
+            msys2.cmd -c "pacman --noconfirm -S --needed --overwrite '*' make"
+        fi
+        echo ::endgroup::
+
+        if [[ "${{ inputs.roswell-version }}" != "latest" ]]; then
+            echo ::group::Installing Roswell ${{ inputs.roswell-version }}
+            curl -L https://raw.githubusercontent.com/roswell/roswell/${{ inputs.roswell-version }}/scripts/install-for-ci.sh | sh -x
+        else
+            echo ::group::Installing latest Roswell
+            curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh -x
+        fi
+
         echo ::endgroup::
     - name: Upgrade ASDF to the Latest Version
-      shell: bash
+      shell: bash-or-msys2 {0}
       run: |
-        if [[ -n "${{ inputs.asdf-version }}" ]]; then
+        if [[ "${{ inputs.asdf-version }}" != "latest" ]]; then
             echo ::group::Installing ASDF ${{ inputs.asdf-version }}
             ros install asdf/${{ inputs.asdf-version }}
         else
@@ -124,18 +177,19 @@ runs:
         fi
         echo ::endgroup::
     - name: Install Qlot
-      shell: bash
-      # Version 0.11.1 is fixed while issue
-      # https://github.com/fukamachi/qlot/issues/118
-      # will not be resolved.
+      shell: bash-or-msys2 {0}
       run: |
-        echo ::group::Install Qlot
-        ros install fukamachi/qlot/0.11.5
+        if [[ "${{ inputs.qlot-version }}" != "latest" ]]; then
+            echo ::group::Installing Qlot ${{ inputs.qlot-version }}
+            ros install fukamachi/qlot/${{ inputs.qlot-version }}
+        else
+            echo ::group::Installing latest Qlot
+            ros install fukamachi/qlot
+        fi
         echo .qlot/bin >> $GITHUB_PATH
         echo ::endgroup::
-
     - name: Create Qlot Environment
-      shell: bash
+      shell: bash-or-msys2 {0}
       run: |
         echo ::group::Create Qlot Environment
 
@@ -154,7 +208,7 @@ runs:
             echo 'There is no qlfile. Creating an empty one.'
             touch qlfile
         fi
-        
+
         qlot install
         echo ::endgroup::
       env:
@@ -164,7 +218,7 @@ runs:
     # all possible roswell scripts, if the system
     # has them in the roswell/ subdirectory:
     - name: Install ASDF System
-      shell: bash
+      shell: bash-or-msys2 {0}
       run: |
         echo ::group::Install ASDF System
         if [[ -n "${{ inputs.asdf-system }}" ]]; then
