@@ -43,6 +43,7 @@ and [Qlot](https://github.com/fukamachi/qlot) inside the Github CI.
   (@typical-usage section)
   (@roswell-version section)
   (@asdf-version section)
+  (@qlot-version section)
   (@ql-file section)
   (@caching section)
   (@roadmap section)
@@ -130,27 +131,42 @@ system. It is documented [here](https://40ants.com/run-tests).
 
 (defsection @roswell-version (:title "Overriding Roswell version")
   "
-By default this action will install the latest version of Roswell. However,
-should you need to use a different version instead, you can specify that via
-the `roswell-version` argument:
+By default this action will install the latest version of Roswell known to be
+working with this action. However, should you need to use a different version
+instead, you can specify that via the `roswell-version` argument:
 
 ```
 - uses: 40ants/setup-lisp@v1
   with:
-    roswell-version: v21.06.14.110
+    roswell-version: v21.10.14.111
 ```
 ")
 
 
 (defsection @asdf-version (:title "Overriding ASDF version")
   "
-By default, action will install the latest ASDF version. But sometimes you might
-want to fix an ASDF version. In such case, use `asdf-version` argument:
+By default this action will install the latest version of ASDF known to be
+working with this action.  However, should you need to use a different version
+instead, you can specify that via the `asdf-version` argument:
 
 ```
 - uses: 40ants/setup-lisp@v1
   with:
-    asdf-version: 3.3.4.18
+    asdf-version: 3.3.5.3
+```
+")
+
+
+(defsection @qlot-version (:title "Overriding Qlot version")
+  "
+By default this action will install the latest version of Qlot known to be
+working with this action.  However, should you need to use a different version
+instead, you can specify that via the `qlot-version` argument:
+
+```
+- uses: 40ants/setup-lisp@v1
+  with:
+    qlot-version: 0.11.5
 ```
 ")
 
