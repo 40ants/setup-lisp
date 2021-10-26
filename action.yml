@@ -165,6 +165,13 @@ runs:
         fi
 
         echo ::endgroup::
+    - name: Upgrade Quicklisp dists
+      shell: bash-or-msys2 {0}
+      run: |
+        # The parent workflow might have caching enabled for Roswell and all
+        # the other Lisp files in general, so it's better to tell Quicklisp
+        # to update all its dists.
+        ros -e "(ql:update-all-dists :prompt nil)"
     - name: Upgrade ASDF to the Latest Version
       shell: bash-or-msys2 {0}
       run: |
