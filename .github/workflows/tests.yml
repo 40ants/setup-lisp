@@ -7,7 +7,7 @@ on:
     - cron: "0 0 * * SUN"
 
 jobs:
-  qlot-exec-ros-install:
+  tests:
     # We want to run on external PRs, but not on our own internal PRs as
     # they'll be run by the push to the branch.
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
@@ -16,37 +16,19 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            shell: bash
             lisp: sbcl-bin
           - os: macos-latest
-            shell: bash
             lisp: sbcl-bin
           - os: windows-latest
-            shell: msys2 {0}
             lisp: sbcl-bin
     defaults:
       run:
-        shell: ${{ matrix.shell }}
+        shell: lispsh {0}
     env:
       LISP: ${{ matrix.lisp }}
-    name: build with ${{ matrix.lisp }} on ${{ matrix.os }}
+    name: test with ${{ matrix.lisp }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: msys2/setup-msys2@v2
-        if: runner.os == 'Windows'
-        with:
-          # Roswell was added to msys2 just _recently_, so the following makes
-          # sure packages metadata is up to date.  Otherwise...
-          #
-          #    $ pacman -S mingw-w64-x86_64-roswell
-          #    error: target not found: mingw-w64-x86_64-roswell
-          #    Error: Process completed with exit code 1
-          update: true
-          # Msys2 has its own PATH, and the following setting enables standard
-          # PATH manipulation expressions like the one shown below, to succeed:
-          #
-          #    $ echo /usr/local/bin >> $GITHUB_PATH
-          path-type: inherit
       - uses: actions/checkout@v2
         with:
           # The repo already contains the qlot and qlot.lock files, and since
@@ -67,4 +49,5 @@ jobs:
           # https://github.com/roswell/roswell/issues/497
           asdf-version: 3.3.5.3
           qlot-version: latest
+      - run: ros config
       - run: qlot exec ros install 40ants/gh-pages

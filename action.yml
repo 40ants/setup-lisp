@@ -23,7 +23,23 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Create bash-or-msys2
+    # Switch back to setup-msys2/setup-msys2@v2 if / when the following PR is
+    # merged: https://github.com/msys2/setup-msys2/pull/172
+    - uses: iamFIREcracker/setup-msys2@dont-fail-if-not-windows-with-assets
+      with:
+        # Roswell was added to msys2 just _recently_, so the following makes
+        # sure packages metadata is up to date.  Otherwise...
+        #
+        #    $ pacman -S mingw-w64-x86_64-roswell
+        #    error: target not found: mingw-w64-x86_64-roswell
+        #    Error: Process completed with exit code 1
+        update: true
+        # Msys2 has its own PATH, and the following setting enables standard
+        # PATH manipulation expressions like the one shown below, to succeed:
+        #
+        #    $ echo /usr/local/bin >> $GITHUB_PATH
+        path-type: inherit
+    - name: Create lispsh
       shell: bash
       run: |
         # All the steps below, should work without problems on Linux, Mac OS,
@@ -35,18 +51,18 @@ runs:
         # here: https://github.com/actions/runner/issues/835), so the
         # workaround I came up with is:
         #
-        # 1. Symlink bash/msys2 to a known location, i.e. bash-or-msys2
-        # 2. Use bash-or-msys2 as shell parameter
+        # 1. Symlink bash/msys2 to a known location, i.e. lispsh
+        # 2. Use lispsh as shell parameter
         #
         # It's not ideal, but the alternative is to duplicate most of the steps
         # below, and have some of them with `shell: bash`, and others with
         # `shell: msys2 {0}`.
         if [[ "$RUNNER_OS" == "Windows" ]]; then
             powershell New-Item -ItemType SymbolicLink \
-              -Path  "D:/a/_temp/setup-msys2/bash-or-msys2.cmd" \
+              -Path  "D:/a/_temp/setup-msys2/lispsh.cmd" \
               -Target "D:/a/_temp/setup-msys2/msys2.cmd"
         else
-            sudo ln -sf $(which bash) /usr/local/bin/bash-or-msys2
+            sudo ln -sf $(which bash) /usr/local/bin/lispsh
         fi
     - name: Set up Environment
       shell: bash
@@ -139,7 +155,7 @@ runs:
         env | sort -u
         echo ::endgroup::
     - name: Install Roswell
-      shell: bash-or-msys2 {0}
+      shell: lispsh {0}
       run: |
         echo ::group::Installing Roswell dependencies
         if [[ "$RUNNER_OS" == "Linux" ]]; then
@@ -166,14 +182,14 @@ runs:
 
         echo ::endgroup::
     - name: Upgrade Quicklisp dists
-      shell: bash-or-msys2 {0}
+      shell: lispsh {0}
       run: |
         # The parent workflow might have caching enabled for Roswell and all
         # the other Lisp files in general, so it's better to tell Quicklisp
         # to update all its dists.
         ros -e "(ql:update-all-dists :prompt nil)"
     - name: Upgrade ASDF to the Latest Version
-      shell: bash-or-msys2 {0}
+      shell: lispsh {0}
       run: |
         if [[ "${{ inputs.asdf-version }}" != "latest" ]]; then
             echo ::group::Installing ASDF ${{ inputs.asdf-version }}
@@ -184,7 +200,7 @@ runs:
         fi
         echo ::endgroup::
     - name: Install Qlot
-      shell: bash-or-msys2 {0}
+      shell: lispsh {0}
       run: |
         if [[ "${{ inputs.qlot-version }}" != "latest" ]]; then
             echo ::group::Installing Qlot ${{ inputs.qlot-version }}
@@ -196,7 +212,7 @@ runs:
         echo .qlot/bin >> $GITHUB_PATH
         echo ::endgroup::
     - name: Create Qlot Environment
-      shell: bash-or-msys2 {0}
+      shell: lispsh {0}
       run: |
         echo ::group::Create Qlot Environment
 
@@ -225,7 +241,7 @@ runs:
     # all possible roswell scripts, if the system
     # has them in the roswell/ subdirectory:
     - name: Install ASDF System
-      shell: bash-or-msys2 {0}
+      shell: lispsh {0}
       run: |
         echo ::group::Install ASDF System
         if [[ -n "${{ inputs.asdf-system }}" ]]; then
