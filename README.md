@@ -14,7 +14,7 @@ and [Qlot][e3ea] inside the Github `CI`.
 ## What this action does for you?
 
 * It installs Roswell and all it's dependencies, doing right thing depending on
-  the operating system. It should work on Ubuntu, `OSX` and maybe Windows.
+  the operating system. It should work on Ubuntu, `OSX` and Windows.
 
 * Upgrade `ASDF` to the latest version.
 
@@ -87,17 +87,44 @@ env:
 The last step in this workflow runs tests for the specified `ASDF`
 system. It is documented [here][8469].
 
-<a id="x-28PROJECT-DOCS-3A-3A-40ASDF-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+<a id="x-28PROJECT-DOCS-3A-3A-40ROSWELL-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
-## Overriding qlfile
+## Overriding Roswell version
 
-By default, action will install the latest `ASDF` version. But sometimes you might
-want to fix an `ASDF` version. In such case, use `asdf-version` argument:
+By default this action will install the latest version of Roswell known to be
+working with this action. However, should you need to use a different version
+instead, you can specify that via the `roswell-version` argument:
 
 ```
 - uses: 40ants/setup-lisp@v1
   with:
-    asdf-version: 3.3.4.18
+    roswell-version: v21.10.14.111
+```
+<a id="x-28PROJECT-DOCS-3A-3A-40ASDF-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## Overriding ASDF version
+
+By default this action will install the latest version of `ASDF` known to be
+working with this action.  However, should you need to use a different version
+instead, you can specify that via the `asdf-version` argument:
+
+```
+- uses: 40ants/setup-lisp@v1
+  with:
+    asdf-version: 3.3.5.3
+```
+<a id="x-28PROJECT-DOCS-3A-3A-40QLOT-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## Overriding Qlot version
+
+By default this action will install the latest version of Qlot known to be
+working with this action.  However, should you need to use a different version
+instead, you can specify that via the `qlot-version` argument:
+
+```
+- uses: 40ants/setup-lisp@v1
+  with:
+    qlot-version: 0.11.5
 ```
 <a id="x-28PROJECT-DOCS-3A-3A-40QL-FILE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
@@ -111,6 +138,7 @@ matrix:
   os:
     - ubuntu-latest
     - macos-latest
+    - windows-latest
   quicklisp-dist:
     - quicklisp
     - ultralisp
