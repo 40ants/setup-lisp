@@ -2,6 +2,36 @@
 
 # ChangeLog
 
+<a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C2-2E0-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 2.0.0 (2021-10-28)
+
+<a id="new"></a>
+
+### New
+
+* Add Windows support.
+
+<a id="breaking-changes"></a>
+
+### Breaking changes
+
+Now instead of latest version of `ASDF`, Roswell and Qlot
+we pin versions which known to work in supported environments.
+
+If you want latest version, pass "latest" as value of
+"asdf-version", "roswell-version" or "qlot-version".
+
+Currently these versions are used:
+
+* `ASDF`: 3.3.5.3
+
+* Roswell: v21.10.14.111
+
+* Qlot: 0.11.5
+
+Thanks for these changes to Matteo Landi!
+
 <a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C1-2E1-2E2-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 1.1.2 (2021-09-19)
