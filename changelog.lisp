@@ -6,6 +6,10 @@
 
 
 (defchangelog (:ignore-words ("ASDF"))
+  (unreleased
+         "- Improves Windows support
+          - Installs Roswell v21.10.14.111
+          - Installs ASDF 3.3.5.3")
   (1.1.2 2021-09-19
           "Move from Qlot 0.11.1 to 0.11.5.")
   (1.1.1 2021-09-12

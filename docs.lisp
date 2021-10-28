@@ -41,7 +41,9 @@ and [Qlot](https://github.com/fukamachi/qlot) inside the Github CI.
 "
   (@features section)
   (@typical-usage section)
+  (@roswell-version section)
   (@asdf-version section)
+  (@qlot-version section)
   (@ql-file section)
   (@caching section)
   (@roadmap section)
@@ -54,7 +56,7 @@ and [Qlot](https://github.com/fukamachi/qlot) inside the Github CI.
 (defsection @features (:title "What this action does for you?")
   "
 * It installs Roswell and all it's dependencies, doing right thing depending on
-  the operating system. It should work on Ubuntu, OSX and maybe Windows.
+  the operating system. It should work on Ubuntu, OSX and Windows.
 * Upgrade ASDF to the latest version.
 * Installs Qlot.
 * Adds to `PATH` these directories: `~/.roswell/bin` and `.qlot/bin`
@@ -127,15 +129,44 @@ system. It is documented [here](https://40ants.com/run-tests).
 ")
 
 
-(defsection @asdf-version (:title "Overriding qlfile")
+(defsection @roswell-version (:title "Overriding Roswell version")
   "
-By default, action will install the latest ASDF version. But sometimes you might
-want to fix an ASDF version. In such case, use `asdf-version` argument:
+By default this action will install the latest version of Roswell known to be
+working with this action. However, should you need to use a different version
+instead, you can specify that via the `roswell-version` argument:
 
 ```
 - uses: 40ants/setup-lisp@v1
   with:
-    asdf-version: 3.3.4.18
+    roswell-version: v21.10.14.111
+```
+")
+
+
+(defsection @asdf-version (:title "Overriding ASDF version")
+  "
+By default this action will install the latest version of ASDF known to be
+working with this action.  However, should you need to use a different version
+instead, you can specify that via the `asdf-version` argument:
+
+```
+- uses: 40ants/setup-lisp@v1
+  with:
+    asdf-version: 3.3.5.3
+```
+")
+
+
+(defsection @qlot-version (:title "Overriding Qlot version")
+  "
+By default this action will install the latest version of Qlot known to be
+working with this action.  However, should you need to use a different version
+instead, you can specify that via the `qlot-version` argument:
+
+```
+- uses: 40ants/setup-lisp@v1
+  with:
+    qlot-version: 0.11.5
 ```
 ")
 
@@ -150,6 +181,7 @@ matrix:
   os:
     - ubuntu-latest
     - macos-latest
+    - windows-latest
   quicklisp-dist:
     - quicklisp
     - ultralisp

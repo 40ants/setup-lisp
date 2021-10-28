@@ -1,12 +1,21 @@
 name: 'Setup Common Lisp'
 
 inputs:
+  roswell-version:
+    description: 'Roswell version to install. If not specified, the latest working version will be used; if "latest", the latest version is used'
+    required: false
+    default: v21.10.14.111
   asdf-system:
     description: 'ASDF system to install'
     required: false
   asdf-version:
-    description: 'ASDF version to install. If not specified, then latest version will be used'
+    description: 'ASDF version to install. If not specified, the latest working version will be used; if "latest", the latest version is used'
     required: false
+    default: 3.3.5.3
+  qlot-version:
+    description: 'Qlot version to install. If not specified, the latest working version will be used; if "latest", the latest version is used'
+    required: false
+    default: 0.11.5
   qlfile-template:
     description: "Djula template for qlfile. All environment variables are available in it's context"
     required: false
@@ -14,20 +23,142 @@ inputs:
 runs:
   using: composite
   steps:
+    # Switch back to setup-msys2/setup-msys2@v2 if / when the following PR is
+    # merged: https://github.com/msys2/setup-msys2/pull/172
+    - uses: iamFIREcracker/setup-msys2@dont-fail-if-not-windows-with-assets
+      with:
+        # Roswell was added to msys2 just _recently_, so the following makes
+        # sure packages metadata is up to date.  Otherwise...
+        #
+        #    $ pacman -S mingw-w64-x86_64-roswell
+        #    error: target not found: mingw-w64-x86_64-roswell
+        #    Error: Process completed with exit code 1
+        update: true
+        # Msys2 has its own PATH, and the following setting enables standard
+        # PATH manipulation expressions like the one shown below, to succeed:
+        #
+        #    $ echo /usr/local/bin >> $GITHUB_PATH
+        path-type: inherit
+        platform-check-severity: warn
+    - name: Create lispsh
+      shell: bash
+      run: |
+        # All the steps below, should work without problems on Linux, Mac OS,
+        # and Windows, provided that they are run with the "right" shell
+        # parameter, i.e. bash for Linux and Mac OS, and msys2 for Windows.
+        #
+        # Unfortunately, composite actions do not support getting the shell
+        # parameter injected from the parent workflow (read more about this
+        # here: https://github.com/actions/runner/issues/835), so the
+        # workaround I came up with is:
+        #
+        # 1. Symlink bash/msys2 to a known location, i.e. lispsh
+        # 2. Use lispsh as shell parameter
+        #
+        # It's not ideal, but the alternative is to duplicate most of the steps
+        # below, and have some of them with `shell: bash`, and others with
+        # `shell: msys2 {0}`.
+        if [[ "$RUNNER_OS" == "Windows" ]]; then
+            powershell New-Item -ItemType SymbolicLink \
+              -Path  "D:/a/_temp/setup-msys2/lispsh.cmd" \
+              -Target "D:/a/_temp/setup-msys2/msys2.cmd"
+        else
+            sudo ln -sf $(which bash) /usr/local/bin/lispsh
+        fi
+    - name: Set up Environment
+      shell: bash
+      run: |
+        echo ::group::Set up Environment
+        if [[ "$RUNNER_OS" == "Windows" ]]; then
+            # ROSWELL_INSTALL_DIR defaults to /usr/local/bin which
+            # unfortunately is not part of PATH on Windows; one could be
+            # tempted to patch things up like this:
+            #
+            #     echo /usr/local/bin >> $GITHUB_PATH
+            #
+            # However, if the absolute Windows path that /usr/local/bin
+            # actually refers to, contains any white space in it, you will
+            # inevitably bump into the following error:
+            #
+            #     'C:\Program' is not recognized as an internal or external command,
+            #       operable program or batch file.
+            #       Install Script for sbcl-bin...
+            #       'C:\Program' is not recognized as an internal or external command,
+            #       operable program or batch file.
+            #       Unhandled UIOP/RUN-PROGRAM:SUBPROCESS-ERROR in thread #<SB-THREAD:THREAD "main thread" RUNNING
+            #                                                                {10057000A3}>:
+            #         Subprocess #<UIOP/LAUNCH-PROGRAM::PROCESS-INFO {100506B0E3}>
+            #        with command "C:\\Program Files\\Git\\usr\\local\\bin\\ros.exe config set setup.time 3843610170"
+            #        exited with error code 1
+            #
+            #       Backtrace for: #<SB-THREAD:THREAD "main thread" RUNNING {10057000A3}>
+            #
+            # The work-around?  Install Roswell in a different location, whose
+            # absolute path we are 100% positive won't contain any white
+            # spaces!
+            mkdir -p /d/a/_temp/roswell
+            echo ROSWELL_INSTALL_DIR=/d/a/_temp/roswell >> $GITHUB_ENV
+            echo /d/a/_temp/roswell >> $GITHUB_PATH
+
+            # Roswell internally checks for the MSYSCON env varible to be
+            # defined, and when not there, it would go and install msys2 (i.e.
+            # `ros install msys2+`) and rely on the `bash` bonary that comes
+            # with that installation.
+            #
+            # All good except that something is not quite working as it should,
+            # given that every time Roswell tries to run a `bash` command, it
+            # would spit out the following:
+            #
+            #     Unhandled SIMPLE-ERROR in thread #<SB-THREAD:THREAD "main thread" RUNNING
+            #                                         {1005700003}>:
+            #       Couldn't execute "C:\\Users\\runneradmin\\.roswell\\impls\\x86-64\\windows\\msys2\\NIL\\usr\\bin\\bash": The system cannot find the file specified.
+            #
+            #     Backtrace for: #<SB-THREAD:THREAD "main thread" RUNNING {1005700003}>
+            #     0: (SB-DEBUG::DEBUGGER-DISABLED-HOOK #<SIMPLE-ERROR "Couldn't execute ~S: ~A" {1004EEA623}> #<unused argument> :QUIT T)
+            #     1: (SB-DEBUG::RUN-HOOK SB-EXT:*INVOKE-DEBUGGER-HOOK* #<SIMPLE-ERROR "Couldn't execute ~S: ~A" {1004EEA623}>)
+            #     2: (INVOKE-DEBUGGER #<SIMPLE-ERROR "Couldn't execute ~S: ~A" {1004EEA623}>)
+            #     3: (ERROR "Couldn't execute ~S: ~A" "C:\\Users\\runneradmin\\.roswell\\impls\\x86-64\\windows\\msys2\\NIL\\usr\\bin\\bash" "The system cannot find the file specified.")
+            #     4: (SB-EXT:RUN-PROGRAM "C:\\Users\\runneradmin\\.roswell\\impls\\x86-64\\windows\\msys2\\NIL\\usr\\bin\\bash" ("-lc" "cd \"C:\\\\Users\\\\runneradmin\\\\.roswell\\\\src\\\\asdf-3.3.5.3\\\\\";pwd") :ENV NIL :ENVIRONMENT NIL :WAIT NIL :SEARCH T :INPUT NIL :IF-INPUT-DOES-NOT-EXIST :ERROR :OUTPUT :STREAM :IF-OUTPUT-EXISTS :APPEND :ERROR NIL :IF-ERROR-EXISTS :APPEND :STATUS-HOOK NIL :EXTERNAL-FORMAT :UTF-8 :DIRECTORY NIL :PRESERVE-FDS NIL :ESCAPE-ARGUMENTS T :WINDOW NIL)
+            #     5: (UIOP/LAUNCH-PROGRAM:LAUNCH-PROGRAM ("C:\\Users\\runneradmin\\.roswell\\impls\\x86-64\\windows\\msys2\\NIL\\usr\\bin\\bash" "-lc" "cd \"C:\\\\Users\\\\runneradmin\\\\.roswell\\\\src\\\\asdf-3.3.5.3\\\\\";pwd") :INPUT NIL :OUTPUT :STREAM :ERROR-OUTPUT NIL :OUTPUT :STRING)
+            #     6: ((LAMBDA (UIOP/RUN-PROGRAM::REDUCED-INPUT UIOP/RUN-PROGRAM::INPUT-ACTIVITY) :IN UIOP/RUN-PROGRAM::%USE-LAUNCH-PROGRAM) NIL NIL)
+            #     7: (UIOP/RUN-PROGRAM::%USE-LAUNCH-PROGRAM ("C:\\Users\\runneradmin\\.roswell\\impls\\x86-64\\windows\\msys2\\NIL\\usr\\bin\\bash" "-lc" "cd \"C:\\\\Users\\\\runneradmin\\\\.roswell\\\\src\\\\asdf-3.3.5.3\\\\\";pwd") :OUTPUT :STRING)
+            #     8: (MINGW-NAMESTRING #P"C:/Users/runneradmin/.roswell/src/asdf-3.3.5.3/")
+            #     9: (ROSWELL.INSTALL.ASDF::ASDF-INSTALL (:TARGET "asdf" :VERSION "3.3.5.3" :VERSION-NOT-SPECIFIED 0 :ARGV NIL))
+            #
+            # The NIL over there, seems to be the result of evaluating the
+            # following form:
+            #
+            #     (config "msys2.version")
+            #
+            # Now, I am not sure what's going on with that, but since
+            # we got msys2 installed already, I figured it would be easier to
+            # tell Roswell about it and ignore all the other installation
+            # steps.
+            echo MSYSCON=Stop-Roswell-From-Installing-Msys2 >> $GITHUB_ENV
+
+            # Also, for whatever reason Roswell seems to be installing
+            # ASDF-system-specific scripts inside .roswell/lisp/quicklisp/bin
+            # and not .roswell/bin, so if we want to enable users of this
+            # action to directly invoke these scripts, we need to add
+            # .roswell/lisp/quicklisp/bin to PATH.
+            echo $HOME/.roswell/lisp/quicklisp/bin >> $GITHUB_PATH
+        fi
+        echo $HOME/.roswell/bin >> $GITHUB_PATH
+        echo ::endgroup::
     - name: Current Env
       shell: bash
       run: |
         echo ::group::Environment
         echo "Current dir:"
         pwd
-        
+
         echo "Environment Variables:"
         env | sort -u
         echo ::endgroup::
     - name: Install Roswell
-      shell: bash
+      shell: lispsh {0}
       run: |
-        echo ::group::Install Roswell
+        echo ::group::Installing Roswell dependencies
         if [[ "$RUNNER_OS" == "Linux" ]]; then
             sudo apt-get update
             sudo apt-get -y install git build-essential automake libcurl4-openssl-dev
@@ -35,15 +166,33 @@ runs:
         if [[ "$RUNNER_OS" == "macOS" ]]; then
             brew install automake autoconf curl
         fi
-        
-        curl -L https://raw.githubusercontent.com/svetlyak40wt/roswell/patches/scripts/install-for-ci.sh | sh
-        
-        echo $HOME/.roswell/bin >> $GITHUB_PATH
+        if [[ "$RUNNER_OS" == "Windows" ]]; then
+            # Installing ASDF requires `make`, so let's make sure it's
+            # available
+            msys2.cmd -c "pacman --noconfirm -S --needed --overwrite '*' make"
+        fi
         echo ::endgroup::
-    - name: Upgrade ASDF to the Latest Version
-      shell: bash
+
+        if [[ "${{ inputs.roswell-version }}" != "latest" ]]; then
+            echo ::group::Installing Roswell ${{ inputs.roswell-version }}
+            curl -L https://raw.githubusercontent.com/roswell/roswell/${{ inputs.roswell-version }}/scripts/install-for-ci.sh | sh -x
+        else
+            echo ::group::Installing latest Roswell
+            curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh -x
+        fi
+
+        echo ::endgroup::
+    - name: Upgrade Quicklisp dists
+      shell: lispsh {0}
       run: |
-        if [[ -n "${{ inputs.asdf-version }}" ]]; then
+        # The parent workflow might have caching enabled for Roswell and all
+        # the other Lisp files in general, so it's better to tell Quicklisp
+        # to update all its dists.
+        ros -e "(ql:update-all-dists :prompt nil)"
+    - name: Upgrade ASDF to the Latest Version
+      shell: lispsh {0}
+      run: |
+        if [[ "${{ inputs.asdf-version }}" != "latest" ]]; then
             echo ::group::Installing ASDF ${{ inputs.asdf-version }}
             ros install asdf/${{ inputs.asdf-version }}
         else
@@ -52,18 +201,19 @@ runs:
         fi
         echo ::endgroup::
     - name: Install Qlot
-      shell: bash
-      # Version 0.11.1 is fixed while issue
-      # https://github.com/fukamachi/qlot/issues/118
-      # will not be resolved.
+      shell: lispsh {0}
       run: |
-        echo ::group::Install Qlot
-        ros install fukamachi/qlot/0.11.5
+        if [[ "${{ inputs.qlot-version }}" != "latest" ]]; then
+            echo ::group::Installing Qlot ${{ inputs.qlot-version }}
+            ros install fukamachi/qlot/${{ inputs.qlot-version }}
+        else
+            echo ::group::Installing latest Qlot
+            ros install fukamachi/qlot
+        fi
         echo .qlot/bin >> $GITHUB_PATH
         echo ::endgroup::
-
     - name: Create Qlot Environment
-      shell: bash
+      shell: lispsh {0}
       run: |
         echo ::group::Create Qlot Environment
 
@@ -82,7 +232,7 @@ runs:
             echo 'There is no qlfile. Creating an empty one.'
             touch qlfile
         fi
-        
+
         qlot install
         echo ::endgroup::
       env:
@@ -92,7 +242,7 @@ runs:
     # all possible roswell scripts, if the system
     # has them in the roswell/ subdirectory:
     - name: Install ASDF System
-      shell: bash
+      shell: lispsh {0}
       run: |
         echo ::group::Install ASDF System
         if [[ -n "${{ inputs.asdf-system }}" ]]; then
