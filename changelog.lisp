@@ -6,10 +6,24 @@
 
 
 (defchangelog (:ignore-words ("ASDF"))
-  (unreleased
-         "- Improves Windows support
-          - Installs Roswell v21.10.14.111
-          - Installs ASDF 3.3.5.3")
+  (2.0.0 2021-10-28
+         "# New
+
+          - Add Windows support.
+
+          # Breaking changes
+
+          Now instead of latest version of ASDF, Roswell and Qlot
+          we pin versions which known to work in supported environments.
+
+          If you want latest version, pass \"latest\" as value of
+          \"asdf-version\", \"roswell-version\" or \"qlot-version\".
+
+          Currently these versions are used:
+
+          - ASDF: 3.3.5.3
+          - Roswell: v21.10.14.111
+          - Qlot: 0.11.5")
   (1.1.2 2021-09-19
           "Move from Qlot 0.11.1 to 0.11.5.")
   (1.1.1 2021-09-12
