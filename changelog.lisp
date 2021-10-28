@@ -23,7 +23,9 @@
 
           - ASDF: 3.3.5.3
           - Roswell: v21.10.14.111
-          - Qlot: 0.11.5")
+          - Qlot: 0.11.5
+
+          Thanks for these changes to Matteo Landi!")
   (1.1.2 2021-09-19
           "Move from Qlot 0.11.1 to 0.11.5.")
   (1.1.1 2021-09-12
