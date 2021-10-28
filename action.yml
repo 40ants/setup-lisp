@@ -39,6 +39,7 @@ runs:
         #
         #    $ echo /usr/local/bin >> $GITHUB_PATH
         path-type: inherit
+        platform-check-severity: warn
     - name: Create lispsh
       shell: bash
       run: |
