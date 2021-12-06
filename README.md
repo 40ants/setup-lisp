@@ -246,7 +246,7 @@ I also added a current month there, to make sure cache will be renewed at least 
 
 ## Roadmap
 
-* Support [`CLPM`][2c45].
+* Support [CLPM][2c45].
 
 * Vendor all dependencies, to make action more reliable and secure.
 
