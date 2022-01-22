@@ -95,11 +95,11 @@ jobs:
       LISP: ${{ matrix.lisp }}
 
     steps:
-      - uses: actions/checkout@v1
-      - uses: 40ants/setup-lisp@v1
+      - uses: actions/checkout@v2
+      - uses: 40ants/setup-lisp@v2
         with:
           asdf-system: cl-info
-      - uses: 40ants/run-tests@v2-beta
+      - uses: 40ants/run-tests@v2
         with:
           asdf-system: cl-info
 ```
@@ -107,7 +107,7 @@ jobs:
 The part, corresponding to an action call is:
 
 ```yaml
-- uses: 40ants/setup-lisp@v1
+- uses: 40ants/setup-lisp@v2
   with:
     asdf-system: cl-info
 ```
@@ -136,7 +136,7 @@ working with this action. However, should you need to use a different version
 instead, you can specify that via the `roswell-version` argument:
 
 ```
-- uses: 40ants/setup-lisp@v1
+- uses: 40ants/setup-lisp@v2
   with:
     roswell-version: v21.10.14.111
 ```
@@ -150,7 +150,7 @@ working with this action.  However, should you need to use a different version
 instead, you can specify that via the `asdf-version` argument:
 
 ```
-- uses: 40ants/setup-lisp@v1
+- uses: 40ants/setup-lisp@v2
   with:
     asdf-version: 3.3.5.3
 ```
@@ -164,7 +164,7 @@ working with this action.  However, should you need to use a different version
 instead, you can specify that via the `qlot-version` argument:
 
 ```
-- uses: 40ants/setup-lisp@v1
+- uses: 40ants/setup-lisp@v2
   with:
     qlot-version: 0.11.5
 ```
@@ -201,8 +201,8 @@ env:
   QUICKLISP_DIST: ${{ matrix.quicklisp-dist }}
 
 steps:
-  - uses: actions/checkout@v1
-  - uses: 40ants/setup-lisp@v1
+  - uses: actions/checkout@v2
+  - uses: 40ants/setup-lisp@v2
     with:
       asdf-system: cl-info
       qlfile-template: |
@@ -265,7 +265,7 @@ To make caching work, add such sections into your workflow file:
     echo $HOME/.roswell/bin >> $GITHUB_PATH
     echo .qlot/bin >> $GITHUB_PATH
   if: steps.cache.outputs.cache-hit == 'true'
-- uses: 40ants/setup-lisp@v1
+- uses: 40ants/setup-lisp@v2
   if: steps.cache.outputs.cache-hit != 'true'
 ```
 
