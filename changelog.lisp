@@ -6,6 +6,8 @@
 
 
 (defchangelog (:ignore-words ("ASDF"))
+  (2.1.0 2022-11-10
+         "Moved to newer action msys2/setup-msys2@2.14.2 where a warning about stale Node.js version is fixed.")
   (2.0.0 2021-10-28
          "# New
 
@@ -27,7 +29,7 @@
 
           Thanks for these changes to Matteo Landi!")
   (1.1.2 2021-09-19
-          "Move from Qlot 0.11.1 to 0.11.5.")
+         "Move from Qlot 0.11.1 to 0.11.5.")
   (1.1.1 2021-09-12
          "Version of qlot was fixed on 0.11.1, because later versions are broken and unable to install
           systems from the GitHub. See issue [#118](https://github.com/fukamachi/qlot/issues/118).")
