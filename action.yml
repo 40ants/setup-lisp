@@ -23,9 +23,8 @@ inputs:
 runs:
   using: composite
   steps:
-    # Switch back to setup-msys2/setup-msys2@v2 if / when the following PR is
-    # merged: https://github.com/msys2/setup-msys2/pull/172
-    - uses: iamFIREcracker/setup-msys2@dont-fail-if-not-windows-with-assets
+    # Using branch v2.14.0
+    - uses: msys2/setup-msys2@d40200dc2db4c351366b048a9565ad82919e1c24
       with:
         # Roswell was added to msys2 just _recently_, so the following makes
         # sure packages metadata is up to date.  Otherwise...
