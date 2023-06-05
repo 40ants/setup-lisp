@@ -2,6 +2,12 @@
 
 # ChangeLog
 
+<a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C2-2E1-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 2.1.0 (2022-11-10)
+
+Moved to newer action msys2/setup-msys2@2.14.2 where a warning about stale Node.js version is fixed.
+
 <a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C2-2E0-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 2.0.0 (2021-10-28)
