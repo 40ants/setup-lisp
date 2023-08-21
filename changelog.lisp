@@ -1,4 +1,4 @@
-(defpackage #:project-docs/changelog
+(uiop:define-package #:project-docs/changelog
   (:use #:cl)
   (:import-from #:40ants-doc/changelog
                 #:defchangelog))

@@ -1,6 +1,7 @@
-(defpackage #:project-docs
+(uiop:define-package #:project-docs
   (:use #:cl)
   (:nicknames #:project-docs/docs)
+  
   (:import-from #:40ants-doc
                 #:defsection
                 #:defsection-copy)
@@ -18,7 +19,12 @@
   ;; 40ANTS-DOC-THEME-40ANTS system will bring
   ;; as dependency a full 40ANTS-DOC but we don't want
   ;; unnecessary dependencies here:
-  (ql:quickload :40ants-doc-theme-40ants)
+  #+quicklisp
+  (uiop:symbol-call :ql :quickload
+                    :40ants-doc-theme-40ants)
+  #-quicklisp
+  (asdf:load-system :40ants-doc-theme-40ants)
+  
   (list :theme
         (find-symbol "40ANTS-THEME"
                      (find-package "40ANTS-DOC-THEME-40ANTS"))))
