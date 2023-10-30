@@ -15,16 +15,11 @@ and [Qlot][e3ea] inside the Github `CI`.
 
 * It installs Roswell and all it's dependencies, doing right thing depending on
   the operating system. It should work on Ubuntu, `OSX` and Windows.
-
 * Upgrade `ASDF` to the latest version.
-
 * Installs Qlot.
-
 * Adds to `PATH` these directories: `~/.roswell/bin` and `.qlot/bin`
-
 * Creates `.qlot` by running `qlot install`. How to override content of the
   `qlfile`, see "Overriding qlfile" section.
-
 * And finally, it can install a specified `ASDF` system and all it's dependencies.
   But this step is optional.
 
@@ -170,9 +165,7 @@ Here we see a few important things.
 
 1. We put into the env var the type of the quicklisp distribution we want to
    our library to test against.
-
 2. We pass a multiline argument `qlfile-template` to the action.
-
 3. Template refers to `quicklisp_dist` to conditionally include a line
    into `qlfile` when `quicklisp_dist == "ultralisp"`.
 
@@ -229,7 +222,6 @@ There are two important lines here.
 
 * The last line `if: steps.cache.outputs.cache-hit != 'true'` skips
   running lisp installation, it it was take from the cache.
-
 * The `key` value:
 
 `
@@ -247,7 +239,6 @@ I also added a current month there, to make sure cache will be renewed at least 
 ## Roadmap
 
 * Support [CLPM][2c45].
-
 * Vendor all dependencies, to make action more reliable and secure.
 
 <a id="x-28PROJECT-DOCS-3A-3A-40CONTRIBUTION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>

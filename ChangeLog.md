@@ -31,9 +31,7 @@ If you want latest version, pass "latest" as value of
 Currently these versions are used:
 
 * `ASDF`: 3.3.5.3
-
 * Roswell: v21.10.14.111
-
 * Qlot: 0.11.5
 
 Thanks for these changes to Matteo Landi!
