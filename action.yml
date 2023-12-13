@@ -201,7 +201,7 @@ runs:
         cat >> ~/.roswell/init.lisp <<EOF
         (let ((fix-filename (make-pathname :directory '(:absolute :home ".quicklisp-client-fix")
                                            :name "quicklisp-fix"
-        	                           :type "lisp")))
+                                           :type "lisp")))
           (cond
             ((probe-file fix-filename)
              (format t "Loading quicklisp fix.~%")
