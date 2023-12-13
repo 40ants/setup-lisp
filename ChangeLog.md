@@ -2,6 +2,12 @@
 
 # ChangeLog
 
+<a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C3-2E0-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 3.0.0 (2023-12-14)
+
+Now action uses a fix for Quicklisp client which makes it possible to load package inferred `ASDF` systems by name of the subsystem.
+
 <a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C2-2E1-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 2.1.0 (2022-11-10)
