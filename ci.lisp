@@ -2,8 +2,15 @@
   (:use #:cl)
   (:import-from #:40ants-ci/workflow
                 #:defworkflow)
-  (:import-from #:40ants-ci/jobs/docs))
+  (:import-from #:40ants-ci/jobs/docs)
+  (:import-from #:40ants-ci/jobs/autotag)
+  (:import-from #:40ants-ci/jobs/linter))
 (in-package project-docs/ci)
+
+
+(defworkflow release
+  :on-push-to "master"
+  :jobs ((40ants-ci/jobs/autotag:autotag)))
 
 
 (defworkflow docs

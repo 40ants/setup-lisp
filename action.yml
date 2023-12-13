@@ -188,6 +188,29 @@ runs:
         # the other Lisp files in general, so it's better to tell Quicklisp
         # to update all its dists.
         ros -e "(ql:update-all-dists :prompt nil)"
+    - name: Install Quicklisp patch for package-inferred systems
+      shell: lispsh {0}
+      run: |
+        git clone \
+            --no-tags \
+            --single-branch \
+            --depth=1  \
+            https://github.com/40ants/quicklisp-client-fix \
+            ~/.quicklisp-client-fix
+
+        mkdir -p ~/.roswell
+
+        cat >> ~/.roswell/init.lisp <<EOF
+        (let ((fix-filename (make-pathname :directory '(:absolute :home ".quicklisp-client-fix")
+                                           :name "quicklisp-fix"
+                                           :type "lisp")))
+          (cond
+            ((probe-file fix-filename)
+             (format t "Loading quicklisp fix.~%")
+             (load fix-filename))
+            (t
+             (format t "Quicklisp fix was not found at ~S.~%" fix-filename))))
+        EOF
     - name: Upgrade ASDF to the Latest Version
       shell: lispsh {0}
       run: |

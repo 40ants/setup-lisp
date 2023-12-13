@@ -6,6 +6,8 @@
 
 
 (defchangelog (:ignore-words ("ASDF"))
+  (3.0.0 2023-12-14
+         "Now action uses a fix for Quicklisp client which makes it possible to load package inferred ASDF systems by name of the subsystem.")
   (2.1.0 2022-11-10
          "Moved to newer action msys2/setup-msys2@2.14.2 where a warning about stale Node.js version is fixed.")
   (2.0.0 2021-10-28
