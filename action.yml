@@ -197,7 +197,9 @@ runs:
             --depth=1  \
             https://github.com/40ants/quicklisp-client-fix \
             ~/.quicklisp-client-fix
- 
+
+        mkdir -p ~/.roswell
+
         cat >> ~/.roswell/init.lisp <<EOF
         (let ((fix-filename (make-pathname :directory '(:absolute :home ".quicklisp-client-fix")
                                            :name "quicklisp-fix"
