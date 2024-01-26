@@ -4,7 +4,7 @@ inputs:
   roswell-version:
     description: 'Roswell version to install. If not specified, the latest working version will be used; if "latest", the latest version is used'
     required: false
-    default: v21.10.14.111
+    default: v23.10.14.114
   asdf-system:
     description: 'ASDF system to install'
     required: false
@@ -52,7 +52,11 @@ runs:
         # workaround I came up with is:
         #
         # 1. Symlink bash/msys2 to a known location, i.e. lispsh
-        # 2. Use lispsh as shell parameter
+        # 2. Use lispsh -eo pipefail {0} as shell parameter
+        #
+        # Pay attention to -eo pipefail options. We need them to exit on the
+        # first error. Without this option, Roswell might fail to install the
+        # implementation and continue to execute everything with default SBCL.
         #
         # It's not ideal, but the alternative is to duplicate most of the steps
         # below, and have some of them with `shell: bash`, and others with
@@ -68,6 +72,7 @@ runs:
       shell: bash
       run: |
         echo ::group::Set up Environment
+
         if [[ "$RUNNER_OS" == "Windows" ]]; then
             # ROSWELL_INSTALL_DIR defaults to /usr/local/bin which
             # unfortunately is not part of PATH on Windows; one could be
@@ -155,9 +160,12 @@ runs:
         env | sort -u
         echo ::endgroup::
     - name: Install Roswell
-      shell: lispsh {0}
+      shell: lispsh -eo pipefail {0}
       run: |
         echo ::group::Installing Roswell dependencies
+
+
+
         if [[ "$RUNNER_OS" == "Linux" ]]; then
             sudo apt-get update
             sudo apt-get -y install git build-essential automake libcurl4-openssl-dev
@@ -182,14 +190,14 @@ runs:
 
         echo ::endgroup::
     - name: Upgrade Quicklisp dists
-      shell: lispsh {0}
+      shell: lispsh -eo pipefail {0}
       run: |
         # The parent workflow might have caching enabled for Roswell and all
         # the other Lisp files in general, so it's better to tell Quicklisp
         # to update all its dists.
         ros -e "(ql:update-all-dists :prompt nil)"
     - name: Install Quicklisp patch for package-inferred systems
-      shell: lispsh {0}
+      shell: lispsh -eo pipefail {0}
       run: |
         git clone \
             --no-tags \
@@ -201,18 +209,23 @@ runs:
         mkdir -p ~/.roswell
 
         cat >> ~/.roswell/init.lisp <<EOF
-        (let ((fix-filename (make-pathname :directory '(:absolute :home ".quicklisp-client-fix")
-                                           :name "quicklisp-fix"
-                                           :type "lisp")))
-          (cond
-            ((probe-file fix-filename)
-             (format t "Loading quicklisp fix.~%")
-             (load fix-filename))
-            (t
-             (format t "Quicklisp fix was not found at ~S.~%" fix-filename))))
+        (handler-bind ((error #'(lambda (c)
+                                  (uiop:print-condition-backtrace c)
+                                  (uiop:quit 1))))
+          (let ((fix-filename (merge-pathnames
+                               (make-pathname :directory '(:relative ".quicklisp-client-fix")
+                                              :name "quicklisp-fix"
+                                              :type "lisp")
+                               (user-homedir-pathname))))
+            (cond
+              ((probe-file fix-filename)
+               (format t "Loading quicklisp fix.~%")
+               (load fix-filename))
+              (t
+               (format t "Quicklisp fix was not found at ~S.~%" fix-filename)))))
         EOF
     - name: Upgrade ASDF to the Latest Version
-      shell: lispsh {0}
+      shell: lispsh -eo pipefail {0}
       run: |
         if [[ "${{ inputs.asdf-version }}" != "latest" ]]; then
             echo ::group::Installing ASDF ${{ inputs.asdf-version }}
@@ -223,7 +236,7 @@ runs:
         fi
         echo ::endgroup::
     - name: Install Qlot
-      shell: lispsh {0}
+      shell: lispsh -eo pipefail {0}
       run: |
         if [[ "${{ inputs.qlot-version }}" != "latest" ]]; then
             echo ::group::Installing Qlot ${{ inputs.qlot-version }}
@@ -235,7 +248,7 @@ runs:
         echo .qlot/bin >> $GITHUB_PATH
         echo ::endgroup::
     - name: Create Qlot Environment
-      shell: lispsh {0}
+      shell: lispsh -eo pipefail {0}
       run: |
         echo ::group::Create Qlot Environment
 
@@ -264,12 +277,18 @@ runs:
     # all possible roswell scripts, if the system
     # has them in the roswell/ subdirectory:
     - name: Install ASDF System
-      shell: lispsh {0}
+      shell: lispsh -eo pipefail {0}
       run: |
         echo ::group::Install ASDF System
+
         if [[ -n "${{ inputs.asdf-system }}" ]]; then
             qlot exec ros install ${{ inputs.asdf-system }}
         else
             echo "ASDF system wasn't provided."
         fi
         echo ::endgroup::
+
+    - name: Check it is possible to run desired lisp implementation
+      shell: lispsh -eo pipefail {0}
+      run: setup-lisp/test.ros
+      

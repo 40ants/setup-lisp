@@ -1,0 +1,64 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  (ros:ensure-asdf)
+  #+quicklisp(ql:quickload '() :silent t)
+  )
+
+(defpackage :ros.script.test
+  (:use :cl))
+(in-package :ros.script.test)
+
+
+(defparameter *lisps*
+  '(("sbcl-bin" . "SBCL")
+    ("sbcl" . "SBCL")
+    ("clisp" . "CLISP")
+    ("clisp-head" . "CLISP")
+    ("ccl-bin" . "Clozure Common Lisp")
+    ("clasp" . "clasp")
+    ("clasp-bin" . "clasp")
+    ("cmu-bin" . "CMU Common Lisp")
+    ("allegro" . "International Allegro CL Free Express Edition")
+    ("abcl-bin" . "Armed Bear Common Lisp")
+    ("npt" . "NPT")
+    ("ecl" . "ECL")))
+
+
+(defun cut-before (char text)
+  (let ((pos (position char text)))
+    (if pos
+        (subseq text 0 pos)
+        text)))
+
+
+(defun main (&rest argv)
+  (declare (ignorable argv))
+  (handler-bind ((error (lambda (c)
+                          (uiop:print-condition-backtrace c)
+                          ;; Not all implementation do quit with correct status code
+                          ;; in case if we just signal and error :(
+                          ;; Example of such implementations: CCL-BIN 
+                          (uiop:quit 1))))
+    (let ((needed-lisp (uiop:getenv "LISP")))
+      (unless needed-lisp
+        (error "Env variable LISP was not set."))
+     
+      (let ((expected (or (cdr (assoc needed-lisp *lisps* :test #'string-equal))
+                          (cdr (assoc (cut-before #\/ needed-lisp) *lisps* :test #'string-equal))))
+            (real-implementation (lisp-implementation-type)))
+        (unless expected
+          (error "This test does not support LISP=~A. The real-implementation=~A."
+                 needed-lisp
+                 real-implementation))
+       
+        (unless (string-equal real-implementation
+                              expected)
+          (error "Real implementation is \"~A\", but \"~A\" was expected when LISP=~A."
+                 real-implementation
+                 expected
+                 needed-lisp))))))
+;;; vim: set ft=lisp lisp:
