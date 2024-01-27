@@ -23,6 +23,28 @@ and [Qlot][e3ea] inside the Github `CI`.
 * And finally, it can install a specified `ASDF` system and all it's dependencies.
   But this step is optional.
 
+<a id="x-28PROJECT-DOCS-3A-3A-40IMPLEMENTATION-SUPPORT-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## Implementation support
+
+Most implementations are tested on Linux, but for some of them Windows and `OSX` are also should work:
+
+| **Implementation** | **Supported** |
+| --- | --- |
+| abcl-bin | ✅ |
+| allegro | ✅ |
+| ccl-bin | ✅ |
+| clasp | [❌][ecc6] |
+| clasp-bin | ✅ |
+| clisp | [❌][78c5] |
+| clisp-head | ✅ |
+| cmu-bin | ✅ |
+| ecl | ✅ |
+| mkcl | [❌][2801] |
+| npt | [❌][7189] |
+| sbcl | ✅ |
+| sbcl-bin | ✅ |
+
 <a id="x-28PROJECT-DOCS-3A-3A-40TYPICAL-USAGE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## A typical usage
@@ -253,6 +275,10 @@ If you want to contribute to this system, join development at GitHub:
 [8469]: https://40ants.com/run-tests
 [04b3]: https://docs.djangoproject.com/en/3.1/topics/templates/
 [cbff]: https://github.com/40ants/setup-lisp
+[78c5]: https://github.com/40ants/setup-lisp/issues/15
+[ecc6]: https://github.com/40ants/setup-lisp/issues/16
+[2801]: https://github.com/40ants/setup-lisp/issues/17
+[7189]: https://github.com/40ants/setup-lisp/issues/18
 [e3ea]: https://github.com/fukamachi/qlot
 [3dbd]: https://github.com/mmontone/djula
 [795a]: https://github.com/roswell/roswell

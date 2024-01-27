@@ -2,6 +2,26 @@
 
 # ChangeLog
 
+<a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C3-2E1-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 3.1.0 (2023-01-27)
+
+<a id="changed"></a>
+
+### Changed
+
+* Switched from Roswell v21.10.14.111 to v23.10.14.114.
+* Now action checks if it is really installed requested Lisp implementation.
+* A list of supported implementation was added to the documentation.
+* Some implementation supported by Roswell, have problems. If you need them, please, contribute the fix either to this action or to the Roswell itself.
+
+<a id="fixed"></a>
+
+### Fixed
+
+* Now all steps fail-fast on the first encountered error. Previously some step might be failed, but action's execution was considered success.
+* Fixed Quicklisp fix activation for lisp implementations which are not support `:HOME` as part of the pathname.
+
 <a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C3-2E0-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 3.0.0 (2023-12-14)
