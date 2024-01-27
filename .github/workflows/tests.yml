@@ -2,25 +2,57 @@ name: tests
 
 on:
   push:
+    branches:
+      - master
   pull_request:
   schedule:
     - cron: "0 0 * * SUN"
 
 jobs:
   tests:
-    # We want to run on external PRs, but not on our own internal PRs as
-    # they'll be run by the push to the branch.
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
     strategy:
       fail-fast: false # Let the workflow continue as much as possible
       matrix:
         include:
           - os: ubuntu-latest
-            lisp: sbcl-bin
+            lisp: sbcl
+          # Just to ensure test.ros will not fail when version
+          # is specified explicitly
+          - os: ubuntu-latest
+            lisp: sbcl/2.3.1
           - os: macos-latest
             lisp: sbcl-bin
           - os: windows-latest
             lisp: sbcl-bin
+          - os: ubuntu-latest
+            lisp: sbcl-bin
+          - os: ubuntu-latest
+            lisp: ccl-bin
+
+          # See issue: https://github.com/40ants/setup-lisp/issues/15
+          # - os: ubuntu-latest
+          #   lisp: clisp
+          - os: ubuntu-latest
+            lisp: clisp-head
+          - os: ubuntu-latest
+            lisp: ecl
+          - os: ubuntu-latest
+            lisp: allegro
+          - os: ubuntu-latest
+            lisp: abcl-bin
+          # See issue: https://github.com/40ants/setup-lisp/issues/16
+          # - os: ubuntu-latest
+          #   lisp: clasp
+          - os: ubuntu-latest
+            lisp: clasp-bin
+          - os: ubuntu-latest
+            lisp: cmu-bin
+          # See issue: https://github.com/40ants/setup-lisp/issues/17
+          # - os: ubuntu-latest
+          #   lisp: mkcl
+          # See issue: https://github.com/40ants/setup-lisp/issues/18
+          # - os: ubuntu-latest
+          #   lisp: npt
     defaults:
       run:
         shell: lispsh {0}
@@ -28,6 +60,7 @@ jobs:
       LISP: ${{ matrix.lisp }}
     name: test with ${{ matrix.lisp }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v2
         with:
@@ -50,4 +83,6 @@ jobs:
           asdf-version: 3.3.5.3
           qlot-version: latest
       - run: ros config
-      - run: qlot exec ros install 40ants/gh-pages
+      - run: qlot exec ros install 40ants/cl-info
+      - run: qlot exec cl-info
+

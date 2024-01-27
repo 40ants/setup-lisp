@@ -5,7 +5,22 @@
 (in-package project-docs/changelog)
 
 
-(defchangelog (:ignore-words ("ASDF"))
+(defchangelog (:ignore-words ("ASDF"
+                              "HOME"))
+  (3.1.0 2023-01-27
+         "
+# Changed
+
+* Switched from Roswell v21.10.14.111 to v23.10.14.114.
+* Now action checks if it is really installed requested Lisp implementation.
+* A list of supported implementation was added to the documentation.
+* Some implementation supported by Roswell, have problems. If you need them, please, contribute the fix either to this action or to the Roswell itself.
+
+# Fixed
+
+* Now all steps fail-fast on the first encountered error. Previously some step might be failed, but action's execution was considered success.
+* Fixed Quicklisp fix activation for lisp implementations which are not support :HOME as part of the pathname.
+")
   (3.0.0 2023-12-14
          "Now action uses a fix for Quicklisp client which makes it possible to load package inferred ASDF systems by name of the subsystem.")
   (2.1.0 2022-11-10

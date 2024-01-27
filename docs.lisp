@@ -46,6 +46,7 @@ necessary to make available [Roswell](https://github.com/roswell/roswell)
 and [Qlot](https://github.com/fukamachi/qlot) inside the Github CI.
 "
   (@features section)
+  (@implementation-support section)
   (@typical-usage section)
   (@roswell-version section)
   (@asdf-version section)
@@ -72,6 +73,29 @@ and [Qlot](https://github.com/fukamachi/qlot) inside the Github CI.
   But this step is optional.
 ")
 
+
+(defsection @implementation-support (:title "Implementation support")
+  "
+Most implementations are tested on Linux, but for some of them Windows and OSX are also should work:
+
+
+| **Implementation** | **Supported**                                        |
+|--------------------|------------------------------------------------------|
+| abcl-bin           | ✅                                                   |
+| allegro            | ✅                                                   |
+| ccl-bin            | ✅                                                   |
+| clasp              | [❌](https://github.com/40ants/setup-lisp/issues/16) |
+| clasp-bin          | ✅                                                   |
+| clisp              | [❌](https://github.com/40ants/setup-lisp/issues/15) |
+| clisp-head         | ✅                                                   |
+| cmu-bin            | ✅                                                   |
+| ecl                | ✅                                                   |
+| mkcl               | [❌](https://github.com/40ants/setup-lisp/issues/17) |
+| npt                | [❌](https://github.com/40ants/setup-lisp/issues/18) |
+| sbcl               | ✅                                                   |
+| sbcl-bin           | ✅                                                   |
+
+")
 
 (defsection @typical-usage (:title "A typical usage")
   "
