@@ -28,10 +28,6 @@ jobs:
             lisp: sbcl-bin
           - os: ubuntu-latest
             lisp: ccl-bin
-
-          # See issue: https://github.com/40ants/setup-lisp/issues/15
-          # - os: ubuntu-latest
-          #   lisp: clisp
           - os: ubuntu-latest
             lisp: clisp-head
           - os: ubuntu-latest
@@ -40,13 +36,17 @@ jobs:
             lisp: allegro
           - os: ubuntu-latest
             lisp: abcl-bin
-          # See issue: https://github.com/40ants/setup-lisp/issues/16
-          # - os: ubuntu-latest
-          #   lisp: clasp
           - os: ubuntu-latest
             lisp: clasp-bin
           - os: ubuntu-latest
             lisp: cmu-bin
+
+          # See issue: https://github.com/40ants/setup-lisp/issues/15
+          # - os: ubuntu-latest
+          #   lisp: clisp
+          # See issue: https://github.com/40ants/setup-lisp/issues/16
+          # - os: ubuntu-latest
+          #   lisp: clasp
           # See issue: https://github.com/40ants/setup-lisp/issues/17
           # - os: ubuntu-latest
           #   lisp: mkcl
@@ -55,20 +55,20 @@ jobs:
           #   lisp: npt
     defaults:
       run:
-        shell: lispsh {0}
+        shell: lispsh -eo pipefail {0}
     env:
       LISP: ${{ matrix.lisp }}
     name: test with ${{ matrix.lisp }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           # The repo already contains the qlot and qlot.lock files, and since
           # we don't want those to interfere with the current test run, we
           # clone the repository somewhere else (i.e. something different from
           # the default './')
-          path: setup-lisp/
+          path: setup-lisp
       - name: Call setup-lisp with default arguments
         if: github.event_name != 'schedule'
         uses: ./setup-lisp/
@@ -82,6 +82,7 @@ jobs:
           # https://github.com/roswell/roswell/issues/497
           asdf-version: 3.3.5.3
           qlot-version: latest
+      - run: which ros
       - run: ros config
       - run: qlot exec ros install 40ants/cl-info
       - run: qlot exec cl-info

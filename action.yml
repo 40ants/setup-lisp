@@ -42,6 +42,7 @@ runs:
     - name: Create lispsh
       shell: bash
       run: |
+        echo ::group::Set up link to lispsh
         # All the steps below, should work without problems on Linux, Mac OS,
         # and Windows, provided that they are run with the "right" shell
         # parameter, i.e. bash for Linux and Mac OS, and msys2 for Windows.
@@ -68,42 +69,13 @@ runs:
         else
             sudo ln -sf $(which bash) /usr/local/bin/lispsh
         fi
+        echo ::endgroup::
     - name: Set up Environment
       shell: bash
       run: |
         echo ::group::Set up Environment
 
         if [[ "$RUNNER_OS" == "Windows" ]]; then
-            # ROSWELL_INSTALL_DIR defaults to /usr/local/bin which
-            # unfortunately is not part of PATH on Windows; one could be
-            # tempted to patch things up like this:
-            #
-            #     echo /usr/local/bin >> $GITHUB_PATH
-            #
-            # However, if the absolute Windows path that /usr/local/bin
-            # actually refers to, contains any white space in it, you will
-            # inevitably bump into the following error:
-            #
-            #     'C:\Program' is not recognized as an internal or external command,
-            #       operable program or batch file.
-            #       Install Script for sbcl-bin...
-            #       'C:\Program' is not recognized as an internal or external command,
-            #       operable program or batch file.
-            #       Unhandled UIOP/RUN-PROGRAM:SUBPROCESS-ERROR in thread #<SB-THREAD:THREAD "main thread" RUNNING
-            #                                                                {10057000A3}>:
-            #         Subprocess #<UIOP/LAUNCH-PROGRAM::PROCESS-INFO {100506B0E3}>
-            #        with command "C:\\Program Files\\Git\\usr\\local\\bin\\ros.exe config set setup.time 3843610170"
-            #        exited with error code 1
-            #
-            #       Backtrace for: #<SB-THREAD:THREAD "main thread" RUNNING {10057000A3}>
-            #
-            # The work-around?  Install Roswell in a different location, whose
-            # absolute path we are 100% positive won't contain any white
-            # spaces!
-            mkdir -p /d/a/_temp/roswell
-            echo ROSWELL_INSTALL_DIR=/d/a/_temp/roswell >> $GITHUB_ENV
-            echo /d/a/_temp/roswell >> $GITHUB_PATH
-
             # Roswell internally checks for the MSYSCON env varible to be
             # defined, and when not there, it would go and install msys2 (i.e.
             # `ros install msys2+`) and rely on the `bash` bonary that comes
@@ -164,8 +136,6 @@ runs:
       run: |
         echo ::group::Installing Roswell dependencies
 
-
-
         if [[ "$RUNNER_OS" == "Linux" ]]; then
             sudo apt-get update
             sudo apt-get -y install git build-essential automake libcurl4-openssl-dev
@@ -182,10 +152,10 @@ runs:
 
         if [[ "${{ inputs.roswell-version }}" != "latest" ]]; then
             echo ::group::Installing Roswell ${{ inputs.roswell-version }}
-            curl -L https://raw.githubusercontent.com/roswell/roswell/${{ inputs.roswell-version }}/scripts/install-for-ci.sh | sh -x
+            curl -L https://raw.githubusercontent.com/roswell/roswell/${{ inputs.roswell-version }}/scripts/install-for-ci.sh | bash -xeo pipefail
         else
             echo ::group::Installing latest Roswell
-            curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh -x
+            curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | bash -xeo pipefail
         fi
 
         echo ::endgroup::
@@ -290,5 +260,25 @@ runs:
 
     - name: Check it is possible to run desired lisp implementation
       shell: lispsh -eo pipefail {0}
-      run: setup-lisp/test.ros
-      
+      # Call ${{ github.action_path }}test.ros does not work on windows
+      # because of backslashes.
+      #
+      # Here we are using sed to transform slashes in the path.
+      # Without this trick it is impossible to run test.ros on Windows.
+      # 
+      # The other way to do the trick is to change write path to GITHUB_PATH.
+      # In this case, GitHub itself will convert backslashes. Hovewer, this
+      # way the path will be added to the PATH variable of the workflow
+      # which used setup-lisp and I consider this is not desired behaviour.
+      run: |
+        echo ::group::Checking if we installed correct Lisp implementation
+        
+        if [[ "$RUNNER_OS" == "Windows" ]]; then
+            ACTION_PATH="$(echo '${{ github.action_path }}' | sed -e 's|/|\\|')\\"
+        else
+            ACTION_PATH='${{ github.action_path }}/'
+        fi
+        
+        ${ACTION_PATH}test.ros
+
+        echo ::endgroup::

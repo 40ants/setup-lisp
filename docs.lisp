@@ -76,7 +76,16 @@ and [Qlot](https://github.com/fukamachi/qlot) inside the Github CI.
 
 (defsection @implementation-support (:title "Implementation support")
   "
-Most implementations are tested on Linux, but for some of them Windows and OSX are also should work:
+Most implementations are tested on Linux, but for some of them Windows and OSX are also should work.
+
+Note, that for correct execution, your workflow should use `lispsh -eo pipefail` instead of default `bash`.
+This way a workflow will work Linux, OSX and Windows. You you will ignore this advice, you'll see such error
+when trying to call `ros` or `qlot` scripts:
+
+```
+/c/Users/runneradmin/.roswell/lisp/quicklisp/bin/qlot: line 4: exec: ros: not found
+  Error: Process completed with exit code 127.
+```
 
 
 | **Implementation** | **Supported**                                        |
