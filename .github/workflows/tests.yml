@@ -51,3 +51,4 @@ jobs:
           qlot-version: latest
       - run: ros config
       - run: qlot exec ros install 40ants/gh-pages
+      - run: which ros
