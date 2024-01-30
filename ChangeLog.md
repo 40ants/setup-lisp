@@ -2,6 +2,24 @@
 
 # ChangeLog
 
+<a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C3-2E2-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 3.2.0 (2023-01-30)
+
+<a id="changed"></a>
+
+### Changed
+
+* Now action uses `bash -xeo pipefail` for running Roswell install script. This way, in case of some errors inside the script, it will be interrupted immediately.
+* Also, we don't attempt to set `ROSWELL_INSTALL_DIR` env variable anymore, because despite it's presence, Roswell was installed into `/mingw64/bin/` instead under Windows and it works well (at least for me).
+* Now we don't add action's directory to the `PATH` using modification of `GITHUB_PATH` variable. This prevents modification of the `PATH` of a workflow called the action.
+
+<a id="fixed"></a>
+
+### Fixed
+
+* Fixed running of test.ros script under Windows.
+
 <a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C3-2E1-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 3.1.0 (2023-01-27)
