@@ -60,5 +60,9 @@ exec ros -Q -- $0 "$@"
           (error "Real implementation is \"~A\", but \"~A\" was expected when LISP=~A."
                  real-implementation
                  expected
-                 needed-lisp))))))
+                 needed-lisp))
+
+        (format t "Everything ok, we are running on \"~A\" as expected for LISP=~A."
+                real-implementation
+                needed-lisp)))))
 ;;; vim: set ft=lisp lisp:

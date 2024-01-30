@@ -6,7 +6,21 @@
 
 
 (defchangelog (:ignore-words ("ASDF"
+                              "PATH"
                               "HOME"))
+  (3.2.0 2023-01-30
+         "
+# Changed
+
+* Now action uses `bash -xeo pipefail` for running Roswell install script. This way, in case of some errors inside the script, it will be interrupted immediately.
+* Also, we don't attempt to set `ROSWELL_INSTALL_DIR` env variable anymore, because despite it's presence, Roswell was installed into `/mingw64/bin/` instead under Windows and it works well (at least for me).
+* Now we don't add action's directory to the `PATH` using modification of `GITHUB_PATH` variable. This prevents modification of the `PATH` of a workflow called the action.
+
+# Fixed
+
+* Fixed running of test.ros script under Windows.
+
+")
   (3.1.0 2023-01-27
          "
 # Changed
