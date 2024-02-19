@@ -68,7 +68,7 @@ runs:
         # `shell: msys2 {0}`.
         if [[ "$RUNNER_OS" == "Windows" ]]; then
             powershell New-Item -ItemType SymbolicLink \
-              -Path  "D:/a/_temp/setup-msys2/lispsh.cmd" \
+              -Path  "/usr/local/bin/lispsh" \
               -Target "D:/a/_temp/setup-msys2/msys2.cmd"
         else
             sudo ln -sf $(which bash) /usr/local/bin/lispsh
@@ -302,4 +302,4 @@ runs:
       # cache ~/.roswell directory. And if we'll leave lispsh
       # link in the /usr/local/bin, then it will become unavailable
       # when cache will be restored
-      run: mv `which lispsh` ~/.roswell/bin
+      run: mv `/usr/local/bin/lispsh` ~/.roswell/bin
