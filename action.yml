@@ -242,17 +242,19 @@ runs:
             touch qlfile
         fi
 
-        # qlot install
+        which ros
+        which qlot
+        qlot install
         echo ::endgroup::
       env:
         QLFILE_TEMPLATE: ${{ inputs.qlfile-template }}
 
-    - name: Start SSH session
-      uses: luchihoratiu/debug-via-ssh@main
-      with:
-        NGROK_AUTH_TOKEN: ${{ inputs.ngrok_auth_token }}
-        NGROK_REGION: eu
-        SSH_PASS: ${{ inputs.ssh_pass }}
+    # - name: Start SSH session
+    #   uses: luchihoratiu/debug-via-ssh@main
+    #   with:
+    #     NGROK_AUTH_TOKEN: ${{ inputs.ngrok_auth_token }}
+    #     NGROK_REGION: eu
+    #     SSH_PASS: ${{ inputs.ssh_pass }}
 
     # This step will install system and
     # all possible roswell scripts, if the system
