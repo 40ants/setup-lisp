@@ -284,6 +284,7 @@ runs:
         echo ::endgroup::
 
     - name: Move lispsh into ~/.roswell/bin
+      shell: lispsh -eo pipefail {0}
       # We need this step because usually you will want to
       # cache ~/.roswell directory. And if we'll leave lispsh
       # link in the /usr/local/bin, then it will become unavailable
