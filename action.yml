@@ -244,7 +244,7 @@ runs:
 
         which ros
         which qlot
-        qlot install
+        qlot install --no-deps
         echo ::endgroup::
       env:
         QLFILE_TEMPLATE: ${{ inputs.qlfile-template }}
