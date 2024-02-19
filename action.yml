@@ -282,3 +282,10 @@ runs:
         ${ACTION_PATH}test.ros
 
         echo ::endgroup::
+
+    - name: Move lispsh into ~/.roswell/bin
+      # We need this step because usually you will want to
+      # cache ~/.roswell directory. And if we'll leave lispsh
+      # link in the /usr/local/bin, then it will become unavailable
+      # when cache will be restored
+      run: mv `which lispsh` ~/.roswell/bin
