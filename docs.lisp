@@ -71,6 +71,8 @@ and [Qlot](https://github.com/fukamachi/qlot) inside the Github CI.
   `qlfile`, see \"Overriding qlfile\" section.
 * And finally, it can install a specified ASDF system and all it's dependencies.
   But this step is optional.
+* Installed Roswell, `.qlot` and `~/.cache/common-lisp/` files are cached to speed up
+  repeated builds.
 ")
 
 
@@ -91,7 +93,7 @@ when trying to call `ros` or `qlot` scripts:
 | **Implementation** | **Supported**                                        |
 |--------------------|------------------------------------------------------|
 | abcl-bin           | ✅                                                   |
-| allegro            | ✅                                                   |
+| allegro            | ✅ (sometimes fails because of \"expired-license\")  |
 | ccl-bin            | ✅                                                   |
 | clasp              | [❌](https://github.com/40ants/setup-lisp/issues/16) |
 | clasp-bin          | ✅                                                   |
@@ -134,8 +136,8 @@ jobs:
       LISP: ${{ matrix.lisp }}
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: 40ants/setup-lisp@v2
+      - uses: actions/checkout@v4
+      - uses: 40ants/setup-lisp@v4
         with:
           asdf-system: cl-info
       - uses: 40ants/run-tests@v2
@@ -146,7 +148,7 @@ jobs:
 The part, corresponding to an action call is:
 
 ```yaml
-- uses: 40ants/setup-lisp@v2
+- uses: 40ants/setup-lisp@v4
   with:
     asdf-system: cl-info
 ```
@@ -175,7 +177,7 @@ working with this action. However, should you need to use a different version
 instead, you can specify that via the `roswell-version` argument:
 
 ```
-- uses: 40ants/setup-lisp@v2
+- uses: 40ants/setup-lisp@v4
   with:
     roswell-version: v21.10.14.111
 ```
@@ -189,7 +191,7 @@ working with this action.  However, should you need to use a different version
 instead, you can specify that via the `asdf-version` argument:
 
 ```
-- uses: 40ants/setup-lisp@v2
+- uses: 40ants/setup-lisp@v4
   with:
     asdf-version: 3.3.5.3
 ```
@@ -203,7 +205,7 @@ working with this action.  However, should you need to use a different version
 instead, you can specify that via the `qlot-version` argument:
 
 ```
-- uses: 40ants/setup-lisp@v2
+- uses: 40ants/setup-lisp@v4
   with:
     qlot-version: 0.11.5
 ```
@@ -240,8 +242,8 @@ env:
   QUICKLISP_DIST: ${{ matrix.quicklisp-dist }}
 
 steps:
-  - uses: actions/checkout@v2
-  - uses: 40ants/setup-lisp@v2
+  - uses: actions/checkout@v4
+  - uses: 40ants/setup-lisp@v4
     with:
       asdf-system: cl-info
       qlfile-template: |
@@ -271,58 +273,17 @@ Usually installing Roswell, a lisp implementation and dependencies
 take from 2 to 10 minutes. Multiply this to the number of
 matrix combinations and you'll get signifficant time.
 
-To speed up build, you can use caching using a standad GitHub action `actions/cache@v2`.
+Starting from version `4.0.0`, this action cares about caching itself
+and you don't need to wrap it with `actions/cache`. This behaviour
+of enabled by default. Without cache action could be executed about
+4 minutes, and with cache it runs only 20 seconds on Ubuntu or 1 minute on Windows.
 
-To make caching work, add such sections into your workflow file:
+A new input variable `cache` was added to control caching beheviour.
+It is `true` by default, but you can switch it to `false` to turn caching off.
 
-```yaml
-- name: Grant All Perms to Make Cache Restoring Possible
-  run: |
-    sudo mkdir -p /usr/local/etc/roswell
-    sudo chown \"${USER}\" /usr/local/etc/roswell
-    # Here the ros binary will be restored:
-    sudo chown \"${USER}\" /usr/local/bin
-- name: Get Current Month
-  id: current-month
-  run: |
-    echo \"::set-output name=value::$(date -u \"+%Y-%m\")\"
-- name: Cache Roswell Setup
-  id: cache
-  uses: actions/cache@v2
-  env:
-    cache-name: cache-roswell
-  with:
-    path: |
-      /usr/local/bin/ros
-      ~/.cache/common-lisp/
-      ~/.roswell
-      /usr/local/etc/roswell
-      .qlot
-    key: \"${{ steps.current-month.outputs.value }}-${{ env.cache-name }}-${{ runner.os }}-${{ hashFiles('qlfile.lock') }}\"
-- name: Restore Path To Cached Files
-  run: |
-    echo $HOME/.roswell/bin >> $GITHUB_PATH
-    echo .qlot/bin >> $GITHUB_PATH
-  if: steps.cache.outputs.cache-hit == 'true'
-- uses: 40ants/setup-lisp@v2
-  if: steps.cache.outputs.cache-hit != 'true'
-```
-
-There are two important lines here.
-
-- The last line `if: steps.cache.outputs.cache-hit != 'true'` skips
-  running lisp installation, it it was take from the cache.
-- The `key` value:
-
-  ```
-  key: \"${{ steps.current-month.outputs.value }}-${{ env.cache-name }}-${{ runner.os }}-${{ hashFiles('qlfile.lock') }}\"
-  ```
-
-  It controls when your cache will be matched. If you are using `matrix`, put all it's components
-  into the key.
-
-  I also added a current month there, to make sure cache will be renewed at least monthly.
-  This way a new Roswell, Qlot and ASDF will be used in a build.
+The current month is used as part of the cache key, to refresh caches every month.
+This way a new Roswell, Qlot and ASDF will be used in a build. Also, you can set
+`env.cache-name` variable to some value, to force rebuild with a fresh cache.
 ")
 
 

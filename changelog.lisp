@@ -8,6 +8,14 @@
 (defchangelog (:ignore-words ("ASDF"
                               "PATH"
                               "HOME"))
+  (4.0.0 2024-02-24
+         "
+# Changed
+
+* Internal cache mechanism was added. Now action caches Roswell and Qlot files to speed up reruns. For example, without cache action could be executed about 4 minutes, and with cache it runs only 20 seconds on Ubuntu or 1 minute on Windows.
+* A new input variable `cache` was added to control caching beheviour. It is `true` by default, but you can switch it to `false` to turn caching off.
+
+")
   (3.2.0 2023-01-30
          "
 # Changed
