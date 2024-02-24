@@ -2,6 +2,17 @@
 
 # ChangeLog
 
+<a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 4.0.0 (2024-02-24)
+
+<a id="changed"></a>
+
+### Changed
+
+* Internal cache mechanism was added. Now action caches Roswell and Qlot files to speed up reruns. For example, without cache action could be executed about 4 minutes, and with cache it runs only 20 seconds on Ubuntu or 1 minute on Windows.
+* A new input variable `cache` was added to control caching beheviour. It is `true` by default, but you can switch it to `false` to turn caching off.
+
 <a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C3-2E2-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 3.2.0 (2023-01-30)
