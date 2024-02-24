@@ -1,44 +1,98 @@
 name: 'Setup Common Lisp'
+author: Alexander Artemenko
+description: This action setup Roswell and a Common Lisp implementation plus Qlot for managing virtual environments.
 
 inputs:
   roswell-version:
     description: 'Roswell version to install. If not specified, the latest working version will be used; if "latest", the latest version is used'
     required: false
     default: v23.10.14.114
+
   asdf-system:
     description: 'ASDF system to install'
     required: false
+
   asdf-version:
     description: 'ASDF version to install. If not specified, the latest working version will be used; if "latest", the latest version is used'
     required: false
     default: 3.3.5.3
+
   qlot-version:
     description: 'Qlot version to install. If not specified, the latest working version will be used; if "latest", the latest version is used'
     required: false
     default: 0.11.5
+
   qlfile-template:
     description: "Djula template for qlfile. All environment variables are available in it's context"
     required: false
 
+  cache:
+    description: 'If true (default), then cache will be created to speedup repeated action runs.'
+    required: false
+    default: true
+
+  # GitHub does not support anchors in the action
+  # and returns error like this:
+  #
+  # Anchors are not currently supported. Remove the anchor 'roswell-cache-paths'
+  #
+  # That is why I use "input" variable to not repeat this list in two places
+  roswell-cache-paths:
+    description: "Internal var. Don't use it."
+    required: false
+    default: |
+      ~/.quicklisp-client-fix
+      ~/.roswell
+      /usr/local/etc/roswell
+      /usr/local/bin/ros
+      /usr/local/Cellar/roswell
+
+  qlot-cache-paths:
+    description: "Internal var. Don't use it."
+    required: false
+    default: |
+      path: |
+        qlfile
+        qlfile.lock
+        ~/.cache/common-lisp/
+        .qlot
+
 runs:
   using: composite
   steps:
-    # Using branch v2.14.0
-    - uses: msys2/setup-msys2@d40200dc2db4c351366b048a9565ad82919e1c24
+    - name: Calculate variables
+      id: locals
+      shell: bash
+      run: |
+        if [[ '${{ inputs.roswell-version }}' == 'latest' ]]
+        then
+          echo "windows-package-name=mingw-w64-x86_64-roswell" >> $GITHUB_OUTPUT
+        else
+          # Strip v prefix from version number
+          ROS_VERSION=$(echo ${{ inputs.roswell-version }} | sed 's/v//')
+          echo "windows-package-name=mingw-w64-x86_64-roswell=$ROS_VERSION" >> $GITHUB_OUTPUT
+        fi
+
+        # echo 'roswell-cache-paths=~/.quicklisp-client-fix\n~/.roswell\n/usr/local/etc/roswell\n/usr/local/bin/ros\n/usr/local/Cellar/roswell' >> $GITHUB_OUTPUT
+
+        echo "current-month=$(date -u '+%Y-%m')" >> $GITHUB_OUTPUT
+            
+    - if: runner.os == 'Windows'
+      uses: msys2/setup-msys2@cc11e9188b693c2b100158c3322424c4cc1dadea #v2.22.0
       with:
-        # Roswell was added to msys2 just _recently_, so the following makes
-        # sure packages metadata is up to date.  Otherwise...
-        #
-        #    $ pacman -S mingw-w64-x86_64-roswell
-        #    error: target not found: mingw-w64-x86_64-roswell
-        #    Error: Process completed with exit code 1
-        update: true
         # Msys2 has its own PATH, and the following setting enables standard
         # PATH manipulation expressions like the one shown below, to succeed:
         #
         #    $ echo /usr/local/bin >> $GITHUB_PATH
         path-type: inherit
         platform-check-severity: warn
+        # Installing ASDF requires `make`, so let's make sure it's
+        # available
+        install: >-
+          make
+          ${{ steps.locals.outputs.windows-package-name }}
+        cache: ${{ inputs.cache }}
+
     - name: Create lispsh
       shell: bash
       run: |
@@ -63,7 +117,7 @@ runs:
         # below, and have some of them with `shell: bash`, and others with
         # `shell: msys2 {0}`.
         if [[ "$RUNNER_OS" == "Windows" ]]; then
-            powershell New-Item -ItemType SymbolicLink \
+            powershell New-Item -ItemType SymbolicLink -Force \
               -Path  "D:/a/_temp/setup-msys2/lispsh.cmd" \
               -Target "D:/a/_temp/setup-msys2/msys2.cmd"
         else
@@ -121,17 +175,56 @@ runs:
         fi
         echo $HOME/.roswell/bin >> $GITHUB_PATH
         echo ::endgroup::
-    - name: Current Env
-      shell: bash
-      run: |
-        echo ::group::Environment
-        echo "Current dir:"
-        pwd
 
-        echo "Environment Variables:"
-        env | sort -u
-        echo ::endgroup::
-    - name: Install Roswell
+    # TODO: comment for prod
+    # - name: Current Env
+    #   shell: bash
+    #   run: |
+    #     echo ::group::Environment
+    #     echo "Current dir:"
+    #     pwd
+
+    #     echo "Environment Variables:"
+    #     env | sort -u
+    #     echo ::endgroup::
+
+    # On Windows we dont have such problems with permission.
+    # Also we don't have sudo there, so just skip this step
+    # on this platform:
+    - if: inputs.cache == 'true' && runner.os != 'Windows'
+      name: Grant All Perms to Make Roswell Cache Restoring Possible
+      shell: lispsh -eo pipefail {0}
+      run: |
+        sudo mkdir -p /usr/local/etc/roswell
+        sudo chown "${USER}" /usr/local/etc/roswell
+        # Here the ros binary will be restored:
+        sudo chown "${USER}" /usr/local/bin
+
+    - if: inputs.cache == 'true'
+      name: Restore Roswell From Cache
+      id: roswell-cache-restore
+      uses: actions/cache/restore@v4
+      with:
+        path: ${{ inputs.roswell-cache-paths }}
+        key: roswell-${{ inputs.roswell-version }}-${{ steps.locals.outputs.current-month }}-${{ env.cache-name }}-${{ runner.os }}-${{ env.LISP }}
+
+    - if: inputs.cache == 'true' && steps.roswell-cache-restore.outputs.cache-hit == 'true'
+      name: Restore Path To Cached Files
+      shell: lispsh -eo pipefail {0}
+      run: |
+        echo $HOME/.roswell/bin >> $GITHUB_PATH
+        echo .qlot/bin >> $GITHUB_PATH
+
+        if [[ "$RUNNER_OS" == "Windows" ]]; then
+          echo $HOME/.roswell/lisp/quicklisp/bin >> $GITHUB_PATH
+        fi
+
+
+    # Start the piece which results should be cached
+
+    # On Windows we install roswell using Pacman package manager and don't need this step
+    - if: (inputs.cache == 'false' || steps.roswell-cache-restore.outputs.cache-hit != 'true') && runner.os != 'Windows'
+      name: Install Roswell
       shell: lispsh -eo pipefail {0}
       run: |
         echo ::group::Installing Roswell dependencies
@@ -143,11 +236,7 @@ runs:
         if [[ "$RUNNER_OS" == "macOS" ]]; then
             brew install automake autoconf curl
         fi
-        if [[ "$RUNNER_OS" == "Windows" ]]; then
-            # Installing ASDF requires `make`, so let's make sure it's
-            # available
-            msys2.cmd -c "pacman --noconfirm -S --needed --overwrite '*' make"
-        fi
+
         echo ::endgroup::
 
         if [[ "${{ inputs.roswell-version }}" != "latest" ]]; then
@@ -159,14 +248,18 @@ runs:
         fi
 
         echo ::endgroup::
-    - name: Upgrade Quicklisp dists
+        
+    - if: inputs.cache == 'false' || steps.roswell-cache-restore.outputs.cache-hit != 'true'
+      name: Upgrade Quicklisp dists
       shell: lispsh -eo pipefail {0}
       run: |
         # The parent workflow might have caching enabled for Roswell and all
         # the other Lisp files in general, so it's better to tell Quicklisp
         # to update all its dists.
         ros -e "(ql:update-all-dists :prompt nil)"
-    - name: Install Quicklisp patch for package-inferred systems
+        
+    - if: inputs.cache == 'false' || steps.roswell-cache-restore.outputs.cache-hit != 'true'
+      name: Install Quicklisp patch for package-inferred systems
       shell: lispsh -eo pipefail {0}
       run: |
         git clone \
@@ -194,7 +287,9 @@ runs:
               (t
                (format t "Quicklisp fix was not found at ~S.~%" fix-filename)))))
         EOF
-    - name: Upgrade ASDF to the Latest Version
+       
+    - if: inputs.cache == 'false' || steps.roswell-cache-restore.outputs.cache-hit != 'true'
+      name: Upgrade ASDF to the Latest Version
       shell: lispsh -eo pipefail {0}
       run: |
         if [[ "${{ inputs.asdf-version }}" != "latest" ]]; then
@@ -205,7 +300,9 @@ runs:
             ros install asdf
         fi
         echo ::endgroup::
-    - name: Install Qlot
+
+    - if: inputs.cache == 'false' || steps.roswell-cache-restore.outputs.cache-hit != 'true'
+      name: Install Qlot
       shell: lispsh -eo pipefail {0}
       run: |
         if [[ "${{ inputs.qlot-version }}" != "latest" ]]; then
@@ -217,7 +314,32 @@ runs:
         fi
         echo .qlot/bin >> $GITHUB_PATH
         echo ::endgroup::
-    - name: Create Qlot Environment
+
+    - if: inputs.cache == 'true' && steps.roswell-cache-restore.outputs.cache-hit != 'true'
+      name: Cache Roswell Setup
+      id: roswell-cache-save
+      uses: actions/cache/save@v4
+      with:
+        path: ${{ inputs.roswell-cache-paths }}
+        key: ${{ steps.roswell-cache-restore.outputs.cache-primary-key }}
+
+
+    - if: inputs.cache == 'true'
+      name: Restore Qlot Environment
+      id: qlot-cache-restore
+      uses: actions/cache/restore@v4
+      with:
+        path: ${{ inputs.qlot-cache-paths }}
+        key: qlot-${{ steps.locals.outputs.current-month }}-${{ env.cache-name }}-${{ runner.os }}-${{ env.QUICKLISP_DIST }}-${{ env.LISP }}-${{ hashFiles('qlfile', 'qlfile.lock', '*.asd') }}
+
+    - if: inputs.cache == 'true' && steps.qlot-cache-restore.outputs.cache-hit == 'true'
+      name: Restore Path To .qlot/bin
+      shell: lispsh -eo pipefail {0}
+      run: |
+        echo .qlot/bin >> $GITHUB_PATH
+
+    - if: inputs.cache == 'false' || steps.qlot-cache-restore.outputs.cache-hit != 'true'
+      name: Create Qlot Environment
       shell: lispsh -eo pipefail {0}
       run: |
         echo ::group::Create Qlot Environment
@@ -246,7 +368,8 @@ runs:
     # This step will install system and
     # all possible roswell scripts, if the system
     # has them in the roswell/ subdirectory:
-    - name: Install ASDF System
+    - if: inputs.cache == 'false' || steps.qlot-cache-restore.outputs.cache-hit != 'true'
+      name: Install ASDF System
       shell: lispsh -eo pipefail {0}
       run: |
         echo ::group::Install ASDF System
@@ -257,6 +380,16 @@ runs:
             echo "ASDF system wasn't provided."
         fi
         echo ::endgroup::
+
+    - if: inputs.cache == 'true' && steps.qlot-cache-restore.outputs.cache-hit != 'true'
+      name: Cache Qlot Environment
+      id: qlot-cache-save
+      uses: actions/cache/save@v4
+      with:
+        path: ${{ inputs.qlot-cache-paths }}
+        key: ${{ steps.qlot-cache-restore.outputs.cache-primary-key }}
+
+    # End of the cached piece
 
     - name: Check it is possible to run desired lisp implementation
       shell: lispsh -eo pipefail {0}
