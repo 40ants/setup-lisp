@@ -42,7 +42,7 @@ when trying to call `ros` or `qlot` scripts:
 | **Implementation** | **Supported** |
 | --- | --- |
 | abcl-bin | ✅ |
-| allegro | ✅ (sometimes fails because of "expired-license") |
+| allegro | [❌][d984] |
 | ccl-bin | ✅ |
 | clasp | [❌][ecc6] |
 | clasp-bin | ✅ |
@@ -249,6 +249,7 @@ If you want to contribute to this system, join development at GitHub:
 [ecc6]: https://github.com/40ants/setup-lisp/issues/16
 [2801]: https://github.com/40ants/setup-lisp/issues/17
 [7189]: https://github.com/40ants/setup-lisp/issues/18
+[d984]: https://github.com/40ants/setup-lisp/issues/22
 [e3ea]: https://github.com/fukamachi/qlot
 [3dbd]: https://github.com/mmontone/djula
 [795a]: https://github.com/roswell/roswell

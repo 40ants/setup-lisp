@@ -2,6 +2,16 @@
 
 # ChangeLog
 
+<a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E1-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 4.0.1 (2024-02-25)
+
+<a id="fixed"></a>
+
+### Fixed
+
+* Fixed loading of quicklisp-osx-fix. Previously the script made unnecessary output and when you had a `qlfile` template in your workflow this output leaked into `qlfile` broking following `qlot install`.
+
 <a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 4.0.0 (2024-02-24)
