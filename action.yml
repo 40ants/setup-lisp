@@ -272,20 +272,19 @@ runs:
         mkdir -p ~/.roswell
 
         cat >> ~/.roswell/init.lisp <<EOF
-        (handler-bind ((error #'(lambda (c)
-                                  (uiop:print-condition-backtrace c)
-                                  (uiop:quit 1))))
-          (let ((fix-filename (merge-pathnames
-                               (make-pathname :directory '(:relative ".quicklisp-client-fix")
-                                              :name "quicklisp-fix"
-                                              :type "lisp")
-                               (user-homedir-pathname))))
+        (let ((fix-filename (make-pathname :directory '(:absolute :home ".quicklisp-client-fix")
+                                           :name "quicklisp-fix"
+                                           :type "lisp")))
+          (let ((quicklisp-found #+quicklisp t
+                                 #-quicklisp nil))
             (cond
+              ((not quicklisp-found)
+               (warn "Quicklisp is not available, skipping fix loading.~%"))
               ((probe-file fix-filename)
-               (format t "Loading quicklisp fix.~%")
-               (load fix-filename))
+               (handler-bind ((warning #'muffle-warning))
+                 (load fix-filename)))
               (t
-               (format t "Quicklisp fix was not found at ~S.~%" fix-filename)))))
+               (warn "Quicklisp fix was not found at ~S.~%" fix-filename)))))
         EOF
        
     - if: inputs.cache == 'false' || steps.roswell-cache-restore.outputs.cache-hit != 'true'

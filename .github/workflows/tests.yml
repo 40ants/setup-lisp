@@ -33,14 +33,15 @@ jobs:
           - os: ubuntu-latest
             lisp: ecl
           - os: ubuntu-latest
-            lisp: allegro
-          - os: ubuntu-latest
             lisp: abcl-bin
           - os: ubuntu-latest
             lisp: clasp-bin
           - os: ubuntu-latest
             lisp: cmu-bin
 
+          # See issue: https://github.com/40ants/setup-lisp/issues/22
+          # - os: ubuntu-latest
+          #   lisp: allegro
           # See issue: https://github.com/40ants/setup-lisp/issues/15
           # - os: ubuntu-latest
           #   lisp: clisp
