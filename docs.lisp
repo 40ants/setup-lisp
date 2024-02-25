@@ -93,7 +93,7 @@ when trying to call `ros` or `qlot` scripts:
 | **Implementation** | **Supported**                                        |
 |--------------------|------------------------------------------------------|
 | abcl-bin           | ✅                                                   |
-| allegro            | ✅ (sometimes fails because of \"expired-license\")  |
+| allegro            | [❌](https://github.com/40ants/setup-lisp/issues/22) |
 | ccl-bin            | ✅                                                   |
 | clasp              | [❌](https://github.com/40ants/setup-lisp/issues/16) |
 | clasp-bin          | ✅                                                   |
