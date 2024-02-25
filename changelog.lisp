@@ -8,6 +8,12 @@
 (defchangelog (:ignore-words ("ASDF"
                               "PATH"
                               "HOME"))
+  (4.0.1 2024-02-25
+         "
+# Fixed
+
+* Fixed loading of quicklisp-osx-fix. Previously the script made unnecessary output and when you had a `qlfile` template in your workflow this output leaked into `qlfile` broking following `qlot install`.
+")
   (4.0.0 2024-02-24
          "
 # Changed
