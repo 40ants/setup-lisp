@@ -8,6 +8,15 @@
 (defchangelog (:ignore-words ("ASDF"
                               "PATH"
                               "HOME"))
+  (4.0.2 2024-02-27
+         "
+# Fixed
+
+* Fix recreating of qlfile inside qlot environment cache.
+
+  When some jobs used qlfile-template argument + caching, a template application
+  result was cached and caused an error during the next run.
+")
   (4.0.1 2024-02-25
          "
 # Fixed
