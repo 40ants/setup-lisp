@@ -322,6 +322,34 @@ runs:
         path: ${{ inputs.roswell-cache-paths }}
         key: ${{ steps.roswell-cache-restore.outputs.cache-primary-key }}
 
+    # We really need this step go before cache restore,
+    # because it changes qlfile and cache key depends on it.
+    - name: Ensure qlfile exists
+      shell: lispsh -eo pipefail {0}
+      run: |
+        echo ::group::Ensure qlfile exists
+
+        if [[ -n "${{ inputs.qlfile-template }}" ]]; then
+            echo "${{ inputs.qlfile-template }}" | $GITHUB_ACTION_PATH/templater.ros > qlfile
+            rm -f qlfile.lock
+            
+            echo "Created qlfile:"
+            echo '==============='
+            cat qlfile
+            echo '==============='
+            echo ''
+        elif [[ -e qlfile ]]; then
+            echo 'Here is content of qlfile:'
+            echo '==============='
+            cat qlfile
+            echo '==============='
+            echo ''
+        else
+            echo 'There is no qlfile. Creating an empty one.'
+            touch qlfile
+        fi
+            
+        echo ::endgroup::
 
     - if: inputs.cache == 'true'
       name: Restore Qlot Environment
@@ -342,23 +370,6 @@ runs:
       shell: lispsh -eo pipefail {0}
       run: |
         echo ::group::Create Qlot Environment
-
-        if [[ -n "${QLFILE_TEMPLATE}" ]]; then
-            echo "${QLFILE_TEMPLATE}" | $GITHUB_ACTION_PATH/templater.ros > qlfile
-            rm -f qlfile.lock
-        fi
-
-        if [[ -e qlfile ]]; then
-            echo 'Here is content of qlfile:'
-            echo '==============='
-            cat qlfile
-            echo '==============='
-            echo ''
-        else
-            echo 'There is no qlfile. Creating an empty one.'
-            touch qlfile
-        fi
-
         qlot install
         echo ::endgroup::
       env:
