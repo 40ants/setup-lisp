@@ -2,6 +2,19 @@
 
 # ChangeLog
 
+<a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E2-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 4.0.2 (2024-02-27)
+
+<a id="fixed"></a>
+
+### Fixed
+
+* Fix recreating of qlfile inside qlot environment cache.
+
+When some jobs used qlfile-template argument + caching, a template application
+  result was cached and caused an error during the next run.
+
 <a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E1-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 4.0.1 (2024-02-25)
