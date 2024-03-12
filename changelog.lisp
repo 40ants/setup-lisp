@@ -7,7 +7,17 @@
 
 (defchangelog (:ignore-words ("ASDF"
                               "PATH"
+                              "CL"
                               "HOME"))
+  (4.0.3 2024-03-12
+         "
+# Fixed
+
+* There was an error when action suceeded, but actually failed trying to load my quicklisp fix for package inferred systems.
+  A code to load this fix used :HOME as a pathname component which is not supported by some CL implementations. Actually,
+  I've already fixed this issue in 3.1.0 version, but somehow this fix was lost. Also, a handler-bind wrapper around the loader was added
+  and now action's tests will fail in case of any errors.
+")
   (4.0.2 2024-02-27
          "
 # Fixed
@@ -31,7 +41,7 @@
 * A new input variable `cache` was added to control caching beheviour. It is `true` by default, but you can switch it to `false` to turn caching off.
 
 ")
-  (3.2.0 2023-01-30
+  (3.2.0 2024-01-30
          "
 # Changed
 
@@ -44,7 +54,7 @@
 * Fixed running of test.ros script under Windows.
 
 ")
-  (3.1.0 2023-01-27
+  (3.1.0 2024-01-27
          "
 # Changed
 

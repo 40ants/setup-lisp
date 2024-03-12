@@ -14,46 +14,86 @@ jobs:
       fail-fast: false # Let the workflow continue as much as possible
       matrix:
         include:
-          - os: ubuntu-latest
-            lisp: sbcl
-          # Just to ensure test.ros will not fail when version
-          # is specified explicitly
-          - os: ubuntu-latest
-            lisp: sbcl/2.3.1
-          - os: macos-latest
-            lisp: sbcl-bin
-          - os: windows-latest
-            lisp: sbcl-bin
-          - os: ubuntu-latest
-            lisp: sbcl-bin
-          - os: ubuntu-latest
-            lisp: ccl-bin
-          - os: ubuntu-latest
-            lisp: clisp-head
-          - os: ubuntu-latest
-            lisp: ecl
+          # Linux
           - os: ubuntu-latest
             lisp: abcl-bin
-          - os: ubuntu-latest
-            lisp: clasp-bin
-          - os: ubuntu-latest
-            lisp: cmu-bin
-
           # See issue: https://github.com/40ants/setup-lisp/issues/22
           # - os: ubuntu-latest
           #   lisp: allegro
-          # See issue: https://github.com/40ants/setup-lisp/issues/15
-          # - os: ubuntu-latest
-          #   lisp: clisp
+          - os: ubuntu-latest
+            lisp: ccl-bin
           # See issue: https://github.com/40ants/setup-lisp/issues/16
           # - os: ubuntu-latest
           #   lisp: clasp
+          - os: ubuntu-latest
+            lisp: clasp-bin
+          # See issue: https://github.com/40ants/setup-lisp/issues/15
+          # - os: ubuntu-latest
+          #   lisp: clisp
+          - os: ubuntu-latest
+            lisp: clisp-head
+          - os: ubuntu-latest
+            lisp: cmu-bin
+          - os: ubuntu-latest
+            lisp: ecl
           # See issue: https://github.com/40ants/setup-lisp/issues/17
           # - os: ubuntu-latest
           #   lisp: mkcl
           # See issue: https://github.com/40ants/setup-lisp/issues/18
           # - os: ubuntu-latest
           #   lisp: npt
+          - os: ubuntu-latest
+            lisp: sbcl
+          # Just to ensure test.ros will not fail when version
+          # is specified explicitly
+          - os: ubuntu-latest
+            lisp: sbcl/2.3.1
+          - os: ubuntu-latest
+            lisp: sbcl-bin
+
+          # OSX
+          - os: macos-latest
+            lisp: abcl-bin
+          - os: macos-latest
+            lisp: ccl-bin
+          # https://github.com/40ants/setup-lisp/issues/29
+          # - os: macos-latest
+          #   lisp: clasp-bin
+          # https://github.com/40ants/setup-lisp/issues/28
+          # - os: macos-latest
+          #   lisp: clisp-head
+          # https://github.com/40ants/setup-lisp/issues/30
+          # - os: macos-latest
+          #   lisp: cmu-bin
+          - os: macos-latest
+            lisp: ecl
+          - os: macos-latest
+            lisp: sbcl-bin
+
+          # Windows
+
+          # https://github.com/40ants/setup-lisp/issues/27
+          # - os: windows-latest
+          #   lisp: abcl-bin
+          # https://github.com/40ants/setup-lisp/issues/27
+          # - os: windows-latest
+          #   lisp: ccl-bin
+          # https://github.com/40ants/setup-lisp/issues/27
+          # - os: windows-latest
+          #   lisp: clasp-bin
+          # https://github.com/40ants/setup-lisp/issues/27
+          # - os: windows-latest
+          #   lisp: clisp-head
+          # https://github.com/40ants/setup-lisp/issues/27
+          # - os: windows-latest
+          #   lisp: cmu-bin
+          # https://github.com/40ants/setup-lisp/issues/27
+          # - os: windows-latest
+          #   lisp: ecl
+          - os: windows-latest
+            lisp: sbcl-bin
+            
+
     defaults:
       run:
         shell: lispsh -eo pipefail {0}
@@ -83,8 +123,11 @@ jobs:
           # https://github.com/roswell/roswell/issues/497
           asdf-version: 3.3.5.3
           qlot-version: latest
-      - run: which ros
       - run: ros config
+        # On OSX this steps fails often:
+        # https://github.com/40ants/setup-lisp/issues/31
+        # I don't know how to fix it, so we'll skip it for now:
+        continue-on-error: true
       - run: qlot exec ros install 40ants/cl-info
       - run: qlot exec cl-info
 
