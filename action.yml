@@ -56,6 +56,7 @@ inputs:
         qlfile.lock
         ~/.cache/common-lisp/
         .qlot
+
   cache-suffix:
     description: "Internal var. Don't use it."
     required: false
