@@ -57,6 +57,9 @@ inputs:
         ~/.cache/common-lisp/
         .qlot
 
+env:
+  cache-suffix: v1
+        
 runs:
   using: composite
   steps:
@@ -206,7 +209,7 @@ runs:
       uses: actions/cache/restore@v4
       with:
         path: ${{ inputs.roswell-cache-paths }}
-        key: roswell-${{ inputs.roswell-version }}-${{ steps.locals.outputs.current-month }}-${{ env.cache-name }}-${{ runner.os }}-${{ env.LISP }}
+        key: roswell-${{ inputs.roswell-version }}-${{ steps.locals.outputs.current-month }}-${{ env.cache-name }}-${{ runner.os }}-${{ env.LISP }}-${{ env.cache-suffix }}
 
     - if: inputs.cache == 'true' && steps.roswell-cache-restore.outputs.cache-hit == 'true'
       name: Restore Path To Cached Files
@@ -345,7 +348,7 @@ runs:
       uses: actions/cache/restore@v4
       with:
         path: ${{ inputs.qlot-cache-paths }}
-        key: qlot-${{ steps.locals.outputs.current-month }}-${{ env.cache-name }}-${{ runner.os }}-${{ env.QUICKLISP_DIST }}-${{ env.LISP }}-${{ hashFiles('qlfile', 'qlfile.lock', '*.asd') }}
+        key: qlot-${{ steps.locals.outputs.current-month }}-${{ env.cache-name }}-${{ runner.os }}-${{ env.QUICKLISP_DIST }}-${{ env.LISP }}-${{ hashFiles('qlfile', 'qlfile.lock', '*.asd') }}-${{ env.cache-suffix }}
 
     - if: inputs.cache == 'true' && steps.qlot-cache-restore.outputs.cache-hit == 'true'
       name: Restore Path To .qlot/bin
