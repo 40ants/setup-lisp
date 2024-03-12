@@ -7,6 +7,7 @@
 
 (defchangelog (:ignore-words ("ASDF"
                               "PATH"
+                              "CL"
                               "HOME"))
   (4.0.3 2024-03-12
          "
