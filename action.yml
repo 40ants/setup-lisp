@@ -275,8 +275,6 @@ runs:
         mkdir -p ~/.roswell
 
         cat $GITHUB_ACTION_PATH/load-quicklisp-fix.lisp >> ~/.roswell/init.lisp
-
-        EOF
        
     - if: inputs.cache == 'false' || steps.roswell-cache-restore.outputs.cache-hit != 'true'
       name: Upgrade ASDF to the Latest Version
