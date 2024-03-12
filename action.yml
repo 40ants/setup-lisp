@@ -271,20 +271,8 @@ runs:
 
         mkdir -p ~/.roswell
 
-        cat >> ~/.roswell/init.lisp <<EOF
-        (let ((fix-filename (make-pathname :directory '(:absolute :home ".quicklisp-client-fix")
-                                           :name "quicklisp-fix"
-                                           :type "lisp")))
-          (let ((quicklisp-found #+quicklisp t
-                                 #-quicklisp nil))
-            (cond
-              ((not quicklisp-found)
-               (warn "Quicklisp is not available, skipping fix loading.~%"))
-              ((probe-file fix-filename)
-               (handler-bind ((warning #'muffle-warning))
-                 (load fix-filename)))
-              (t
-               (warn "Quicklisp fix was not found at ~S.~%" fix-filename)))))
+        cat $GITHUB_ACTION_PATH/load-quicklisp-fix.lisp >> ~/.roswell/init.lisp
+
         EOF
        
     - if: inputs.cache == 'false' || steps.roswell-cache-restore.outputs.cache-hit != 'true'
@@ -378,17 +366,15 @@ runs:
     # This step will install system and
     # all possible roswell scripts, if the system
     # has them in the roswell/ subdirectory:
-    - if: inputs.cache == 'false' || steps.qlot-cache-restore.outputs.cache-hit != 'true'
+    - if: inputs.asdf-system && (inputs.cache == 'false' || steps.qlot-cache-restore.outputs.cache-hit != 'true')
       name: Install ASDF System
       shell: lispsh -eo pipefail {0}
+      # Here we need CL_SOURCE_REGISTR
       run: |
         echo ::group::Install ASDF System
 
-        if [[ -n "${{ inputs.asdf-system }}" ]]; then
             qlot exec ros install ${{ inputs.asdf-system }}
-        else
-            echo "ASDF system wasn't provided."
-        fi
+            
         echo ::endgroup::
 
     - if: inputs.cache == 'true' && steps.qlot-cache-restore.outputs.cache-hit != 'true'
