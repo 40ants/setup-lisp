@@ -60,7 +60,7 @@ inputs:
   cache-suffix:
     description: "Internal var. Don't use it."
     required: false
-    default: v5
+    default: v6
 
 runs:
   using: composite
@@ -276,7 +276,7 @@ runs:
 
         mkdir -p ~/.roswell
 
-        # cat $GITHUB_ACTION_PATH/load-quicklisp-fix.lisp >> ~/.roswell/init.lisp
+        cat $GITHUB_ACTION_PATH/load-quicklisp-fix.lisp >> ~/.roswell/init.lisp
        
     - if: inputs.cache == 'false' || steps.roswell-cache-restore.outputs.cache-hit != 'true'
       name: Upgrade ASDF to the Latest Version
