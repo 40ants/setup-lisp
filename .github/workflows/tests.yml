@@ -22,8 +22,8 @@ jobs:
           #   lisp: sbcl/2.3.1
           - os: macos-latest
             lisp: sbcl-bin
-          - os: macos-latest
-            lisp: ccl-bin
+          # - os: macos-latest
+          #   lisp: ccl-bin
           # - os: windows-latest
           #   lisp: sbcl-bin
           # - os: ubuntu-latest
