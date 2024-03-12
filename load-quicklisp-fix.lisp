@@ -2,9 +2,11 @@
                  (lambda (condition)
                    (uiop:print-condition-backtrace condition)
                    (uiop:quit 1))))
-  (let ((fix-filename (make-pathname :directory '(:absolute :home ".quicklisp-client-fix")
-                                     :name "quicklisp-fix"
-                                     :type "lisp")))
+  (let ((fix-filename (merge-pathnames
+                       (make-pathname :directory '(:relative ".quicklisp-client-fix")
+                                      :name "quicklisp-fix"
+                                      :type "lisp")
+                       (user-homedir-pathname))))
     (let ((quicklisp-found #+quicklisp t
                            #-quicklisp nil))
       (cond
