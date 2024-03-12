@@ -60,7 +60,7 @@ inputs:
   cache-suffix:
     description: "Internal var. Don't use it."
     required: false
-    default: v7
+    default: v8
 
 runs:
   using: composite
