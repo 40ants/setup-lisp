@@ -60,7 +60,7 @@ inputs:
   cache-suffix:
     description: "Internal var. Don't use it."
     required: false
-    default: v8
+    default: v9
 
 runs:
   using: composite
@@ -372,11 +372,12 @@ runs:
     - if: inputs.asdf-system && (inputs.cache == 'false' || steps.qlot-cache-restore.outputs.cache-hit != 'true')
       name: Install ASDF System
       shell: lispsh -eo pipefail {0}
-      # Here we need CL_SOURCE_REGISTR
+      # Here we'll need to set CL_SOURCE_REGISTRY
+      # when will switch to a new qlot:
       run: |
         echo ::group::Install ASDF System
 
-            qlot exec ros install ${{ inputs.asdf-system }}
+        qlot exec ros install ${{ inputs.asdf-system }}
             
         echo ::endgroup::
 
