@@ -57,6 +57,11 @@ inputs:
         ~/.cache/common-lisp/
         .qlot
 
+  cache-suffix:
+    description: "Internal var. Don't use it."
+    required: false
+    default: v9
+
 runs:
   using: composite
   steps:
@@ -206,7 +211,7 @@ runs:
       uses: actions/cache/restore@v4
       with:
         path: ${{ inputs.roswell-cache-paths }}
-        key: roswell-${{ inputs.roswell-version }}-${{ steps.locals.outputs.current-month }}-${{ env.cache-name }}-${{ runner.os }}-${{ env.LISP }}
+        key: roswell-${{ inputs.roswell-version }}-${{ steps.locals.outputs.current-month }}-${{ env.cache-name }}-${{ runner.os }}-${{ env.LISP }}-${{ inputs.cache-suffix }}
 
     - if: inputs.cache == 'true' && steps.roswell-cache-restore.outputs.cache-hit == 'true'
       name: Restore Path To Cached Files
@@ -271,21 +276,7 @@ runs:
 
         mkdir -p ~/.roswell
 
-        cat >> ~/.roswell/init.lisp <<EOF
-        (let ((fix-filename (make-pathname :directory '(:absolute :home ".quicklisp-client-fix")
-                                           :name "quicklisp-fix"
-                                           :type "lisp")))
-          (let ((quicklisp-found #+quicklisp t
-                                 #-quicklisp nil))
-            (cond
-              ((not quicklisp-found)
-               (warn "Quicklisp is not available, skipping fix loading.~%"))
-              ((probe-file fix-filename)
-               (handler-bind ((warning #'muffle-warning))
-                 (load fix-filename)))
-              (t
-               (warn "Quicklisp fix was not found at ~S.~%" fix-filename)))))
-        EOF
+        cat $GITHUB_ACTION_PATH/load-quicklisp-fix.lisp >> ~/.roswell/init.lisp
        
     - if: inputs.cache == 'false' || steps.roswell-cache-restore.outputs.cache-hit != 'true'
       name: Upgrade ASDF to the Latest Version
@@ -357,7 +348,7 @@ runs:
       uses: actions/cache/restore@v4
       with:
         path: ${{ inputs.qlot-cache-paths }}
-        key: qlot-${{ steps.locals.outputs.current-month }}-${{ env.cache-name }}-${{ runner.os }}-${{ env.QUICKLISP_DIST }}-${{ env.LISP }}-${{ hashFiles('qlfile', 'qlfile.lock', '*.asd') }}
+        key: qlot-${{ steps.locals.outputs.current-month }}-${{ env.cache-name }}-${{ runner.os }}-${{ env.QUICKLISP_DIST }}-${{ env.LISP }}-${{ hashFiles('qlfile', 'qlfile.lock', '*.asd') }}-${{ inputs.cache-suffix }}
 
     - if: inputs.cache == 'true' && steps.qlot-cache-restore.outputs.cache-hit == 'true'
       name: Restore Path To .qlot/bin
@@ -378,17 +369,16 @@ runs:
     # This step will install system and
     # all possible roswell scripts, if the system
     # has them in the roswell/ subdirectory:
-    - if: inputs.cache == 'false' || steps.qlot-cache-restore.outputs.cache-hit != 'true'
+    - if: inputs.asdf-system && (inputs.cache == 'false' || steps.qlot-cache-restore.outputs.cache-hit != 'true')
       name: Install ASDF System
       shell: lispsh -eo pipefail {0}
+      # Here we'll need to set CL_SOURCE_REGISTRY
+      # when will switch to a new qlot:
       run: |
         echo ::group::Install ASDF System
 
-        if [[ -n "${{ inputs.asdf-system }}" ]]; then
-            qlot exec ros install ${{ inputs.asdf-system }}
-        else
-            echo "ASDF system wasn't provided."
-        fi
+        qlot exec ros install ${{ inputs.asdf-system }}
+            
         echo ::endgroup::
 
     - if: inputs.cache == 'true' && steps.qlot-cache-restore.outputs.cache-hit != 'true'
