@@ -20,12 +20,6 @@ jobs:
           # is specified explicitly
           - os: ubuntu-latest
             lisp: sbcl/2.3.1
-          - os: macos-latest
-            lisp: sbcl-bin
-          - os: macos-latest
-            lisp: ccl-bin
-          - os: windows-latest
-            lisp: sbcl-bin
           - os: ubuntu-latest
             lisp: sbcl-bin
           - os: ubuntu-latest
@@ -40,7 +34,6 @@ jobs:
             lisp: clasp-bin
           - os: ubuntu-latest
             lisp: cmu-bin
-
           # See issue: https://github.com/40ants/setup-lisp/issues/22
           # - os: ubuntu-latest
           #   lisp: allegro
@@ -56,6 +49,39 @@ jobs:
           # See issue: https://github.com/40ants/setup-lisp/issues/18
           # - os: ubuntu-latest
           #   lisp: npt
+
+          # Windows
+          - os: windows-latest
+            lisp: sbcl-bin
+          - os: windows-latest
+            lisp: ccl-bin
+          - os: windows-latest
+            lisp: clisp-head
+          - os: windows-latest
+            lisp: ecl
+          - os: windows-latest
+            lisp: abcl-bin
+          - os: windows-latest
+            lisp: clasp-bin
+          - os: windows-latest
+            lisp: cmu-bin
+
+          # OSX
+          - os: macos-latest
+            lisp: sbcl-bin
+          - os: macos-latest
+            lisp: ccl-bin
+          - os: macos-latest
+            lisp: clisp-head
+          - os: macos-latest
+            lisp: ecl
+          - os: macos-latest
+            lisp: abcl-bin
+          - os: macos-latest
+            lisp: clasp-bin
+          - os: macos-latest
+            lisp: cmu-bin
+
     defaults:
       run:
         shell: lispsh -eo pipefail {0}
