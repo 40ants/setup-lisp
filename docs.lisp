@@ -89,22 +89,21 @@ when trying to call `ros` or `qlot` scripts:
   Error: Process completed with exit code 127.
 ```
 
-
-| **Implementation** | **Supported**                                        |
-|--------------------|------------------------------------------------------|
-| abcl-bin           | ✅                                                   |
-| allegro            | [❌](https://github.com/40ants/setup-lisp/issues/22) |
-| ccl-bin            | ✅                                                   |
-| clasp              | [❌](https://github.com/40ants/setup-lisp/issues/16) |
-| clasp-bin          | ✅                                                   |
-| clisp              | [❌](https://github.com/40ants/setup-lisp/issues/15) |
-| clisp-head         | ✅                                                   |
-| cmu-bin            | ✅                                                   |
-| ecl                | ✅                                                   |
-| mkcl               | [❌](https://github.com/40ants/setup-lisp/issues/17) |
-| npt                | [❌](https://github.com/40ants/setup-lisp/issues/18) |
-| sbcl               | ✅                                                   |
-| sbcl-bin           | ✅                                                   |
+| **Implementation** | **Linux**                                            | **OSX** | **Windows**  |
+|--------------------|------------------------------------------------------|---------|--------------|
+| abcl-bin           | ✅                                                   | ✅      | [❌](https://github.com/40ants/setup-lisp/issues/27) |
+| allegro            | [❌](https://github.com/40ants/setup-lisp/issues/22) |         |              |
+| ccl-bin            | ✅                                                   | ✅      | [❌](https://github.com/40ants/setup-lisp/issues/27) |
+| clasp              | [❌](https://github.com/40ants/setup-lisp/issues/16) |         | [❌](https://github.com/40ants/setup-lisp/issues/27) |
+| clasp-bin          | ✅                                                   | [❌](https://github.com/40ants/setup-lisp/issues/29) |
+| clisp              | [❌](https://github.com/40ants/setup-lisp/issues/15) |         | [❌](https://github.com/40ants/setup-lisp/issues/27) |
+| clisp-head         | ✅                                                   | [❌](https://github.com/40ants/setup-lisp/issues/28) |
+| cmu-bin            | ✅                                                   | [❌](https://github.com/40ants/setup-lisp/issues/30) | [❌](https://github.com/40ants/setup-lisp/issues/27) |
+| ecl                | ✅                                                   | ✅      | [❌](https://github.com/40ants/setup-lisp/issues/27) |
+| mkcl               | [❌](https://github.com/40ants/setup-lisp/issues/17) |         |              |
+| npt                | [❌](https://github.com/40ants/setup-lisp/issues/18) |         |              |
+| sbcl               | ✅                                                   |         |              |
+| sbcl-bin           | ✅                                                   | ✅      | ✅           |
 
 ")
 
