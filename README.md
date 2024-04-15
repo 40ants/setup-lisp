@@ -39,21 +39,21 @@ when trying to call `ros` or `qlot` scripts:
 /c/Users/runneradmin/.roswell/lisp/quicklisp/bin/qlot: line 4: exec: ros: not found
   Error: Process completed with exit code 127.
 ```
-| **Implementation** | **Supported** |
-| --- | --- |
-| abcl-bin | ✅ |
-| allegro | [❌][d984] |
-| ccl-bin | ✅ |
-| clasp | [❌][ecc6] |
-| clasp-bin | ✅ |
-| clisp | [❌][78c5] |
-| clisp-head | ✅ |
-| cmu-bin | ✅ |
-| ecl | ✅ |
-| mkcl | [❌][2801] |
-| npt | [❌][7189] |
-| sbcl | ✅ |
-| sbcl-bin | ✅ |
+| **Implementation** | **Linux** | **OSX** | **Windows** |
+| --- | --- | --- | --- |
+| abcl-bin | ✅ | ✅ | [❌][d780] |
+| allegro | [❌][d984] |  |  |
+| ccl-bin | ✅ | ✅ | [❌][d780] |
+| clasp | [❌][ecc6] |  | [❌][d780] |
+| clasp-bin | ✅ | [❌][bf3c] |
+| clisp | [❌][78c5] |  | [❌][d780] |
+| clisp-head | ✅ | [❌][5334] |
+| cmu-bin | ✅ | [❌][2599] | [❌][d780] |
+| ecl | ✅ | ✅ | [❌][d780] |
+| mkcl | [❌][2801] |  |  |
+| npt | [❌][7189] |  |  |
+| sbcl | ✅ |  |  |
+| sbcl-bin | ✅ | ✅ | ✅ |
 
 <a id="x-28PROJECT-DOCS-3A-3A-40TYPICAL-USAGE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
@@ -250,6 +250,10 @@ If you want to contribute to this system, join development at GitHub:
 [2801]: https://github.com/40ants/setup-lisp/issues/17
 [7189]: https://github.com/40ants/setup-lisp/issues/18
 [d984]: https://github.com/40ants/setup-lisp/issues/22
+[d780]: https://github.com/40ants/setup-lisp/issues/27
+[5334]: https://github.com/40ants/setup-lisp/issues/28
+[bf3c]: https://github.com/40ants/setup-lisp/issues/29
+[2599]: https://github.com/40ants/setup-lisp/issues/30
 [e3ea]: https://github.com/fukamachi/qlot
 [3dbd]: https://github.com/mmontone/djula
 [795a]: https://github.com/roswell/roswell

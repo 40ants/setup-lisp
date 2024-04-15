@@ -2,6 +2,19 @@
 
 # ChangeLog
 
+<a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E3-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 4.0.3 (2024-03-12)
+
+<a id="fixed"></a>
+
+### Fixed
+
+* There was an error when action suceeded, but actually failed trying to load my quicklisp fix for package inferred systems.
+  A code to load this fix used `:HOME` as a pathname component which is not supported by some `CL` implementations. Actually,
+  I've already fixed this issue in 3.1.0 version, but somehow this fix was lost. Also, a handler-bind wrapper around the loader was added
+  and now action's tests will fail in case of any errors.
+
 <a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E2-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 4.0.2 (2024-02-27)
@@ -38,7 +51,7 @@ When some jobs used qlfile-template argument + caching, a template application
 
 <a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C3-2E2-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
-## 3.2.0 (2023-01-30)
+## 3.2.0 (2024-01-30)
 
 <a id="changed"></a>
 
@@ -56,7 +69,7 @@ When some jobs used qlfile-template argument + caching, a template application
 
 <a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C3-2E1-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
-## 3.1.0 (2023-01-27)
+## 3.1.0 (2024-01-27)
 
 <a id="changed"></a>
 
