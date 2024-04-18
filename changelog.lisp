@@ -9,6 +9,12 @@
                               "PATH"
                               "CL"
                               "HOME"))
+  (4.0.4 2024-04-18
+         "
+# Fixed
+
+* Cache key was extended with runner architecture. Thanks for the contribution to Ákos Kiss!
+")
   (4.0.3 2024-03-12
          "
 # Fixed
