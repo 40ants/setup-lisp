@@ -2,6 +2,16 @@
 
 # ChangeLog
 
+<a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E4-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 4.0.4 (2024-04-18)
+
+<a id="fixed"></a>
+
+### Fixed
+
+* Cache key was extended with runner architecture. Thanks for the contribution to Ákos Kiss!
+
 <a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E3-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 4.0.3 (2024-03-12)
