@@ -211,7 +211,7 @@ runs:
       uses: actions/cache/restore@v4
       with:
         path: ${{ inputs.roswell-cache-paths }}
-        key: roswell-${{ inputs.roswell-version }}-${{ steps.locals.outputs.current-month }}-${{ env.cache-name }}-${{ runner.os }}-${{ env.LISP }}-${{ inputs.cache-suffix }}
+        key: roswell-${{ inputs.roswell-version }}-${{ steps.locals.outputs.current-month }}-${{ env.cache-name }}-${{ runner.os }}-${{ runner.arch }}-${{ env.LISP }}-${{ inputs.cache-suffix }}
 
     - if: inputs.cache == 'true' && steps.roswell-cache-restore.outputs.cache-hit == 'true'
       name: Restore Path To Cached Files
