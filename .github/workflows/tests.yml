@@ -52,23 +52,42 @@ jobs:
             lisp: sbcl-bin
 
           # OSX
-          - os: macos-latest
+          - os: macos-13
             lisp: abcl-bin
-          - os: macos-latest
+          - os: macos-13
             lisp: ccl-bin
           # https://github.com/40ants/setup-lisp/issues/29
-          # - os: macos-latest
+          # - os: macos-13
           #   lisp: clasp-bin
           # https://github.com/40ants/setup-lisp/issues/28
-          # - os: macos-latest
+          # - os: macos-13
           #   lisp: clisp-head
           # https://github.com/40ants/setup-lisp/issues/30
-          # - os: macos-latest
+          # - os: macos-13
           #   lisp: cmu-bin
-          - os: macos-latest
+          - os: macos-13
             lisp: ecl
-          - os: macos-latest
+          - os: macos-13
             lisp: sbcl-bin
+
+          - os: macos-14
+            lisp: abcl-bin
+          # - os: macos-14
+          #   lisp: ccl-bin
+          # https://github.com/40ants/setup-lisp/issues/29
+          # - os: macos-14
+          #   lisp: clasp-bin
+          # https://github.com/40ants/setup-lisp/issues/28
+          # - os: macos-14
+          #   lisp: clisp-head
+          # https://github.com/40ants/setup-lisp/issues/30
+          # - os: macos-14
+          #   lisp: cmu-bin
+          - os: macos-14
+            lisp: ecl
+          - os: macos-14
+            lisp: sbcl-bin
+
 
           # Windows
 
