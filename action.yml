@@ -46,6 +46,8 @@ inputs:
       /usr/local/etc/roswell
       /usr/local/bin/ros
       /usr/local/Cellar/roswell
+      /opt/homebrew/bin/ros
+      /opt/homebrew/Cellar/roswell
 
   qlot-cache-paths:
     description: "Internal var. Don't use it."
