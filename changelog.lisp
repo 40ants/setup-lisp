@@ -9,6 +9,15 @@
                               "PATH"
                               "CL"
                               "HOME"))
+
+  (4.0.5 2024-04-19
+         "
+# Fixed
+
+* Extended test matrix with macos-14 runner.
+* Fixed Roswell cache paths for macos-14 runner.
+* Extended qlot cache key with runner architecture.
+")
   (4.0.4 2024-04-18
          "
 # Fixed

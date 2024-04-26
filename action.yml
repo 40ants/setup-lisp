@@ -46,6 +46,8 @@ inputs:
       /usr/local/etc/roswell
       /usr/local/bin/ros
       /usr/local/Cellar/roswell
+      /opt/homebrew/bin/ros
+      /opt/homebrew/Cellar/roswell
 
   qlot-cache-paths:
     description: "Internal var. Don't use it."
@@ -348,7 +350,7 @@ runs:
       uses: actions/cache/restore@v4
       with:
         path: ${{ inputs.qlot-cache-paths }}
-        key: qlot-${{ steps.locals.outputs.current-month }}-${{ env.cache-name }}-${{ runner.os }}-${{ env.QUICKLISP_DIST }}-${{ env.LISP }}-${{ hashFiles('qlfile', 'qlfile.lock', '*.asd') }}-${{ inputs.cache-suffix }}
+        key: qlot-${{ steps.locals.outputs.current-month }}-${{ env.cache-name }}-${{ runner.os }}-${{ runner.arch }}-${{ env.QUICKLISP_DIST }}-${{ env.LISP }}-${{ hashFiles('qlfile', 'qlfile.lock', '*.asd') }}-${{ inputs.cache-suffix }}
 
     - if: inputs.cache == 'true' && steps.qlot-cache-restore.outputs.cache-hit == 'true'
       name: Restore Path To .qlot/bin
