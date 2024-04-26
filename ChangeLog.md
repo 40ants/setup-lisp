@@ -2,6 +2,18 @@
 
 # ChangeLog
 
+<a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E5-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 4.0.5 (2024-04-19)
+
+<a id="fixed"></a>
+
+### Fixed
+
+* Extended test matrix with macos-14 runner.
+* Fixed Roswell cache paths for macos-14 runner.
+* Extended qlot cache key with runner architecture.
+
 <a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E4-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 4.0.4 (2024-04-18)
