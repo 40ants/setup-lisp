@@ -369,11 +369,11 @@ runs:
       run: |
         echo ::group::Create Qlot Environment
         if [[ "${{ inputs.qlot-no-deps }}" != 'false' ]]; then
-          echo 'Running Qlot as usual'
-          qlot install
-        else
           echo 'Running Qlot with --no-deps argument'
           qlot install --no-deps
+        else
+          echo 'Running Qlot as usual'
+          qlot install
         fi
         echo ::endgroup::
       env:
