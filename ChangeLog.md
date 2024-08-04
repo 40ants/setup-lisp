@@ -2,6 +2,20 @@
 
 # ChangeLog
 
+<a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E1-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 4.1.0 (2024-05-17)
+
+<a id="added"></a>
+
+### Added
+
+* Input argument qlot-no-deps was added.
+
+Make Qlot ignore asd files and their dependencies.
+
+This this might be useful in rare cases when your project contains a non-readable asd files such as templates.
+
 <a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E5-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 4.0.5 (2024-04-19)
