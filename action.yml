@@ -22,6 +22,11 @@ inputs:
     required: false
     default: 0.11.5
 
+  qlot-no-deps:
+    description: 'Make Qlot ignore asd files and their dependencies. This this might be useful in rare cases when your project contains a non-readable asd files such as templates.'
+    required: false
+    default: false
+
   qlfile-template:
     description: "Djula template for qlfile. All environment variables are available in it's context"
     required: false
@@ -363,7 +368,13 @@ runs:
       shell: lispsh -eo pipefail {0}
       run: |
         echo ::group::Create Qlot Environment
-        qlot install
+        if [[ "${{ inputs.qlot-no-deps }}" != 'false' ]]; then
+          echo 'Running Qlot with --no-deps argument'
+          qlot install --no-deps
+        else
+          echo 'Running Qlot as usual'
+          qlot install
+        fi
         echo ::endgroup::
       env:
         QLFILE_TEMPLATE: ${{ inputs.qlfile-template }}

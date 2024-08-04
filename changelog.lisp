@@ -10,6 +10,15 @@
                               "CL"
                               "HOME"))
 
+  (4.1.0 2024-05-17
+         "
+# Added
+
+* Input argument qlot-no-deps was added.
+
+  Make Qlot ignore asd files and their dependencies.
+
+  This this might be useful in rare cases when your project contains a non-readable asd files such as templates.")
   (4.0.5 2024-04-19
          "
 # Fixed
