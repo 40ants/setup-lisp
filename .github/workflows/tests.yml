@@ -151,6 +151,7 @@ jobs:
       - run: pwd
       - run: ls -l -A .
       - run: ls -l -A .qlot/
+      - run: find . -name '*cl-info*'
       - run: ls -l -A .qlot/bin
       - run: qlot exec cl-info
 
