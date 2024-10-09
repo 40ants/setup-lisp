@@ -148,5 +148,6 @@ jobs:
         # I don't know how to fix it, so we'll skip it for now:
         continue-on-error: true
       - run: qlot exec ros install 40ants/cl-info
+      - run: ls -l .qlot/bin
       - run: qlot exec cl-info
 
