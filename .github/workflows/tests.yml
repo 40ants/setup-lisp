@@ -149,7 +149,7 @@ jobs:
         continue-on-error: true
       - run: qlot exec ros install 40ants/cl-info
       - run: pwd
-      - run: ls -l .
+      - run: ls -l -A .
       - run: ls -l .qlot/bin
       - run: qlot exec cl-info
 
