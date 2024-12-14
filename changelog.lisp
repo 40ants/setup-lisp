@@ -8,6 +8,7 @@
 (defchangelog (:ignore-words ("ASDF"
                               "PATH"
                               "CL"
+                              "SBCL"
                               "HOME"))
 
   (4.2.0 2024-12-14
