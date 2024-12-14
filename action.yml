@@ -265,7 +265,7 @@ runs:
 
         if [[ "${{ inputs.dynamic-space-size }}" != "" ]]; then
             echo ::group::Changing Dynamic Space Size in Roswell Config
-            echo "dynamic-space-size    0       ${{ inputs.dynamic-space-size }}" >> ~/.roswell/config 
+            ros config set dynamic-space-size ${{ inputs.dynamic-space-size }}
         fi
 
         echo ::endgroup::

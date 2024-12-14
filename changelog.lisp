@@ -11,6 +11,8 @@
                               "SBCL"
                               "HOME"))
 
+  (4.2.1 2024-12-15
+         "Fixed the way how we set dynamic-space-size.")
   (4.2.0 2024-12-14
          "Input variable `dynamic-space-size` was added. It can be used to default set memory size for SBCL.")
   (4.1.0 2024-05-17
