@@ -2,6 +2,12 @@
 
 # ChangeLog
 
+<a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E2-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 4.2.0 (2024-12-14)
+
+Input variable `dynamic-space-size` was added. It can be used to default set memory size for `SBCL`.
+
 <a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E1-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 4.1.0 (2024-05-17)
