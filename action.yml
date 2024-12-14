@@ -8,6 +8,10 @@ inputs:
     required: false
     default: v23.10.14.114
 
+  dynamic-space-size:
+    description: 'If given, then will be used to change dynamic space size for SBCL. This value will be written to ~/.roswell/config'
+    required: false
+
   asdf-system:
     description: 'ASDF system to install'
     required: false
@@ -257,6 +261,11 @@ runs:
         else
             echo ::group::Installing latest Roswell
             curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | bash -xeo pipefail
+        fi
+
+        if [[ "${{ inputs.dynamic-space-size }}" != "" ]]; then
+            echo ::group::Changing Dynamic Space Size in Roswell Config
+            echo "dynamic-space-size    0       ${{ inputs.dynamic-space-size }}" >> ~/.roswell/config 
         fi
 
         echo ::endgroup::
