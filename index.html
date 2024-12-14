@@ -1,0 +1,216 @@
+<html lang=en>
+ <head>
+  <meta charset=UTF-8><meta name=viewport
+      content="width=device-width, initial-scale=1">
+  <title>GitHub Action to Setup Common Lisp for CI</title>
+  <link rel=alternate
+        href="https://40ants.com/setup-lisp/changelog.xml"
+        type="application/rss+xml">
+  <link rel=stylesheet type="text/css"
+        href=theme.css>
+  <script type="text/javascript" src=jquery.js></script>
+  <script type="text/javascript" src=toc.js></script>
+  <script type="text/javascript">$(document).ready(function() {$('a:has(img)').css('border-bottom', 'none')})</script>
+  <link rel=stylesheet type="text/css"
+      href=highlight.min.css>
+  <script type="text/javascript"
+          src=highlight.min.js></script>
+  <script type="text/javascript">hljs.highlightAll();</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FL71WXK73K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-FL71WXK73K');
+    </script>
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();
+       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+       ym(42462884, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true
+       });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/42462884" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+
+ </head>
+ <body>
+  <div class=page><a id=fork-me href="https://github.com/40ants/setup-lisp">Fork me on GitHub</a>
+   <div class=navbar>
+    <div class=navbar-inner>
+     <a class=brand href="/">
+      <img class=logo
+           src="https://40ants.com/img/logo.svg"></a>
+     <ul class=nav>
+      <li><a href="/posts/">Blog</a>
+      <li><a href="/ru/posts/">Blog (RU)</a>
+      <li><a href="/tips/">Lisp Tips</a>
+      <li><a href="/projects/">Our Projects</a>
+      <li><a href="/about/">About</a>
+     </ul>
+    </div>
+   </div>
+   <input type=checkbox id=sidebar-check>
+   <label for=sidebar-check>
+    <div id=sidebar-trigger>
+     <span></span><span></span><span></span>
+    </div></label><div class=sidebar><div class=header><form class=search method=GET action="search/">
+      <input type=text name=q>
+      <input type=submit value=Search><span id=search-progress></span>
+     </form>
+    </div><div class=content><div class=page-toc><ul><li><p><a href="#x-28PROJECT-DOCS-3A-40INDEX-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28PROJECT-DOCS-3A-40INDEX-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">GitHub Action to Setup Common Lisp for CI</a></p><ul><li><p><a href="#x-28PROJECT-DOCS-3A-3A-40FEATURES-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28PROJECT-DOCS-3A-3A-40FEATURES-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">What this action does for you?</a></p></li><li><p><a href="#x-28PROJECT-DOCS-3A-3A-40IMPLEMENTATION-SUPPORT-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28PROJECT-DOCS-3A-3A-40IMPLEMENTATION-SUPPORT-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Implementation support</a></p></li><li><p><a href="#x-28PROJECT-DOCS-3A-3A-40TYPICAL-USAGE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28PROJECT-DOCS-3A-3A-40TYPICAL-USAGE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">A typical usage</a></p></li><li><p><a href="#x-28PROJECT-DOCS-3A-3A-40ROSWELL-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28PROJECT-DOCS-3A-3A-40ROSWELL-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Overriding Roswell version</a></p></li><li><p><a href="#x-28PROJECT-DOCS-3A-3A-40ASDF-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28PROJECT-DOCS-3A-3A-40ASDF-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Overriding ASDF version</a></p></li><li><p><a href="#x-28PROJECT-DOCS-3A-3A-40QLOT-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28PROJECT-DOCS-3A-3A-40QLOT-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Overriding Qlot version</a></p></li><li><p><a href="#x-28PROJECT-DOCS-3A-3A-40QL-FILE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28PROJECT-DOCS-3A-3A-40QL-FILE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Overriding qlfile</a></p></li><li><p><a href="#x-28PROJECT-DOCS-3A-3A-40CACHING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28PROJECT-DOCS-3A-3A-40CACHING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Caching</a></p></li><li><p><a href="#x-28PROJECT-DOCS-3A-3A-40ROADMAP-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28PROJECT-DOCS-3A-3A-40ROADMAP-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Roadmap</a></p></li><li><p><a href="#x-28PROJECT-DOCS-3A-3A-40CONTRIBUTION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28PROJECT-DOCS-3A-3A-40CONTRIBUTION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Contribution</a></p></li></ul></li><li><p><a href="changelog/#x-28PROJECT-DOCS-2FCHANGELOG-3A-40CHANGELOG-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="changelog/" data-node="x-28PROJECT-DOCS-2FCHANGELOG-3A-40CHANGELOG-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">ChangeLog</a></p></li></ul>
+     </div>
+    </div><div class=footer>
+     <a href="https://40ants.com/doc">[generated by 40ANTS-DOC]</a>
+    </div>
+   </div><div class=content role=main><h1>GitHub Action to Setup Common Lisp for CI<a class=header-link
+     href=#x-28PROJECT-DOCS-3A-40INDEX-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-3A-40INDEX-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h1><p>This is a Github Action to setup Common Lisp, Roswell and Qlot.</p><p>It is useful to call it before running tests or building docs
+for your Common Lisp libraries. Action encapsulates all steps
+necessary to make available <a href="https://github.com/roswell/roswell">Roswell</a>
+and <a href="https://github.com/fukamachi/qlot">Qlot</a> inside the Github <code>CI</code>.</p><h2>What this action does for you?<a class=header-link
+     href=#x-28PROJECT-DOCS-3A-3A-40FEATURES-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-3A-3A-40FEATURES-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><ul><li><p>It installs Roswell and all it's dependencies, doing right thing depending on
+  the operating system. It should work on Ubuntu, <code>OSX</code> and Windows.</p></li><li><p>Upgrade <code>ASDF</code> to the latest version.</p></li><li><p>Installs Qlot.</p></li><li><p>Adds to <code>PATH</code> these directories: <code>~/.roswell/bin</code> and <code>.qlot/bin</code></p></li><li><p>Creates <code>.qlot</code> by running <code>qlot install</code>. How to override content of the
+  <code>qlfile</code>, see &quot;Overriding qlfile&quot; section.</p></li><li><p>And finally, it can install a specified <code>ASDF</code> system and all it's dependencies.
+  But this step is optional.</p></li><li><p>Installed Roswell, <code>.qlot</code> and <code>~/.cache/common-lisp/</code> files are cached to speed up
+  repeated builds.</p></li></ul><h2>Implementation support<a class=header-link
+     href=#x-28PROJECT-DOCS-3A-3A-40IMPLEMENTATION-SUPPORT-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-3A-3A-40IMPLEMENTATION-SUPPORT-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>Most implementations are tested on Linux, but for some of them Windows and <code>OSX</code> are also should work.</p><p>Note, that for correct execution, your workflow should use <code>lispsh -eo pipefail</code> instead of default <code>bash</code>.
+This way a workflow will work Linux, <code>OSX</code> and Windows. You you will ignore this advice, you'll see such error
+when trying to call <code>ros</code> or <code>qlot</code> scripts:</p><pre><code class="">/c/Users/runneradmin/.roswell/lisp/quicklisp/bin/qlot: line 4: exec: ros: not found
+  Error: Process completed with exit code 127.</code></pre><table><tr><td><p><b>Implementation</b></p></td><td><p><b>Linux</b></p></td><td><p><b>OSX</b></p></td><td><p><b>Windows</b></p></td></tr><tr><td><p>abcl-bin</p></td><td><p>✅</p></td><td><p>✅</p></td><td><p><a href="https://github.com/40ants/setup-lisp/issues/27">❌</a></p></td></tr><tr><td><p>allegro</p></td><td><p><a href="https://github.com/40ants/setup-lisp/issues/22">❌</a></p></td><td><p></p></td><td><p></p></td></tr><tr><td><p>ccl-bin</p></td><td><p>✅</p></td><td><p>✅</p></td><td><p><a href="https://github.com/40ants/setup-lisp/issues/27">❌</a></p></td></tr><tr><td><p>clasp</p></td><td><p><a href="https://github.com/40ants/setup-lisp/issues/16">❌</a></p></td><td><p></p></td><td><p><a href="https://github.com/40ants/setup-lisp/issues/27">❌</a></p></td></tr><tr><td><p>clasp-bin</p></td><td><p>✅</p></td><td><p><a href="https://github.com/40ants/setup-lisp/issues/29">❌</a></p></td></tr><tr><td><p>clisp</p></td><td><p><a href="https://github.com/40ants/setup-lisp/issues/15">❌</a></p></td><td><p></p></td><td><p><a href="https://github.com/40ants/setup-lisp/issues/27">❌</a></p></td></tr><tr><td><p>clisp-head</p></td><td><p>✅</p></td><td><p><a href="https://github.com/40ants/setup-lisp/issues/28">❌</a></p></td></tr><tr><td><p>cmu-bin</p></td><td><p>✅</p></td><td><p><a href="https://github.com/40ants/setup-lisp/issues/30">❌</a></p></td><td><p><a href="https://github.com/40ants/setup-lisp/issues/27">❌</a></p></td></tr><tr><td><p>ecl</p></td><td><p>✅</p></td><td><p>✅</p></td><td><p><a href="https://github.com/40ants/setup-lisp/issues/27">❌</a></p></td></tr><tr><td><p>mkcl</p></td><td><p><a href="https://github.com/40ants/setup-lisp/issues/17">❌</a></p></td><td><p></p></td><td><p></p></td></tr><tr><td><p>npt</p></td><td><p><a href="https://github.com/40ants/setup-lisp/issues/18">❌</a></p></td><td><p></p></td><td><p></p></td></tr><tr><td><p>sbcl</p></td><td><p>✅</p></td><td><p></p></td><td><p></p></td></tr><tr><td><p>sbcl-bin</p></td><td><p>✅</p></td><td><p>✅</p></td><td><p>✅</p></td></tr></table><h2>A typical usage<a class=header-link
+     href=#x-28PROJECT-DOCS-3A-3A-40TYPICAL-USAGE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-3A-3A-40TYPICAL-USAGE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>Here is how a minimal GitHub Workflow might look like:</p><pre><code class="yaml">name: 'CI'
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'master'
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        lisp:
+          - sbcl-bin
+          - ccl-bin
+          
+    env:
+      LISP: ${{ matrix.lisp }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: 40ants/setup-lisp@v4
+        with:
+          asdf-system: cl-info
+      - uses: 40ants/run-tests@v2
+        with:
+          asdf-system: cl-info</code></pre><p>The part, corresponding to an action call is:</p><pre><code class="yaml">- uses: 40ants/setup-lisp@v4
+  with:
+    asdf-system: cl-info</code></pre><p>If you remove <code>with</code> part, then action will skip the <code>ASDF</code> system
+installation.</p><p>Also, pay attention to the <code>env</code> section of the workflow. If you don't
+set up a <code>LISP</code> env variable, action will set default lisp implementation
+to <code>sbcl</code>:</p><pre><code class="yaml">env:
+  LISP: ${{ matrix.lisp }}</code></pre><p>The last step in this workflow runs tests for the specified <code>ASDF</code>
+system. It is documented <a href="https://40ants.com/run-tests">here</a>.</p><h2>Overriding Roswell version<a class=header-link
+     href=#x-28PROJECT-DOCS-3A-3A-40ROSWELL-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-3A-3A-40ROSWELL-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>By default this action will install the latest version of Roswell known to be
+working with this action. However, should you need to use a different version
+instead, you can specify that via the <code>roswell-version</code> argument:</p><pre><code class="">- uses: 40ants/setup-lisp@v4
+  with:
+    roswell-version: v21.10.14.111</code></pre><h2>Overriding ASDF version<a class=header-link
+     href=#x-28PROJECT-DOCS-3A-3A-40ASDF-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-3A-3A-40ASDF-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>By default this action will install the latest version of <code>ASDF</code> known to be
+working with this action.  However, should you need to use a different version
+instead, you can specify that via the <code>asdf-version</code> argument:</p><pre><code class="">- uses: 40ants/setup-lisp@v4
+  with:
+    asdf-version: 3.3.5.3</code></pre><h2>Overriding Qlot version<a class=header-link
+     href=#x-28PROJECT-DOCS-3A-3A-40QLOT-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-3A-3A-40QLOT-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>By default this action will install the latest version of Qlot known to be
+working with this action.  However, should you need to use a different version
+instead, you can specify that via the <code>qlot-version</code> argument:</p><pre><code class="">- uses: 40ants/setup-lisp@v4
+  with:
+    qlot-version: 0.11.5</code></pre><h2>Overriding qlfile<a class=header-link
+     href=#x-28PROJECT-DOCS-3A-3A-40QL-FILE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-3A-3A-40QL-FILE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>Sometimes you might want to generate content of qlfile
+depending on matrix parameters. For example with matrix like this one:</p><pre><code class="yaml">matrix:
+  os:
+    - ubuntu-latest
+    - macos-latest
+    - windows-latest
+  quicklisp-dist:
+    - quicklisp
+    - ultralisp
+  lisp:
+    - sbcl-bin
+    - ccl-bin
+    - ecl</code></pre><p>you might want to add an <a href="https://ultralisp.org">ultralisp</a> source
+to the qlfile. Here is how this can be archived:</p><pre><code class="yaml">env:
+  LISP: ${{ matrix.lisp }}
+  OS: ${{ matrix.os }}
+  QUICKLISP_DIST: ${{ matrix.quicklisp-dist }}
+
+steps:
+  - uses: actions/checkout@v4
+  - uses: 40ants/setup-lisp@v4
+    with:
+      asdf-system: cl-info
+      qlfile-template: |
+        {% ifequal quicklisp_dist &quot;ultralisp&quot; %}
+        dist ultralisp http://dist.ultralisp.org
+        {% endifequal %}</code></pre><p>Here we see a few important things.</p><ol><li><p>We put into the env var the type of the quicklisp distribution we want to
+   our library to test against.</p></li><li><p>We pass a multiline argument <code>qlfile-template</code> to the action.</p></li><li><p>Template refers to <code>quicklisp_dist</code> to conditionally include a line
+   into <code>qlfile</code> when <code>quicklisp_dist == &quot;ultralisp&quot;</code>.</p></li></ol><p>You can refer any environment variable inside the <code>qlfile</code> templater.
+Also note, it is using <a href="https://github.com/mmontone/djula">Djula</a>
+markup, similar to <a href="https://docs.djangoproject.com/en/3.1/topics/templates/">Django</a>
+and <a href="https://jinja.palletsprojects.com/">Jinja2</a>.</p><h2>Caching<a class=header-link
+     href=#x-28PROJECT-DOCS-3A-3A-40CACHING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-3A-3A-40CACHING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>Usually installing Roswell, a lisp implementation and dependencies
+take from 2 to 10 minutes. Multiply this to the number of
+matrix combinations and you'll get signifficant time.</p><p>Starting from version <code>4.0.0</code>, this action cares about caching itself
+and you don't need to wrap it with <code>actions/cache</code>. This behaviour
+of enabled by default. Without cache action could be executed about
+4 minutes, and with cache it runs only 20 seconds on Ubuntu or 1 minute on Windows.</p><p>A new input variable <code>cache</code> was added to control caching beheviour.
+It is <code>true</code> by default, but you can switch it to <code>false</code> to turn caching off.</p><p>The current month is used as part of the cache key, to refresh caches every month.
+This way a new Roswell, Qlot and <code>ASDF</code> will be used in a build. Also, you can set
+<code>env.cache-name</code> variable to some value, to force rebuild with a fresh cache.</p><h2>Roadmap<a class=header-link
+     href=#x-28PROJECT-DOCS-3A-3A-40ROADMAP-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-3A-3A-40ROADMAP-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><ul><li><p>Support <a href="https://gitlab.common-lisp.net/clpm/clpm">CLPM</a>.</p></li><li><p>Vendor all dependencies, to make action more reliable and secure.</p></li></ul><h2>Contribution<a class=header-link
+     href=#x-28PROJECT-DOCS-3A-3A-40CONTRIBUTION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-3A-3A-40CONTRIBUTION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>If you want to contribute to this system, join development at GitHub:</p><p><a href="https://github.com/40ants/setup-lisp">https://github.com/40ants/setup-lisp</a></p>
+   </div><div class=footer>
+    <hr class=separator>
+    <p class=fineprint>Created with passion by <em>40Ants</em><a class=lisp-logo
+     href="http://lisp-lang.org/">
+      <img
+           src="https://40ants.com/img/made-with-lisp.svg"></a>
+   </div>
+  </div>
+ </body>
+</html>

@@ -1,0 +1,155 @@
+<html lang=en>
+ <head>
+  <meta charset=UTF-8><meta name=viewport
+      content="width=device-width, initial-scale=1">
+  <title>ChangeLog</title>
+  <link rel=alternate
+        href="https://40ants.com/setup-lisp/changelog.xml"
+        type="application/rss+xml">
+  <link rel=stylesheet type="text/css"
+        href="../theme.css">
+  <script type="text/javascript" src="../jquery.js"></script>
+  <script type="text/javascript" src="../toc.js"></script>
+  <script type="text/javascript">$(document).ready(function() {$('a:has(img)').css('border-bottom', 'none')})</script>
+  <link rel=stylesheet type="text/css"
+      href="../highlight.min.css">
+  <script type="text/javascript"
+          src="../highlight.min.js"></script>
+  <script type="text/javascript">hljs.highlightAll();</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FL71WXK73K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-FL71WXK73K');
+    </script>
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();
+       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+       ym(42462884, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true
+       });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/42462884" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+
+ </head>
+ <body>
+  <div class=page><a id=fork-me href="https://github.com/40ants/setup-lisp">Fork me on GitHub</a>
+   <div class=navbar>
+    <div class=navbar-inner>
+     <a class=brand href="/">
+      <img class=logo
+           src="https://40ants.com/img/logo.svg"></a>
+     <ul class=nav>
+      <li><a href="/posts/">Blog</a>
+      <li><a href="/ru/posts/">Blog (RU)</a>
+      <li><a href="/tips/">Lisp Tips</a>
+      <li><a href="/projects/">Our Projects</a>
+      <li><a href="/about/">About</a>
+     </ul>
+    </div>
+   </div>
+   <input type=checkbox id=sidebar-check>
+   <label for=sidebar-check>
+    <div id=sidebar-trigger>
+     <span></span><span></span><span></span>
+    </div></label><div class=sidebar><div class=header><form class=search method=GET
+      action="../search/">
+      <input type=text name=q>
+      <input type=submit value=Search><span id=search-progress></span>
+     </form>
+    </div><div class=content><div class=page-toc><ul><li><p><a href="../#x-28PROJECT-DOCS-3A-40INDEX-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="../" data-node="x-28PROJECT-DOCS-3A-40INDEX-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">GitHub Action to Setup Common Lisp for CI</a></p><ul><li><p><a href="../#x-28PROJECT-DOCS-3A-3A-40FEATURES-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="../" data-node="x-28PROJECT-DOCS-3A-3A-40FEATURES-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">What this action does for you?</a></p></li><li><p><a href="../#x-28PROJECT-DOCS-3A-3A-40IMPLEMENTATION-SUPPORT-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="../" data-node="x-28PROJECT-DOCS-3A-3A-40IMPLEMENTATION-SUPPORT-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Implementation support</a></p></li><li><p><a href="../#x-28PROJECT-DOCS-3A-3A-40TYPICAL-USAGE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="../" data-node="x-28PROJECT-DOCS-3A-3A-40TYPICAL-USAGE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">A typical usage</a></p></li><li><p><a href="../#x-28PROJECT-DOCS-3A-3A-40ROSWELL-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="../" data-node="x-28PROJECT-DOCS-3A-3A-40ROSWELL-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Overriding Roswell version</a></p></li><li><p><a href="../#x-28PROJECT-DOCS-3A-3A-40ASDF-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="../" data-node="x-28PROJECT-DOCS-3A-3A-40ASDF-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Overriding ASDF version</a></p></li><li><p><a href="../#x-28PROJECT-DOCS-3A-3A-40QLOT-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="../" data-node="x-28PROJECT-DOCS-3A-3A-40QLOT-VERSION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Overriding Qlot version</a></p></li><li><p><a href="../#x-28PROJECT-DOCS-3A-3A-40QL-FILE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="../" data-node="x-28PROJECT-DOCS-3A-3A-40QL-FILE-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Overriding qlfile</a></p></li><li><p><a href="../#x-28PROJECT-DOCS-3A-3A-40CACHING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="../" data-node="x-28PROJECT-DOCS-3A-3A-40CACHING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Caching</a></p></li><li><p><a href="../#x-28PROJECT-DOCS-3A-3A-40ROADMAP-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="../" data-node="x-28PROJECT-DOCS-3A-3A-40ROADMAP-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Roadmap</a></p></li><li><p><a href="../#x-28PROJECT-DOCS-3A-3A-40CONTRIBUTION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="../" data-node="x-28PROJECT-DOCS-3A-3A-40CONTRIBUTION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Contribution</a></p></li></ul></li><li><p><a href="#x-28PROJECT-DOCS-2FCHANGELOG-3A-40CHANGELOG-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28PROJECT-DOCS-2FCHANGELOG-3A-40CHANGELOG-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">ChangeLog</a></p></li></ul>
+     </div>
+    </div><div class=footer>
+     <a href="https://40ants.com/doc">[generated by 40ANTS-DOC]</a>
+    </div>
+   </div><div class=content role=main><h1>ChangeLog<a class=rss-icon href="https://40ants.com/setup-lisp/changelog.xml"></a></h1><h2>4.2.1 (2024-12-15)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E2-2E1-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E2-2E1-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>Fixed the way how we set dynamic-space-size.</p><h2>4.2.0 (2024-12-14)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E2-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E2-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>Input variable <code>dynamic-space-size</code> was added. It can be used to default set memory size for <code>SBCL</code>.</p><h2>4.1.0 (2024-05-17)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E1-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E1-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><h3 id="added">Added</h3><ul><li><p>Input argument qlot-no-deps was added.</p></li></ul><p>Make Qlot ignore asd files and their dependencies.</p><p>This this might be useful in rare cases when your project contains a non-readable asd files such as templates.</p><h2>4.0.5 (2024-04-19)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E5-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E5-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><h3 id="fixed">Fixed</h3><ul><li><p>Extended test matrix with macos-14 runner.</p></li><li><p>Fixed Roswell cache paths for macos-14 runner.</p></li><li><p>Extended qlot cache key with runner architecture.</p></li></ul><h2>4.0.4 (2024-04-18)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E4-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E4-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><h3 id="fixed">Fixed</h3><ul><li><p>Cache key was extended with runner architecture. Thanks for the contribution to Ákos Kiss!</p></li></ul><h2>4.0.3 (2024-03-12)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E3-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E3-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><h3 id="fixed">Fixed</h3><ul><li><p>There was an error when action suceeded, but actually failed trying to load my quicklisp fix for package inferred systems.
+  A code to load this fix used <code>:HOME</code> as a pathname component which is not supported by some <code>CL</code> implementations. Actually,
+  I've already fixed this issue in 3.1.0 version, but somehow this fix was lost. Also, a handler-bind wrapper around the loader was added
+  and now action's tests will fail in case of any errors.</p></li></ul><h2>4.0.2 (2024-02-27)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E2-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E2-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><h3 id="fixed">Fixed</h3><ul><li><p>Fix recreating of qlfile inside qlot environment cache.</p></li></ul><p>When some jobs used qlfile-template argument + caching, a template application
+  result was cached and caused an error during the next run.</p><h2>4.0.1 (2024-02-25)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E1-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E1-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><h3 id="fixed">Fixed</h3><ul><li><p>Fixed loading of quicklisp-osx-fix. Previously the script made unnecessary output and when you had a <code>qlfile</code> template in your workflow this output leaked into <code>qlfile</code> broking following <code>qlot install</code>.</p></li></ul><h2>4.0.0 (2024-02-24)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E0-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><h3 id="changed">Changed</h3><ul><li><p>Internal cache mechanism was added. Now action caches Roswell and Qlot files to speed up reruns. For example, without cache action could be executed about 4 minutes, and with cache it runs only 20 seconds on Ubuntu or 1 minute on Windows.</p></li><li><p>A new input variable <code>cache</code> was added to control caching beheviour. It is <code>true</code> by default, but you can switch it to <code>false</code> to turn caching off.</p></li></ul><h2>3.2.0 (2024-01-30)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C3-2E2-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C3-2E2-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><h3 id="changed">Changed</h3><ul><li><p>Now action uses <code>bash -xeo pipefail</code> for running Roswell install script. This way, in case of some errors inside the script, it will be interrupted immediately.</p></li><li><p>Also, we don't attempt to set <code>ROSWELL_INSTALL_DIR</code> env variable anymore, because despite it's presence, Roswell was installed into <code>/mingw64/bin/</code> instead under Windows and it works well (at least for me).</p></li><li><p>Now we don't add action's directory to the <code>PATH</code> using modification of <code>GITHUB_PATH</code> variable. This prevents modification of the <code>PATH</code> of a workflow called the action.</p></li></ul><h3 id="fixed">Fixed</h3><ul><li><p>Fixed running of test.ros script under Windows.</p></li></ul><h2>3.1.0 (2024-01-27)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C3-2E1-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C3-2E1-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><h3 id="changed">Changed</h3><ul><li><p>Switched from Roswell v21.10.14.111 to v23.10.14.114.</p></li><li><p>Now action checks if it is really installed requested Lisp implementation.</p></li><li><p>A list of supported implementation was added to the documentation.</p></li><li><p>Some implementation supported by Roswell, have problems. If you need them, please, contribute the fix either to this action or to the Roswell itself.</p></li></ul><h3 id="fixed">Fixed</h3><ul><li><p>Now all steps fail-fast on the first encountered error. Previously some step might be failed, but action's execution was considered success.</p></li><li><p>Fixed Quicklisp fix activation for lisp implementations which are not support <code>:HOME</code> as part of the pathname.</p></li></ul><h2>3.0.0 (2023-12-14)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C3-2E0-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C3-2E0-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>Now action uses a fix for Quicklisp client which makes it possible to load package inferred <code>ASDF</code> systems by name of the subsystem.</p><h2>2.1.0 (2022-11-10)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C2-2E1-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C2-2E1-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>Moved to newer action msys2/setup-msys2@2.14.2 where a warning about stale Node.js version is fixed.</p><h2>2.0.0 (2021-10-28)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C2-2E0-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C2-2E0-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><h3 id="new">New</h3><ul><li><p>Add Windows support.</p></li></ul><h3 id="breaking-changes">Breaking changes</h3><p>Now instead of latest version of <code>ASDF</code>, Roswell and Qlot
+we pin versions which known to work in supported environments.</p><p>If you want latest version, pass &quot;latest&quot; as value of
+&quot;asdf-version&quot;, &quot;roswell-version&quot; or &quot;qlot-version&quot;.</p><p>Currently these versions are used:</p><ul><li><p><code>ASDF</code>: 3.3.5.3</p></li><li><p>Roswell: v21.10.14.111</p></li><li><p>Qlot: 0.11.5</p></li></ul><p>Thanks for these changes to Matteo Landi!</p><h2>1.1.2 (2021-09-19)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C1-2E1-2E2-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C1-2E1-2E2-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>Move from Qlot 0.11.1 to 0.11.5.</p><h2>1.1.1 (2021-09-12)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C1-2E1-2E1-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C1-2E1-2E1-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>Version of qlot was fixed on 0.11.1, because later versions are broken and unable to install
+systems from the GitHub. See issue <a href="https://github.com/fukamachi/qlot/issues/118">#118</a>.</p><h2>1.1.0 (2021-06-06)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C1-2E1-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C1-2E1-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>Added a new input variable <code>asdf-version</code>. By default, the latest
+<code>ASDF</code> will be used.</p><h2>1.0.2 (2021-04-04)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C1-2E0-2E2-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C1-2E0-2E2-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>Fixed installation of <code>libcurl4-openssl-dev</code> on Ubuntu Focal.</p><h2>1.0.1 (2021-02-22)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C1-2E0-2E1-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C1-2E0-2E1-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>Fixed error when there is no <code>qlfile</code> in the repository.</p><h2>1.0.0 (2021-01-07)<a class=header-link
+     href=#x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C1-2E0-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C1-2E0-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>Initial version.</p>
+   </div><div class=footer>
+    <hr class=separator>
+    <p class=fineprint>Created with passion by <em>40Ants</em><a class=lisp-logo
+     href="http://lisp-lang.org/">
+      <img
+           src="https://40ants.com/img/made-with-lisp.svg"></a>
+   </div>
+  </div>
+ </body>
+</html>
