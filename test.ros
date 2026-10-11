@@ -25,6 +25,7 @@ exec ros -Q -- $0 "$@"
     ("allegro" . "International Allegro CL Free Express Edition")
     ("abcl-bin" . "Armed Bear Common Lisp")
     ("npt" . "NPT")
+    ("dotcl-bin" . "dotcl")
     ("ecl" . "ECL")))
 
 
