@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<rss version="2.0">
+    <channel>
+        <title>project-docs ChangeLog</title>
+        <link>https://40ants.com/setup-lisp/</link>
+        <generator>xml-emitter</generator>
+        <language>en-us</language>
+        <item>
+            <title>4.2.1  (2024-12-15)</title>
+            <description>&lt;p&gt;Fixed the way how we set dynamic-space-size.&lt;/p&gt;</description>
+            <pubDate>Sun, 15 Dec 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>4.2.0  (2024-12-14)</title>
+            <description>&lt;p&gt;Input variable &lt;code&gt;dynamic-space-size&lt;/code&gt; was added. It can be used to default set memory size for &lt;code&gt;SBCL&lt;/code&gt;.&lt;/p&gt;</description>
+            <pubDate>Sat, 14 Dec 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>4.1.0  (2024-05-17)</title>
+            <description>&lt;h1 id=&quot;added&quot;&gt;Added&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Input argument qlot-no-deps was added.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Make Qlot ignore asd files and their dependencies.&lt;/p&gt;&lt;p&gt;This this might be useful in rare cases when your project contains a non-readable asd files such as templates.&lt;/p&gt;</description>
+            <pubDate>Fri, 17 May 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>4.0.5  (2024-04-19)</title>
+            <description>&lt;h1 id=&quot;fixed&quot;&gt;Fixed&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Extended test matrix with macos-14 runner.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Fixed Roswell cache paths for macos-14 runner.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Extended qlot cache key with runner architecture.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Fri, 19 Apr 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>4.0.4  (2024-04-18)</title>
+            <description>&lt;h1 id=&quot;fixed&quot;&gt;Fixed&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Cache key was extended with runner architecture. Thanks for the contribution to &#xC1;kos Kiss!&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Thu, 18 Apr 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>4.0.3  (2024-03-12)</title>
+            <description>&lt;h1 id=&quot;fixed&quot;&gt;Fixed&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;There was an error when action suceeded, but actually failed trying to load my quicklisp fix for package inferred systems.
+  A code to load this fix used &lt;code&gt;:HOME&lt;/code&gt; as a pathname component which is not supported by some &lt;code&gt;CL&lt;/code&gt; implementations. Actually,
+  I&apos;ve already fixed this issue in 3.1.0 version, but somehow this fix was lost. Also, a handler-bind wrapper around the loader was added
+  and now action&apos;s tests will fail in case of any errors.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Tue, 12 Mar 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>4.0.2  (2024-02-27)</title>
+            <description>&lt;h1 id=&quot;fixed&quot;&gt;Fixed&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Fix recreating of qlfile inside qlot environment cache.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;When some jobs used qlfile-template argument + caching, a template application
+  result was cached and caused an error during the next run.&lt;/p&gt;</description>
+            <pubDate>Tue, 27 Feb 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>4.0.1  (2024-02-25)</title>
+            <description>&lt;h1 id=&quot;fixed&quot;&gt;Fixed&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Fixed loading of quicklisp-osx-fix. Previously the script made unnecessary output and when you had a &lt;code&gt;qlfile&lt;/code&gt; template in your workflow this output leaked into &lt;code&gt;qlfile&lt;/code&gt; broking following &lt;code&gt;qlot install&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Sun, 25 Feb 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>4.0.0  (2024-02-24)</title>
+            <description>&lt;h1 id=&quot;changed&quot;&gt;Changed&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Internal cache mechanism was added. Now action caches Roswell and Qlot files to speed up reruns. For example, without cache action could be executed about 4 minutes, and with cache it runs only 20 seconds on Ubuntu or 1 minute on Windows.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;A new input variable &lt;code&gt;cache&lt;/code&gt; was added to control caching beheviour. It is &lt;code&gt;true&lt;/code&gt; by default, but you can switch it to &lt;code&gt;false&lt;/code&gt; to turn caching off.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Sat, 24 Feb 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>3.2.0  (2024-01-30)</title>
+            <description>&lt;h1 id=&quot;changed&quot;&gt;Changed&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Now action uses &lt;code&gt;bash -xeo pipefail&lt;/code&gt; for running Roswell install script. This way, in case of some errors inside the script, it will be interrupted immediately.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Also, we don&apos;t attempt to set &lt;code&gt;ROSWELL_INSTALL_DIR&lt;/code&gt; env variable anymore, because despite it&apos;s presence, Roswell was installed into &lt;code&gt;/mingw64/bin/&lt;/code&gt; instead under Windows and it works well (at least for me).&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Now we don&apos;t add action&apos;s directory to the &lt;code&gt;PATH&lt;/code&gt; using modification of &lt;code&gt;GITHUB_PATH&lt;/code&gt; variable. This prevents modification of the &lt;code&gt;PATH&lt;/code&gt; of a workflow called the action.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;h1 id=&quot;fixed&quot;&gt;Fixed&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Fixed running of test.ros script under Windows.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Tue, 30 Jan 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>3.1.0  (2024-01-27)</title>
+            <description>&lt;h1 id=&quot;changed&quot;&gt;Changed&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Switched from Roswell v21.10.14.111 to v23.10.14.114.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Now action checks if it is really installed requested Lisp implementation.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;A list of supported implementation was added to the documentation.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Some implementation supported by Roswell, have problems. If you need them, please, contribute the fix either to this action or to the Roswell itself.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;h1 id=&quot;fixed&quot;&gt;Fixed&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Now all steps fail-fast on the first encountered error. Previously some step might be failed, but action&apos;s execution was considered success.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Fixed Quicklisp fix activation for lisp implementations which are not support &lt;code&gt;:HOME&lt;/code&gt; as part of the pathname.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description>
+            <pubDate>Sat, 27 Jan 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>3.0.0  (2023-12-14)</title>
+            <description>&lt;p&gt;Now action uses a fix for Quicklisp client which makes it possible to load package inferred &lt;code&gt;ASDF&lt;/code&gt; systems by name of the subsystem.&lt;/p&gt;</description>
+            <pubDate>Thu, 14 Dec 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>2.1.0  (2022-11-10)</title>
+            <description>&lt;p&gt;Moved to newer action msys2/setup-msys2@2.14.2 where a warning about stale Node.js version is fixed.&lt;/p&gt;</description>
+            <pubDate>Thu, 10 Nov 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>2.0.0  (2021-10-28)</title>
+            <description>&lt;h1 id=&quot;new&quot;&gt;New&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Add Windows support.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;h1 id=&quot;breaking-changes&quot;&gt;Breaking changes&lt;/h1&gt;&lt;p&gt;Now instead of latest version of &lt;code&gt;ASDF&lt;/code&gt;, Roswell and Qlot
+we pin versions which known to work in supported environments.&lt;/p&gt;&lt;p&gt;If you want latest version, pass &amp;quot;latest&amp;quot; as value of
+&amp;quot;asdf-version&amp;quot;, &amp;quot;roswell-version&amp;quot; or &amp;quot;qlot-version&amp;quot;.&lt;/p&gt;&lt;p&gt;Currently these versions are used:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;&lt;code&gt;ASDF&lt;/code&gt;: 3.3.5.3&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Roswell: v21.10.14.111&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Qlot: 0.11.5&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Thanks for these changes to Matteo Landi!&lt;/p&gt;</description>
+            <pubDate>Thu, 28 Oct 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>1.1.2  (2021-09-19)</title>
+            <description>&lt;p&gt;Move from Qlot 0.11.1 to 0.11.5.&lt;/p&gt;</description>
+            <pubDate>Sun, 19 Sep 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>1.1.1  (2021-09-12)</title>
+            <description>&lt;p&gt;Version of qlot was fixed on 0.11.1, because later versions are broken and unable to install
+systems from the GitHub. See issue &lt;a href=&quot;https://github.com/fukamachi/qlot/issues/118&quot;&gt;#118&lt;/a&gt;.&lt;/p&gt;</description>
+            <pubDate>Sun, 12 Sep 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>1.1.0  (2021-06-06)</title>
+            <description>&lt;p&gt;Added a new input variable &lt;code&gt;asdf-version&lt;/code&gt;. By default, the latest
+&lt;code&gt;ASDF&lt;/code&gt; will be used.&lt;/p&gt;</description>
+            <pubDate>Sun, 06 Jun 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>1.0.2  (2021-04-04)</title>
+            <description>&lt;p&gt;Fixed installation of &lt;code&gt;libcurl4-openssl-dev&lt;/code&gt; on Ubuntu Focal.&lt;/p&gt;</description>
+            <pubDate>Sun, 04 Apr 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>1.0.1  (2021-02-22)</title>
+            <description>&lt;p&gt;Fixed error when there is no &lt;code&gt;qlfile&lt;/code&gt; in the repository.&lt;/p&gt;</description>
+            <pubDate>Mon, 22 Feb 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>1.0.0  (2021-01-07)</title>
+            <description>&lt;p&gt;Initial version.&lt;/p&gt;</description>
+            <pubDate>Thu, 07 Jan 2021 00:00:00 +0000</pubDate>
+        </item>
+    </channel>
+</rss>
