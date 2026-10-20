@@ -11,6 +11,19 @@
                               "SBCL"
                               "HOME"))
 
+  (4.2.2 2026-10-20
+         "
+# Fixed
+
+* Restoring the Qlot environment from cache broke with Qlot >= 1.8.0.
+
+  These Qlot versions keep sources in `~/.cache/qlot/` and only put symlinks into `.qlot/`.
+  We don't cache that directory, so on a cache hit `.qlot/` was full of dangling symlinks and
+  the first `ql:quickload` failed with \"Can't create directory ..., a file with the same name already exists\".
+  Now action sets `QLOT_NO_CACHE=1`, making Qlot copy sources into `.qlot/` as before.
+
+  The cache key suffix was changed, so broken caches created by previous versions will not be reused.
+")
   (4.2.1 2024-12-15
          "Fixed the way how we set dynamic-space-size.")
   (4.2.0 2024-12-14
