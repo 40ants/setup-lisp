@@ -387,10 +387,8 @@ runs:
         echo ::endgroup::
       env:
         QLFILE_TEMPLATE: ${{ inputs.qlfile-template }}
-        # Qlot >= 1.8.0 keeps sources in ~/.cache/qlot/ and puts symlinks
-        # into .qlot/. We cache only .qlot/, so after restore these symlinks
-        # would be dangling. This variable makes Qlot copy sources into .qlot/
-        # as older versions did. Older versions just ignore it.
+        # Disable Qlot's shared cache: its symlinks in .qlot/ would dangle
+        # when this action restores .qlot/ without their targets.
         QLOT_NO_CACHE: 1
 
     # This step will install system and
@@ -408,8 +406,7 @@ runs:
 
         echo ::endgroup::
       env:
-        # See the comment in the "Create Qlot Environment" step.
-        # Qlot >= 1.8.3 also symlinks releases installed by ql:quickload.
+        # Installing the ASDF system can add releases to .qlot/ before we cache it.
         QLOT_NO_CACHE: 1
 
     - if: inputs.cache == 'true' && steps.qlot-cache-restore.outputs.cache-hit != 'true'
