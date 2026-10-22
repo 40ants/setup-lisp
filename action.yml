@@ -62,16 +62,16 @@ inputs:
     description: "Internal var. Don't use it."
     required: false
     default: |
-      path: |
-        qlfile
-        qlfile.lock
-        ~/.cache/common-lisp/
-        .qlot
+      qlfile
+      qlfile.lock
+      ~/.cache/common-lisp/
+      ~/.cache/qlot/
+      .qlot
 
   cache-suffix:
     description: "Internal var. Don't use it."
     required: false
-    default: v9
+    default: v10
 
 runs:
   using: composite
@@ -400,7 +400,7 @@ runs:
         echo ::group::Install ASDF System
 
         qlot exec ros install ${{ inputs.asdf-system }}
-            
+
         echo ::endgroup::
 
     - if: inputs.cache == 'true' && steps.qlot-cache-restore.outputs.cache-hit != 'true'

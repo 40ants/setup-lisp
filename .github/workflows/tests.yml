@@ -147,6 +147,9 @@ jobs:
         # https://github.com/40ants/setup-lisp/issues/31
         # I don't know how to fix it, so we'll skip it for now:
         continue-on-error: true
+      # cl-info's ASDF definition loads 40ants-asdf-system before its own
+      # dependencies can be resolved, so install that bootstrap system first.
+      - run: qlot exec ros install 40ants/40ants-asdf-system
       - run: qlot exec ros install 40ants/cl-info
       - run: qlot exec cl-info
 
