@@ -62,11 +62,11 @@ inputs:
     description: "Internal var. Don't use it."
     required: false
     default: |
-      path: |
-        qlfile
-        qlfile.lock
-        ~/.cache/common-lisp/
-        .qlot
+      qlfile
+      qlfile.lock
+      ~/.cache/common-lisp/
+      ~/.cache/qlot/
+      .qlot
 
   cache-suffix:
     description: "Internal var. Don't use it."
@@ -387,9 +387,6 @@ runs:
         echo ::endgroup::
       env:
         QLFILE_TEMPLATE: ${{ inputs.qlfile-template }}
-        # Disable Qlot's shared cache: its symlinks in .qlot/ would dangle
-        # when this action restores .qlot/ without their targets.
-        QLOT_NO_CACHE: 1
 
     # This step will install system and
     # all possible roswell scripts, if the system
@@ -405,9 +402,6 @@ runs:
         qlot exec ros install ${{ inputs.asdf-system }}
 
         echo ::endgroup::
-      env:
-        # Installing the ASDF system can add releases to .qlot/ before we cache it.
-        QLOT_NO_CACHE: 1
 
     - if: inputs.cache == 'true' && steps.qlot-cache-restore.outputs.cache-hit != 'true'
       name: Cache Qlot Environment
