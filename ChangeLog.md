@@ -2,6 +2,26 @@
 
 # ChangeLog
 
+<a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E2-2E2-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 4.2.2 (2026-10-20)
+
+<a id="fixed"></a>
+
+### Fixed
+
+* Restoring the Qlot environment from cache broke with Qlot >= 1.8.0.
+
+These Qlot versions keep sources in `~/.cache/qlot/` and only put symlinks into `.qlot/`.
+  We don't cache that directory, so on a cache hit `.qlot/` was full of dangling symlinks and
+  the first `ql:quickload` failed with "Can't create directory ..., a file with the same name already exists".
+  Now action caches `~/.cache/qlot/` together with `.qlot/`.
+  Like `~/.cache/common-lisp/`, this covers the default Unix location only:
+  on Windows or with `QLOT_CACHE_DIRECTORY` set, Qlot keeps its cache elsewhere.
+
+The cache key suffix was changed, so broken caches created by previous versions will not be reused.
+* Removed a stray `path: |` line from the default list of Qlot cache paths.
+
 <a id="x-28PROJECT-DOCS-2FCHANGELOG-3A-3A-7C4-2E2-2E1-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 4.2.1 (2024-12-15)
